@@ -1,0 +1,445 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- FullCalendar CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.css" rel="stylesheet">
+    <title>DayLine</title>
+    <link rel="icon" href="{% static "img/favicon.ico" %}" >
+    <!-- 作成のcss -->
+    {% comment %} <link rel="stylesheet" href="../css/index/create-sidebar.css"> {% endcomment %}
+    
+    <!-- FullCalendar JS -->
+    <script  src="{% static 'js/main-settings.js' %}"  defer></script>
+    <!-- main.js の読み込み（href ではなく src） -->
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.js"></script>
+    <!-- fullcarendarのrruleプラグインを実装 -->
+    <script src="https://cdn.jsdelivr.net/npm/rrule@2.7.2/dist/es5/rrule.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/rrule@6.1.8/index.global.min.js"></script>
+    
+    
+    <!-- 全体のCSS -->
+    <link rel="stylesheet" href="{% static 'css/DayLine_style.css' %}">
+    <!-- ヘッダーのcss -->
+    <link rel="stylesheet" href="{% static 'css/index/header.css' %}">
+    <!-- メインのcss -->
+    <link rel="stylesheet" href="{% static 'css/index/main.css' %}">
+    <!-- fullcalendarのcss -->
+    <link rel="stylesheet" href="{% static 'css/index/fullcalendar.css' %}">
+    <!-- 作成サイドバー -->
+    <link rel="stylesheet" href="{% static 'css/index/create-sidebar.css' %}">
+    <!-- 右サイドバー -->
+    <link rel="stylesheet" href="{% static 'css/index/right_sidebar.css' %}">
+    <!-- 左サイドバー -->
+    <link rel="stylesheet" href="{% static 'css/index/left_main.css' %}">
+    <!-- 詳細モーダル -->
+    <link rel="stylesheet" href="{% static 'css/index/detail_modal.css' %}">
+    <!-- 生成aiのチャット -->
+    <link rel="stylesheet" href="{% static "css/index/chat-sidebar.css" %}">
+    <!-- flatpickr → 参考：https://pa-tu.work/blog/flatpickr -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="{% static 'js/flatpickr.js' %}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ja.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://npmcdn.com/flatpickr/dist/themes/confetti.css">
+</head>
+<body>
+    <header>
+        <div class="header-1">
+            <div id="hamburger" onclick="toggleSidebar()"><img src="{% static 'img/ハンバーガー.svg' %}" alt="" style="height: 30px;"></div>
+            <img id="main-logo" src="{% static 'img/DayLine2.svg' %}" alt="" height="30px">
+            <div class="header-tool-2">
+                <div id="root-today">今日</div>
+
+                <button id="prev"><img src="{% static "img/prev.svg" %}"  alt="" style="height: 20px; transition: 0.3s; padding: 13px;"></button>
+                <button id="next"><img src="{% static "img/next.svg" %}" alt="" style="height: 20px; transition: 0.3s; padding: 13px;"></button>
+                <div id="current-date-wrapper">
+                    <span id="current-date"></span>
+                    <div id="date-jump-dropdown">
+                        <select id="jump-year"></select>
+                        <select id="jump-month"></select>
+                    </div>
+                </div>
+            </div>
+            <div class="header-tool-1">
+                <!-- 表示切替 -->
+                <div class="caltool-daytime-grid">
+                    <div class="custom-select">
+                        <!-- 現在の選択状態 -->
+                        <div id="caltool-daytime-grid-selected" class="custom-select-selected"></div>
+                        <!-- 選択肢のリスト -->
+                        <div id="caltool-daytime-grid-options" class="custom-select-options" style="position: absolute; z-index: 1000;">
+                            <!-- 選custom-select-options択肢 ※最初から選択状態にする場合は必ずis-selectedをクラスとして追加する-->
+                            <button id="monthBtn" class="custom-select-option is-selected" data-value="option1">月</button>
+                            <button id="weekBtn" class="custom-select-option" data-value="option2">週</button>
+                        </div>
+                        <!-- カスタムセレクトで選択した値がここに格納される -->
+                        <input name="name1" class="custom-select-value" type="hidden" value="">
+                    </div>            
+                </div>
+
+                </form>
+                <a href="{% url "DayLine_1_DayLine:search_event" %}" id="serch-event"><img id="serch-event-img" src="{% static "img/検索.svg" %}"  alt=""></a>
+                <button id="create-sidebar-open" onclick="toggleSidebar()" defer><img src="{% static 'img/追加.svg' %}" alt=""></button>
+                <button id="create-sidebar-close" style="display: none;">サイドバー閉じるボタン</button>
+                <a href="https://tasks.google.com/tasks/?utm_source=OGB&utm_medium=app" style="display: none;">ToDo</a>
+            </div>
+        </div>
+        <div class="header-2">
+            <div class="header-icon-space"><img src="{{icon}}" alt=""></div>
+            <div id="index-profile" class="user-info">
+                <a class="user-setting" href="{% url 'DayLine_3_accounts:settings' %}"><img src="{% static "img/設定.svg" %}" alt=""></a>
+                <div class="user-info-icon">
+                    <img src="{{icon}}" alt="">
+                    
+                </div>
+                <div class="user-info-info">
+                    <p class="user-name">{{ user_name }}</p>
+                    <p class="user-email">{{email}}</p>
+                    <form action="{% url 'DayLine_3_accounts:logout' %}" method="POST">{% csrf_token %}
+                        <button type="submit" style="border:none; background:none;" class="user-logput">
+                            <img src="{% static 'img/ログアウト.svg' %}" alt="">ログアウト
+                        </button>
+                    </form>
+                    <a href=""></a>
+                </div>
+            </div>
+        </div>
+    </header>
+    <main>
+        <div id="right-sidebar-overlay"></div>
+        <div id="right-sidebar" class="right-main">
+            <!-- カレンダーのリスト -->
+            <div id="calendar-list">
+                <div class="calendar-list-hader">
+                    <p>カレンダーリスト</p>
+                </div>
+                <div id="calendar-lists">
+                    {% for room in my_rooms %}
+                    <div class="calendar-list" data-room-id="{{ room.id }}">
+                        <div class="calendar-list-img">
+                        <label class="clendar-out-check">
+                            <input type="checkbox" class="calendar-visibility-check" data-room-id="{{ room.id }}" checked>
+                            <div class="clendar-out-checked"></div>
+                            <img src="{% static "img/チェックマーク2.svg" %}" alt="">
+                        </label>
+                            <img src="{{ room.room_img.url }}" alt="">
+                        </div>
+                        <div class="calendar-list-name">
+                            {{room.room_name}}
+                        </div>
+                        <div class="calendar-settings">
+                            <a href="{% url 'DayLine_1_DayLine:settingroom' pk=room.pk %}"><img src="{% static "img/ルーム_設定1.svg" %}" alt=""></a>
+                            <div class="calendar-settings-balloon">詳細設定</div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                    <!-- カレンダーの追加 -->
+                    <a href="{% url 'DayLine_1_DayLine:createroom' %}">
+                        <div id="add-calendar">
+                            <div id="ass-calendar-img"><img src="{% static 'img/calendar_add_img.svg' %}" alt=""></div>
+                            <div id="calendar-add-mane">
+                                カレンダーを追加
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="calendar-container">
+            <div id="calendar"></div>
+        </div>
+        <div id="create-sidebar-overlay"></div>
+        <div class="create-sidebar" id="create-sidebar">
+            <!-- 作成サイドバー -->
+            <form method="POST" id="create-event-field" action="">
+                {% csrf_token %}
+                <div class="create-title">
+                    <!--<input type="text" id="id_title" placeholder="タイトル">-->
+                    {{form.title}}
+                </div>
+                
+                <div class="create-options">
+                    <!-- 時間設定・終日設定 -->
+                    <div class="create-time-select create-costom-options">
+                        <!-- アイコン
+                        <div class="create-icon" id="create-clock">
+                            <img src="{% static 'img/時計.svg' %}" alt="">
+                        </div>
+                        -->
+                        <!-- 時間設定 -->
+                        <div class="time-options">
+                            <!-- 終日設定 -->
+                            <div class="create-allDy">
+                                <p>終日</p>
+                                <label class="toggle-button-2">
+                                    {{form.allday}}
+                                </label>
+                            </div>
+                            <!-- 開始時間 -->
+                            <div class="create-start create-date-time">
+                                <p>開始</p>
+                                <div class="create-day" id="create-start-date">{{form.start_date}}<!--<input class="create-datetime-input" type="date">--></div>
+                                <div class="create-time" id="create-start-time">{{form.start_time}}<!--<input class="create-datetime-input" type="time">--></div>
+                            </div>
+                            <!-- 終了時間 -->
+                            <div class="create-end create-date-time">
+                                <p>終了</p>
+                                <div class="create-day" id="create-end-date">{{form.end_date}}<!--<input class="create-datetime-input" type="date">--></div>
+                                <div class="create-time" id="create-end-time">{{form.end_time}}<!--<input class="create-datetime-input" type="time">--></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="create-main-option create-opotion-area">
+                        <!--ルーム選択-->
+                        <div id="create-selectroom" class="other-options">
+                            <div class="create-icon" id="create-room">
+                                <img src="{% static "img/ルーム.svg" %}" alt="">
+                            </div>
+                            <div id="create-selectroom" class="other-options create-ohter-selecter">
+                                <div class="custom-select">
+                                    <!-- 現在の選択状態 -->
+                                    <div class="custom-select-selected" id="create-color-nowselect"></div>
+                                    <!-- 選択肢のリスト -->
+                                    <div class="custom-select-options">
+                                    {% for room in form.fields.room.queryset %}
+                                        {% if forloop.first %}
+                                            <div class="custom-select-option is-selected" data-value="{{ room.id }}">
+                                                {{ room.room_name }}
+                                            </div>
+                                        {% else %}
+                                            <div class="custom-select-option" data-value="{{ room.id }}">
+                                                {{ room.room_name }}
+                                            </div>
+                                        {% endif %}
+                                    {% endfor %}
+                                        <!-- 選custom-select-options択肢 ※最初から選択状態にする場合は必ずis-selectedをクラスとして追加する-->
+                                    </div>
+                                    {{form.room}}
+                                    <!-- カスタムセレクトで選択した値がここに格納される -->
+                                    {% comment %} <input name="name1" class="custom-select-value" type="hidden" value="" id="create-color"> {% endcomment %}
+                                </div>
+                            </div>
+                        </div>
+                        <!-- 色選択 -->
+                        <div id="create-selectcplor" class="create-selectcplor other-options">
+                            <div class="create-icon" id="create-clock">
+                                <img src="{% static 'img/色選択.svg' %}" alt="">
+                            </div>
+                            <div id="create-color-options" class="create-color-options create-ohter-selecter">
+    
+                                <!-- 自作select https://webdesign-programming.com/javascript-select-box/#i -->
+                                <div class="custom-select">
+                                    <!-- 現在の選択状態 -->
+                                    <div class="custom-select-selected" id="create-color-nowselect"></div>
+                                    <!-- 選択肢のリスト -->
+                                    <div class="custom-select-options">
+                                        {% for color in form.fields.color.queryset  %}
+                                        {% if color.id == 1 %}
+                                        <div class="custom-select-option is-selected" data-value="{{color.id}}">
+                                            {{color.color_name}}
+                                        </div>
+                                        {% else %}
+                                        <div class="custom-select-option" data-value="{{color.id}}">
+                                            {{color.color_name}}
+                                        </div>
+                                        {% endif %}
+                                        {% endfor %}
+                                        <!-- 選custom-select-options択肢 ※最初から選択状態にする場合は必ずis-selectedをクラスとして追加する-->
+                                    </div>
+                                    {{form.color}}
+                                    <!-- カスタムセレクトで選択した値がここに格納される -->
+                                    {% comment %} <input name="name1" class="custom-select-value" type="hidden" value="" id="create-color"> {% endcomment %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="other-optuin-hidden">オプションを表示</p>
+                    <div class="create-other-option create-opotion-area">
+                        <!-- 繰り返し -->
+                        <div id="create-repeat" class="create-repeat other-options">
+                            <div class="create-icon" id="create-repeat">
+                                <img src="{% static 'img/繰り返し.svg' %}" alt="">
+                            </div>
+                            <div id="create-repeat-options" class="create-repeat-options create-ohter-selecter">
+                                <div class="custom-select">
+                                    <!-- 現在の選択状態 -->
+                                    <div class="custom-select-selected"></div>
+                                    <!-- 選択肢のリスト -->
+                                    <div class="custom-select-options">
+                                        <!-- 選custom-select-options択肢 ※最初から選択状態にする場合は必ずis-selectedをクラスとして追加する-->
+                                        {% for repeat in form.fields.repeat.queryset  %}
+                                        {% if repeat.id == 1 %}
+                                        <div class="custom-select-option is-selected" data-value="{{repeat.id}}">
+                                            {{repeat.repeat_name}}
+                                        </div>
+                                        {% else %}
+                                        <div class="custom-select-option" data-value="{{repeat.id}}">
+                                            {{repeat.repeat_name}}
+                                        </div>
+                                        {% endif %}
+                                        {% endfor %}
+                                    </div>
+                                    <!-- カスタムセレクトで選択した値がここに格納される -->
+                                    {{form.repeat}}
+                                </div>
+                            </div>
+                        </div>
+                        <!-- url -->
+                        <div id="create-url" class="create-url other-options">
+                            <div class="create-icon" id="create-url">
+                                <img src="{% static "img/url.svg" %}" alt="">
+                            </div> 
+                            <div id="create-url-options" class="create-url-options create-ohter-selecter">
+                                <!--<input type="url" placeholder="https://example.com">-->
+                                {{form.url}}
+                            </div>
+                        </div>
+                        <!-- 場所 -->
+                        <div id="create-locate" class="create-locate other-options">
+                            <div class="create-icon" id="create-locate">
+                                <img src="{% static 'img/マップ.svg' %}" alt="">
+                            </div>
+                            <div id="create-locate-options" class="create-locate-options create-ohter-selecter">
+                                <!--<input type="text" placeholder="場所">-->
+                                {{form.location}}
+                            </div>
+                        </div>
+                        <!-- メモ -->
+                        <div id="create-memo" class="create-memo other-options">
+                            <div class="create-icon" id="create-memo">
+                                <img src="{% static 'img/メモ.svg' %}" alt="">
+                            </div>
+                            <button type="button" id="memo-openModal" class="open-modal">
+                                <div id="create-memo-options" class="create-memo-options create-ohter-selecter">
+                                    <span id="memo-output">メモ</span>
+                                </div>
+                            </button>
+                            <div id="creatre-memo-modal" class="modal">
+                                <div id="creatre-memo-content" class="modal-content">
+                                    <!-- <span id="closeModal" class="close-modal">&times;</span> -->
+                                    <h2 class="modal-head">メモ</h2>
+                                    <div class="modal-input-form">
+                                        <!--<textarea name="" id="memo-input" class="modal-texterea-form" placeholder="メモを入力"></textarea>-->
+                                        {{form.memo}}
+                                    </div>
+                                    <div class="close-modal">閉じる</div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- To-Doリスト -->
+                        <div id="create-todo" class="create-todo"></div>
+                    </div>
+                    <div class="sbmit-cancel-btn">
+                        <div class="cancel-btn" id="create-cancel-btn">キャンセル</div>
+                        <input id="id_create-submit-btn" class="create-submit-btn"  type="submit" value="保存">
+                    </div>
+                </div>
+            </form>
+            <!-- AIのチャットのサイドバー -->
+            <!-- 詳細モーダル -->
+        </div>
+        <!-- 生成ai -->
+        <div class="ai-chat-wrapper">
+            <div class="ai-chat">
+                <div class="ai-chat-header">
+                    <div>
+                        <div style="font-weight:700; font-size:20px;">AIアシスタント</div>
+                        <div style="color: rgb(120, 120, 120);">予定の管理をサポートします</div>
+                    </div>
+                    <div class="ai-chat-close-btn">
+                        <img src="{% static "img/閉じる.svg" %}" alt="">
+                    </div>
+                </div>
+                <div class="ai-chat-chat">
+                    <div style="width: 100%;height:30px;"></div>
+                    <div class="chat-for-ai ai-chat-chat" style="display:none;">
+                        <p></p>
+                    </div>
+                    <div class="chat-for-user ai-chat-chat" style="display:none;">
+                        <p></p>
+                    </div>
+                        
+                </div>
+                <div class="chat-input">
+                    <div class="chat-input-child">
+                    <div class="chat-input-textarea">
+                        <div class="chat-input-textarea-dummy"></div>
+                        <textarea class="chat-input-textarea-textarea" placeholder="テスト"></textarea>
+                        <button><img src="{% static "img/ai-chat-submit-1.svg" %}" alt=""></button>
+                    </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    
+    <div id="detail-event-modal">
+        <div class="detail-toolbar">
+            <div type="" id="detail-edit" class="detail-tool"><img src="{% static "img/編集.svg" %}" alt=""></div>
+            <!-- actionのpkはjsで指定する -->
+            <form action="" method="POST" id="delete-event-form">
+                {% csrf_token %}
+                <button type="submit" id="detail-delete" class="detail-tool"><img src="{% static "img/ゴミ箱.svg" %}" alt=""></button>
+            </form>
+            <div id="detail-close" class="detail-tool"><img src="{% static "img/閉じる.svg" %}" alt=""></div>
+            </div>
+            <div id="detail-user" class="detail-add-user"><p></p></div>
+            <div id="detail-title" class="detail-event-title"></div>
+            <div class="detail-datetime">
+                <div class="un-check-allday detail-datetime-start detail-datetimes" >
+                    <div id="detail-start-date" class="detail-datetime-start-date">2026/2/12</div>
+                    <div id="detail-start-time" class="detail-datetime-start-time">12:40</div>
+                </div>
+                <div class="check-allday detail-datetime-start detail-datetimes">
+                    <div id="check-detail-start-year" class="check-detail-year">2026年</div>
+                    <div id="check-detail-start-date" class="check-detail-date">2月12日</div>
+                </div>
+                <div class="detail-when"><img src="{% static "img/いつまで.svg" %}" alt=""></div>
+                <div class="un-check-allday detail-datetime-end detail-datetimes">
+                    <div id="detail-end-date" class="detail-datetime-end-date">2026/2/12</div>
+                    <div id="detail-end-time" class="detail-datetime-end-time">9:40分</div>
+                </div>
+                <div class="check-allday detail-datetime-end detail-datetimes">
+                    <div id="check-detail-end-year" class="check-detail-year">2026年</div>
+                    <div id="check-detail-end-date" class="check-detail-date">2月12日</div>
+                </div>
+            </div>
+            <div class="detail-other-options">
+                <div id="detail-repeat" class=" detail-other-option"><img src="{% static "img/繰り返し.svg" %}" alt=""><p>毎日</p></div>
+                <div id="detail-url" class=" detail-other-option"><img src="{% static "img/url.svg" %}" alt=""><p>http://example.com</p></div>
+                <div id="detail-locate" class=" detail-other-option"><img src="{% static "img/マップ.svg" %}" alt=""><p>東京都千代田区</p></div>
+                <div id="detail-memo" class=" detail-other-option" style="cursor:pointer;"><img src="{% static "img/メモ.svg" %}" alt=""><p>東京都千代田区</p></div>
+            </div>
+            <!-- メモ詳細モーダル -->
+            <div id="memo-detail-overlay" class="memo-detail-overlay">
+                <div id="memo-detail-modal" class="memo-detail-modal">
+                    <div class="memo-detail-header">
+                        <div class="memo-detail-title">メモ</div>
+                        <div id="memo-detail-close" class="memo-detail-close">&times;</div>
+                    </div>
+                    <div id="memo-detail-content" class="memo-detail-content"></div>
+                </div>
+            </div>
+        </div>
+        <div class="left-main">
+            <a href="{% url "DayLine_1_DayLine:index" %}">
+                <div class="housekeeping">
+                    <img src="{% static 'img/カレンダーアイコン.svg' %}" alt="">
+                </div>
+            </a>
+
+            <div class="ai-function"><img src="{% static "img/dayline_ai_icon.svg" %}" alt=""></div>
+            <a href="{% url 'DayLine_3_accounts:settings' %}"><img class="housekeeping" src="{% static "img/dayline_user_icon.svg" %}" alt=""></a>
+        </div>
+
+    </main>
+</body>
+<style>
+
+</style>
+</html>

@@ -1,0 +1,105 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="{% static 'css/DayLine_style.css' %}">
+    <link rel="stylesheet" href= "{% static 'css/top/top.css' %}">
+    <script src="{% static "js/toppage.js" %}"></script>
+</head>
+<body>
+    <header>
+        <a href="{% url 'DayLine_2_top:top' %}"></a>
+        <div class="app-title"><img src="{% static 'img/DayLine2.svg' %}" alt=""></div>
+        <div class="header-content">
+
+            <a href="{% url 'DayLine_2_top:contact' %}">問い合わせ</a>
+            <a href="{% url 'DayLine_3_accounts:login' %}" id="app-login">ログイン</a>
+            <a href="{% url 'DayLine_3_accounts:signup' %}" id="app-start">始めてみる</a>
+        </div>
+    </header>
+    <main>
+        <div class="top-words">
+            <div class="top-words-wrap">
+                <div class="top-words-back-img"><img src="{% static 'img/top_カレンダー.jpg' %}" alt=""></div>
+                <div class="top-words-hidden">
+                    <h1 class="road-output">Plan on DayLine</h1>
+                    <h3 class="road-output">あなたの毎日に、ちょうどいいカレンダー</h3>
+                </div>
+            </div>
+        </div>
+        <div class="sub-words">
+            <h1>シンプルでパワフル</h1>
+            <h4>DayLineは、あなたの生活をより豊かにする機能が満載</h4>
+        </div>
+        <div class="top-descriptions-wrap">
+            <div class="top-descriptions">
+                <div class="description">
+                    <div class="description-img"><img src="{% static "img/top_images/トップイメージ2.jpg" %}" alt=""></div>
+                    <div class="description-words">
+                        <h1>シンプルな予定管理</h1>
+                        <p>直感的なUI操作で、予定の追加や編集が簡単</p>
+                    </div>
+                </div>
+                <div class="description">
+                    <div class="description-img"><img src="{% static "img/top_images/トップイメージ.jpg" %}" alt=""></div>
+                    <div class="description-words">
+                        <h1>思い出を一緒に</h1>
+                        <p>予定に写真を追加して、大切な瞬間を記録。カレンダーがあなたの思い出アルバムに。</p>
+                    </div>
+                </div>
+                <div class="description">
+                    <div class="description-img"><img src="{% static "img/top_images/トップイメージ3.jpg" %}" alt=""></div>
+                    <div class="description-words">
+                        <h1>恋人や友人と共有</h1>
+                        <p>大切な人と予定を共有。家族の予定も、友人とのイベントも、みんなで管理できます。</p>
+                    </div>
+                </div>
+                <div class="description">
+                    <div class="description-img"><img src="{% static "img/top_images/ミニマルなスマホ画面のカレンダー.png" %}" alt=""></div>
+                    <div class="description-words">
+                        <h1>リマインダー通知</h1>
+                        <p>大切な予定を忘れない。カスタマイズ可能な通知で、いつでも予定を把握できます。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% comment %} <div class="sub-words">
+            <h1>様々なシーンで活躍</h1>
+            <h4>DayLineはあなたのライフスタイルに合わせて使えます</h4>
+        </div> {% endcomment %}
+    </main>
+    <footer>
+        <div class="footer-contents">
+            <div class="footer-sns">
+                <img src="{% static "img/DayLine3.svg" %}" alt="">
+                <p>あなたの毎日に、ちょうどいいカレンダー</p>
+            </div>
+            {% comment %} <div class="footer-content">
+                <h4>プロダクト</h4>
+                <ul>
+                    <li>機能</li>
+                    <li>料金</li>
+                    <li>更新履歴</li>
+                    <li>ロードマップ</li>
+                </ul>
+            </div> {% endcomment %}
+            <div class="footer-content">
+                <h4>サポート</h4>
+                <ul>
+                    <li><a href="{% url 'DayLine_2_top:contact' %}">お問い合わせ</a></li>
+                    <li><a href="{% url 'DayLine_2_top:privacy' %}">プライバシーポリシー</a></li>
+                    <li><a href="{% url 'DayLine_2_top:terms' %}">利用規約</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="copy-field">
+            <p>&copy; 2026 DayLine. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+
+</html>

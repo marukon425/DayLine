@@ -1,0 +1,80 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="{% static 'css/DayLine_style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/login_signup/account_setting.css' %}">
+    <!-- flatpickr → 参考：https://pa-tu.work/blog/flatpickr -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="{% static 'js/flatpickr.js' %}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ja.js"></script>
+    <script src="{% static "js/edit-account.js" %}"></script>
+    <link rel="stylesheet" type="text/css" href="https://npmcdn.com/flatpickr/dist/themes/confetti.css">
+
+</head>
+<body>
+    <header>
+        <a href="{% url "DayLine_1_DayLine:index" %}">
+            <a href="{% url "DayLine_1_DayLine:index" %}">
+                <div class="header-title">
+                    <img src="{% static "img/DayLine2.svg" %}" alt="">
+                </div>
+            </a>
+            
+        </a>
+    </header>
+    <main>
+        <div class="account-modal">
+            {% comment %} <div class="settings-selecter">
+                <div class="settings-selecter-inner">
+                    <div class="setting-select setting-selected">プロフィール</div>
+                    <a href=""><div class="setting-select">アカウント</div></a>
+                    <a href=""><div class="setting-select">表示設定</div></a>
+                </div>
+            </div> {% endcomment %}
+            <div class="profile">
+                <form class="profile-settings-form" action="" method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="profile-icons">
+                        <div class="profile-title">プロフィール</div>
+                        <div class="profile-icon">
+                            <img class="profiele-icon-img" src="{{ object.icon.url }}" alt="">
+                            <input class="edit-icon" name="icon" accept="image/*" type="file" style="display:none;">
+                            <div class="user-name">{{name}}<br>クリックして編集</div>
+                        </div>
+                    </div>
+                    <div class="profile-settings">
+                        <div class="profile-username">
+                            <p>名前</p> 
+                            {{form.username}}
+                        </div>
+                        <div class="profile-birthday">
+                            <p>誕生日</p>
+                            <!--{{form.birthday}}-->
+                            <!--<input type="text" id="date-picker">-->
+                            {{form.birthday}}
+                        </div>
+                        <div class="profile-word">
+                            <p>一言</p>
+                            {{form.word}}
+                        </div>
+                        <div class="sava-cancel-btn">
+                            <div class="cancel-btn" onclick="location.reload()">キャンセル</div>
+                            <button class="profile-save">保存</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+</body>
+{% load django_browser_reload %}
+{% django_browser_reload_script %}
+</html>
+
+
+

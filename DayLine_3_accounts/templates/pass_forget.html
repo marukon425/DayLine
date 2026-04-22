@@ -1,0 +1,41 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="{% static 'css/DayLine_style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/login_signup/login_signup.css' %}">
+    <script src="{% static 'js/other.js' %}" defer></script>
+</head>
+<body>
+    <header>
+        <a href="{% url "DayLine_2_top:top" %}">
+            <div class="app-icon"><img src="{% static 'img/DayLine2.svg' %}" alt=""></div>
+        </a>
+        <div class="header-content">
+            <a href="{% url 'DayLine_2_top:contact' %}" id="contact">問い合わせ</a>
+            <a href="{% url 'DayLine_3_accounts:signup' %}" class="change-signup-login">サインアップ</a>
+        </div>
+    </header>
+    <main>
+        <div class="login-signup">
+            <div class="login-signup-header">パスワード再設定</div>
+            <form method="POST" action="" id="signup-form" class="signup-login-form">
+                {% csrf_token %}
+                <div id="signup-form-inputs">
+                    <div class="name-mail">
+                        <input name="email" type="text" placeholder="メールアドレス">
+                    </div>
+                    <p style="color:#C0C0C0; margin:30px;">パスワード再設定のURLを上記のメールアドレス宛に送信します。</p>
+                    <div>
+                        <button type="submit" class="login-submit" id="login-btn">送信</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </main>
+</body>
+
+</html>

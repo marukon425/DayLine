@@ -1,0 +1,80 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="{% static "css/index/settingroom.css" %}">
+    <link rel="stylesheet" href="{% static "css/DayLine_style.css" %}">
+    <script src="{% static "js/room_setting.js" %}"></script>
+</head>
+<body>
+    <header>
+        <img class="hamburger" src="{% static "img/ハンバーガー.svg" %}" alt="">
+        <a href="{% url "DayLine_1_DayLine:index" %}"><img src="{% static "img/DayLine2.svg" %}" alt=""></a>
+    </header>
+    <main>
+        <div class="settings-sidebar">
+            <div class="setting-category">
+                <ul>
+                    <li class="now-category"><a href="{% url 'DayLine_1_DayLine:settingroom' pk=room.pk %}">基本情報</a></li>
+                    {% comment %} <li>表示設定</li> {% endcomment %}
+                    <li><a href="{% url "DayLine_1_DayLine:settingroom_memmber" pk=room.pk%}">メンバー管理</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="main-setting">
+            <div class="room-main-setting">
+                <h2>基本情報</h2>
+                <div class="setting-space">
+                    <p class="setting-name">カレンダー情報</p>
+                    {% if is_admin %}                    
+                    <!--                                                                                 ↓ これがないとファイルデータが送信されない                                         -->
+                    <form action="{% url 'DayLine_1_DayLine:settingroom' object.pk %}" method="POST"  enctype="multipart/form-data" class="setting-chunk">
+                        {% csrf_token %}
+                        <div class="setting-area">
+                            <div class="setting-area-name">ルーム名</div>
+                            {{ form.room_name }}
+                        </div>
+                        <div class="setting-area">
+                            <div class="setting-area-name">説明</div>
+                            {{form.room_description}}
+                        </div>
+                        <div class="setting-area area-bottom">
+                            <div class="setting-area-name">アイコン</div>
+                            <img class="room-icon" src="{{ object.room_img.url }}" alt="" style="">
+                            <input class="edit-room-icon" type="file" name="room_img" accept="image/*" style="display:none;">
+                        </div>
+                        <div class="setting-save-cancel">
+                            <div class="cancel-btn">キャンセル</div>
+                            <input type="submit" class="save-btn" value="保存">
+                        </div>
+                    </form>
+                    {% else %}
+                    <div class="setting-chunk">
+                        <div class="setting-area">
+                            <div class="setting-area-name">ルーム名</div>
+                            <div class="setting-input">
+                                {{room_name}}
+                            </div>
+                        </div>
+                        <div class="setting-area">
+                            <div class="setting-area-name">説明</div>
+                            <div class="setting-input description ">
+                                {{room_description}}
+                            </div>
+                        </div>
+                        <div class="setting-area area-bottom">
+                            <div class="setting-area-name">アイコン</div>
+                            <img src="{% static "img/defalt_calendar_img.png" %}" alt="" style="">
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+                <div class="bottom-space"></div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

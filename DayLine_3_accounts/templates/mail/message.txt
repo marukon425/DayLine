@@ -1,0 +1,12 @@
+{{ user.username }} 様
+
+DayLineのパスワードリセットのご依頼を受け付けました。
+
+以下のURLからパスワードの再設定を行ってください。
+このリンクの有効期限は24時間です。
+
+{{ protocol }}://{{ domain }}/accounts/password/reset/{{ uid }}/{{ token }}/
+
+このメールに心当たりがない場合は無視してください。
+
+DayLine

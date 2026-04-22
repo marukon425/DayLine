@@ -1,0 +1,194 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>プライバシーポリシー | DayLine</title>
+  <link rel="stylesheet" href="{% static 'css/top/header.css' %}">
+  <link rel="stylesheet" href="{% static 'css/DayLine_style.css' %}">
+  <link rel="stylesheet" href="{% static 'css/top/terms.css' %}">
+</head>
+<body>
+  <header>
+    <a href="{% url 'DayLine_2_top:top' %}">
+      <div class="app-title"><img src="{% static 'img/DayLine2.svg' %}" alt="DayLine"></div>
+    </a>
+    <div class="header-content">
+      <a href="{% url 'DayLine_2_top:contact' %}">問い合わせ</a>
+      <a href="{% url 'DayLine_3_accounts:login' %}" id="app-login">ログイン</a>
+      <a href="{% url 'DayLine_3_accounts:signup' %}" id="app-start">始めてみる</a>
+    </div>
+  </header>
+
+  <div class="terms-page">
+
+    <div class="terms-hero">
+      <div class="hero-badge">
+        <div class="hero-badge-dot"></div>
+        最終更新：2026年4月
+      </div>
+      <h1>プライバシーポリシー</h1>
+      <p class="hero-sub">DayLineにおける個人情報の取り扱いについて説明します。</p>
+    </div>
+
+    <div class="terms-layout">
+
+      <!-- 目次 -->
+      <nav class="terms-toc">
+        <p class="toc-label">目次</p>
+        <ul>
+          <li><a href="#section-1">第1条　収集する情報</a></li>
+          <li><a href="#section-2">第2条　情報の利用目的</a></li>
+          <li><a href="#section-3">第3条　第三者への提供</a></li>
+          <li><a href="#section-4">第4条　Cookie の利用</a></li>
+          <li><a href="#section-5">第5条　情報の管理・保護</a></li>
+          <li><a href="#section-6">第6条　ユーザーの権利</a></li>
+          <li><a href="#section-7">第7条　未成年者の利用</a></li>
+          <li><a href="#section-8">第8条　ポリシーの変更</a></li>
+          <li><a href="#section-9">第9条　お問い合わせ</a></li>
+        </ul>
+      </nav>
+
+      <!-- 本文 -->
+      <main class="terms-body">
+
+        <div class="terms-intro">
+          DayLine（以下「当サービス」）は、ユーザーの皆さまのプライバシーを尊重し、個人情報の適切な保護に取り組んでいます。
+          本プライバシーポリシーは、当サービスが収集する情報の種類・利用目的・管理方法について説明するものです。
+        </div>
+
+        <section id="section-1">
+          <h2><span class="section-num">01</span>収集する情報</h2>
+          <p>当サービスでは、以下の情報を収集することがあります。</p>
+          <p><strong>アカウント登録時に収集する情報</strong></p>
+          <ul class="terms-list">
+            <li>メールアドレス</li>
+            <li>パスワード（暗号化して保存）</li>
+            <li>ユーザー名・プロフィール画像（任意）</li>
+          </ul>
+          <p><strong>サービス利用中に収集する情報</strong></p>
+          <ul class="terms-list">
+            <li>登録された予定・イベントのデータ</li>
+            <li>グループ（ルーム）の作成・参加履歴</li>
+            <li>アクセスログ（IPアドレス、ブラウザ情報、アクセス日時）</li>
+          </ul>
+        </section>
+
+        <section id="section-2">
+          <h2><span class="section-num">02</span>情報の利用目的</h2>
+          <p>収集した情報は、以下の目的のみに使用します。</p>
+          <ul class="terms-list">
+            <li>アカウントの識別・認証</li>
+            <li>サービスの提供・運営・改善</li>
+            <li>障害対応・不正利用の検知</li>
+            <li>ユーザーへの重要なお知らせの送信</li>
+          </ul>
+          <div class="terms-note">
+            <span class="note-icon">💡</span>
+            収集した情報を広告目的で第三者に販売・提供することはありません。
+          </div>
+        </section>
+
+        <section id="section-3">
+          <h2><span class="section-num">03</span>第三者への提供</h2>
+          <p>当サービスは、以下の場合を除き、ユーザーの個人情報を第三者に提供しません。</p>
+          <ul class="terms-list">
+            <li>ユーザー本人の同意がある場合</li>
+            <li>法令に基づき開示が必要な場合（裁判所・捜査機関からの要請等）</li>
+            <li>人の生命・身体・財産の保護のために緊急に必要な場合</li>
+          </ul>
+          <p>また、サービス運営のために外部サービス（サーバー・メール配信等）を利用する場合がありますが、これらのサービスプロバイダーとは適切な契約を締結し、情報の適切な取り扱いを義務付けています。</p>
+        </section>
+
+        <section id="section-4">
+          <h2><span class="section-num">04</span>Cookie の利用</h2>
+          <p>当サービスでは、ログイン状態の維持やセッション管理のために Cookie を使用しています。</p>
+          <p>Cookie はユーザーを特定するためのものではなく、サービスの正常な動作に必要な技術的情報のみを含みます。ブラウザの設定から Cookie を無効にすることができますが、一部の機能（ログイン維持など）が正常に動作しなくなる場合があります。</p>
+        </section>
+
+        <section id="section-5">
+          <h2><span class="section-num">05</span>情報の管理・保護</h2>
+          <p>当サービスは、収集した個人情報の漏洩・紛失・改ざんを防ぐため、以下の対策を講じています。</p>
+          <ul class="terms-list">
+            <li>パスワードのハッシュ化（平文での保存は行いません）</li>
+            <li>通信の暗号化（HTTPS）</li>
+            <li>アクセス権限の最小化</li>
+          </ul>
+          <p>ただし、インターネット上での完全なセキュリティを保証するものではありません。</p>
+        </section>
+
+        <section id="section-6">
+          <h2><span class="section-num">06</span>ユーザーの権利</h2>
+          <p>ユーザーは、自身の個人情報について以下の権利を有します。</p>
+          <ul class="terms-list">
+            <li>登録情報の確認・修正</li>
+            <li>アカウントの削除（退会）</li>
+            <li>個人情報の開示請求</li>
+          </ul>
+          <p>これらの手続きを希望される場合は、<a href="{% url 'DayLine_2_top:contact' %}">お問い合わせページ</a>からご連絡ください。</p>
+          <div class="terms-note">
+            <span class="note-icon">💡</span>
+            アカウント削除後も、法令上の保存義務がある情報については、定められた期間保持する場合があります。
+          </div>
+        </section>
+
+        <section id="section-7">
+          <h2><span class="section-num">07</span>未成年者の利用</h2>
+          <p>当サービスは16歳未満の方の利用を想定していません。16歳未満の方がご利用になる場合は、保護者の同意を得た上でご利用ください。</p>
+          <p>保護者の方が、お子様が同意なく当サービスに個人情報を提供していることを確認された場合は、お問い合わせください。速やかに対応いたします。</p>
+        </section>
+
+        <section id="section-8">
+          <h2><span class="section-num">08</span>ポリシーの変更</h2>
+          <p>当サービスは、必要に応じて本ポリシーを変更することがあります。重要な変更がある場合は、サービス上でお知らせします。</p>
+          <p>変更後も当サービスをご利用いただいた場合、変更後のポリシーに同意したものとみなします。</p>
+        </section>
+
+        <section id="section-9">
+          <h2><span class="section-num">09</span>お問い合わせ</h2>
+          <p>本ポリシーに関するご質問・個人情報の取り扱いに関するご相談は、以下よりお問い合わせください。</p>
+          <a href="{% url 'DayLine_2_top:contact' %}" class="contact-link">
+            <span>お問い合わせページへ</span>
+            <span class="contact-arrow">→</span>
+          </a>
+        </section>
+
+        <div class="terms-footer-note">
+          <p>制定：2026年4月</p>
+          <p>本ポリシーは<a href="{% url 'DayLine_2_top:terms' %}">利用規約</a>と合わせてご確認ください。</p>
+        </div>
+
+      </main>
+    </div>
+  </div>
+
+  <script>
+    const sections = document.querySelectorAll('section[id]');
+    const tocLinks = document.querySelectorAll('.terms-toc a');
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          tocLinks.forEach(link => link.classList.remove('active'));
+          const activeLink = document.querySelector(`.terms-toc a[href="#${entry.target.id}"]`);
+          if (activeLink) activeLink.classList.add('active');
+        }
+      });
+    }, { rootMargin: '-30% 0px -60% 0px' });
+
+    sections.forEach(s => observer.observe(s));
+
+    tocLinks.forEach(link => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        const target = document.querySelector(link.getAttribute('href'));
+        if (target) {
+          const top = target.getBoundingClientRect().top + window.scrollY - 80;
+          window.scrollTo({ top, behavior: 'smooth' });
+        }
+      });
+    });
+  </script>
+</body>
+</html>

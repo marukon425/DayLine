@@ -1,0 +1,64 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="{% static 'css/index/header.css' %}">
+    <link rel="stylesheet" href="{% static 'css/index/search.css' %}">
+    <script src="{% static "js/search.js" %}"></script>
+
+</head>
+<body>
+    <header>
+        <a href="{% url "DayLine_1_DayLine:index" %}">
+            <div class="header-1">
+                <img src="{% static 'img/DayLine2.svg' %}" alt="" height="30px">
+            </div>
+        </a>
+        <form action="" method="GET">
+            <div class="search-box">
+                <div class="search-icon"><img src="{% static "img/検索.svg" %}" alt=""></div>
+                <input id="event-search-box" type="text" name="query" value="{{ request.GET.query }}">
+                <p><button type="button" id="event-search-box-crear" class="search-clear-btn">×</button></p>
+            </div>
+        </form>
+
+    </header>
+
+    <main>
+        <div class="search_results">
+            {% for search in object_list %}
+            <div class="search-result">
+                {% if search.start_date == search.end_date %}
+                <div class="search-result-date">{{search.start_date}}</div>
+                {% else %}
+                <div class="search-result-date">{{search.start_date}}~{{search.end_date}}</div>
+                {% endif %}
+                <div class="search-result-detail">
+                    {% if search.allday %}
+                    <div class="search-result-detail-time">終日</div>
+                    {% else  %}
+                    <div class="search-result-detail-time">{{search.start_time}}~{{search.end_time}}</div>
+                    {% endif %}
+                    <div class="search-result-detail-title" style="border-color:{{search.color.color}}">{{search.title}}</div>
+                    <div class="search-result-detail-createby"><img src="{% static "img/初期アイコン.svg" %}" alt=""></div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="filter" style="display:none;">
+            ここにフィールター
+        </div>
+    </main>
+</body>
+{% load django_browser_reload %}
+{% django_browser_reload_script %}
+</html>
+
+
+
+
+
+

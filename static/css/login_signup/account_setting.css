@@ -1,0 +1,221 @@
+header{
+    height: 50px;
+    width: calc(100% - 20px);
+    padding: 0 10px;
+    display: flex;
+    align-items: center;
+}
+
+.header-title img{
+    height: 30px;
+}
+
+main{
+    height: calc(100% - 30px);
+    width: 100%;
+    position: relative;
+    display: flex;
+}
+
+.account-modal{
+    display: flex;
+    position: absolute;
+    z-index: 100;
+    height: 80%;
+    max-width: 40%;
+    min-width: 300px;
+    width: 70%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    gap: 15px;
+    
+}
+
+.settings-selecter{
+    width: 470px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    border-radius: 30px;
+    box-shadow: 4px 4px 10px 0 rgba(0, 0, 0, 0.094), -2px -2px 10px 0 rgba(0, 0, 0, 0.098);
+    background-color: rgb(1, 29, 69);
+}
+
+.profile{
+    width: 100%;
+    margin: auto;
+    padding: 20px;
+    border-radius: 30px;
+    box-shadow: 4px 4px 10px 0 rgba(0, 0, 0, 0.094), -2px -2px 10px 0 rgba(0, 0, 0, 0.098);
+
+}
+
+.profile-settings-form{
+    height: 100%;
+}
+
+@media (max-width: 550px) {
+    .profile-settings-form{
+        display: block;
+        height: 100%;
+    }
+}
+
+.profile-icons{
+    display: flex;
+    flex-direction: column;
+}
+
+.profile-title{
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.profile-icon{
+    display: flex;
+    justify-content: center;
+    position: relative;
+    margin: 0 auto;
+}
+
+@media (max-width: 550px) {
+    .profile-icon{
+        margin-top: 0;
+    }
+}
+
+.profiele-icon-img{
+    height: 150px;
+    width: 150px;
+    margin-left: auto;
+    object-fit: cover;
+    border: 1px solid;
+    border-radius: 100px;
+}
+
+.profile-settings{
+    margin: 0 auto;
+    margin-top: 20px;
+    width: 100%;
+    max-width: 300px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    justify-content: center;
+}
+
+@media (max-width: 550px) {
+    .profile-settings{
+        padding-right: 0;
+    }
+}
+
+.profile p{
+    margin: 0;
+    margin-bottom: 5px;
+    font-size: 13px;
+    color: rgb(1, 29, 69);
+    font-weight: 700;
+}
+
+.profile-settings input{
+    width: calc(100% - 10px);
+    border: none;
+    border-radius: 8px;
+    color: rgb(1, 29, 69);
+    padding: 5px;
+    height: 30px;
+    box-shadow: 4px 4px 10px 0 rgba(0, 0, 0, 0.094), -2px -2px 10px 0 rgba(0, 0, 0, 0.098);
+}
+.profile-word textarea:focus{
+    outline: none;
+}
+
+.profile-settings textarea{
+    width: 100%;
+    height: 100px;
+    background: none;
+    border: none;
+    border-radius: 8px;
+    box-shadow: 4px 4px 10px 0 rgba(0, 0, 0, 0.094), -2px -2px 10px 0 rgba(0, 0, 0, 0.098);
+    resize: none;
+}
+
+.profile-settings textarea:focus{
+    outline: none;
+}
+.sava-cancel-btn{
+    display: flex;
+    height: 40px;
+    gap: 10%;
+    margin-left: auto;
+
+}
+
+.cancel-btn{                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
+    font-size: 12px;
+    padding: 0 5px;
+    height: 100%;
+    border: 1px solid;
+    border-color: #0a1a3a4e;
+    border-radius: 100px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.2s;
+    white-space: nowrap;
+}
+.cancel-btn:hover{
+    background-color: #0a1a3a1f;
+}
+
+.profile-save{
+    color: white !important;
+    background-color:  #0A1A3A;
+    border: none;
+    border-radius: 100px !important;
+    width: 80px !important;
+    height: 100%;
+    transition: 0.2s;
+}
+
+.profile-save:hover{
+    background-color: orange;
+}
+
+.settings-selecter-inner{
+    margin: 20px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.setting-select{
+    display: flex;
+    align-items: center;
+    height: 50px;
+    border-radius: 10px;
+    font-weight: 500;
+    transition: 0.2s;
+    color: white;
+    padding: 0 10px;
+}
+
+.setting-selected{
+    background-color: #ffa500;
+}
+
+.setting-select:hover{
+    background-color: rgba(255, 255, 255, 0.288);
+    position: fixed;
+
+}
+
+.user-name{
+    margin: auto 0;
+    margin-left: 15px;
+}

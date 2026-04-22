@@ -1,0 +1,90 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>お問い合わせ | DayLine</title>
+  <link rel="stylesheet" href="{% static 'css/DayLine_style.css' %}">
+  <link rel="stylesheet" href="{% static 'css/top/contact.css' %}">
+  <link rel="stylesheet" href="{% static 'css/top/header.css' %}">
+</head>
+<body>
+    <header>
+        <a href="{% url 'DayLine_2_top:top' %}"><div class="app-title"><img src="{% static 'img/DayLine2.svg' %}" alt=""></div>
+        <div class="header-content"></a>
+            <a href="">問い合わせ</a>
+            <a href="{% url 'DayLine_3_accounts:login' %}" id="app-login">ログイン</a>
+            <a href="{% url 'DayLine_3_accounts:signup' %}" id="app-start">始めてみる</a>
+        </div>
+    </header>
+  <div class="contact-page">
+
+    <div class="hero">
+      <div class="hero-badge">
+        <div class="hero-badge-dot"></div>
+        サポートチームが対応します
+      </div>
+      <h1>お問い合わせ</h1>
+    </div>
+
+    <div class="form-wrap">
+      <div class="form-card">
+
+        <div id="form-body">
+          <form class="form-grid" method="POST">
+            {% csrf_token %}
+            <div class="field">
+              <label>お名前</label>
+              {% comment %} <input type="text" name="name" placeholder="山田 太郎"> {% endcomment %}
+              {{form.name}}
+            </div>
+            <div class="field">
+              <label>メールアドレス</label>
+              {% comment %} <input type="email" name="email" placeholder="example@dayline.jp"> {% endcomment %}
+              {{form.email}}
+            </div>
+            <div class="field full">
+              <label>件名</label>
+              {% comment %} <input type="text" name="subject" placeholder="お問い合わせの件名"> {% endcomment %}
+              {{form.subject}}
+            </div>
+            <div class="field full">
+              <label>お問い合わせ内容</label>
+              {% comment %} <textarea name="message" placeholder="ご質問やご要望の内容を詳しくご記入ください..."></textarea> {% endcomment %}
+              {{form.body}}
+            </div>
+          </form>
+
+          <div class="divider"></div>
+
+          <div class="privacy">
+            <div class="privacy-check" id="check" onclick="this.classList.toggle('checked')"></div>
+            <p>
+              <a href="#">プライバシーポリシー</a>および<a href="#">利用規約</a>に同意します
+            </p>
+          </div>
+
+          <button class="submit-btn" onclick="handleSubmit()">送信する →</button>
+        </div>
+
+        <div class="success" id="success">
+          <div class="success-icon">✓</div>
+          <h2>送信が完了しました</h2>
+          <p>お問い合わせいただきありがとうございます。<br>1〜2営業日以内にご返答いたします。</p>
+          <a href="{% url "DayLine_2_top:top" %}">トップページに戻る</a>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    function handleSubmit() {
+      document.getElementById('form-body').style.display = 'none';
+      document.getElementById('success').style.display = 'block';
+    }
+  </script>
+</body>
+</html>

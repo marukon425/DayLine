@@ -1,0 +1,94 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="{% static "css/index/settingroom.css" %}">
+    <link rel="stylesheet" href="{% static "css/DayLine_style.css" %}">
+    <script src="{% static "js/room_setting.js" %}"></script>
+</head>
+<body>
+    <header>
+        <img class="sidebar" src="{% static "img/ハンバーガー.svg" %}" alt="">
+        <a class="room-icon" href="{% url "DayLine_1_DayLine:index" %}"><img src="{% static "img/DayLine2.svg" %}" alt=""></a>
+    </header>
+    <main>
+        <div class="settings-sidebar">
+            <div class="setting-category">
+                <ul>
+                    <li><a href="{% url 'DayLine_1_DayLine:settingroom' pk=room.pk %}">基本情報</a></li>
+                    {% comment %} <li>表示設定</li> {% endcomment %}
+                    <li class="now-category"><a href="{% url "DayLine_1_DayLine:settingroom_memmber" pk=room.pk%}">メンバー管理</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="main-setting">
+            <div class="room-main-setting">
+                <h2>メンバー情報</h2>
+                <form method="POST">
+                    {% csrf_token %}
+                    <div class="setting-space members">
+                        <p class="setting-name">カレンダーメンバー （{{member_count}}人）</p>
+                        <div class="save-cancel-btn">
+                            <input class="save" type="submit" value="保存">
+                            <div class="camcel" onclick="location.reload()" >キャンセル</div>
+                        </div>
+                        <div class="setting-chunk-memmber">
+                        <table class="setting-area memmbers-table">
+                                <tr><th>ユーザー</th><th>権限</th><th>操作</th></tr>
+                                {% for memmber, form in member_forms %}
+                                <tr>
+                                    <td>
+                                        <div style="display:flex;">
+                                            <div class="memmber-icon"><img src="{{memmber.user.icon.url}}" alt=""></div>
+                                            <div class="memmber-name">
+                                                {% if memmber.user.username == request.user.username %}
+                                                <div style="font-size:13px;color:#ffae00">あなた</div>
+                                                {% endif %}
+                                                {{memmber.user.username}}
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <input type="hidden" name="member_id" value="{{ memmber.pk }}">
+                                        <select name="authority_{{ memmber.pk }}" class="authority-control" id="authority-selecter">
+                                            {% for choice in form.authority.field.choices %}
+                                            <option value="{{ choice.0 }}" 
+                                                {% if choice.0 == memmber.authority.pk %}selected{% endif %}>
+                                                {{ choice.1 }}
+                                            </option>
+                                            {% endfor %}
+                                        </select>
+                                    </td> 
+                                    {% if memmber.authority.authority_code == "owner" %}
+                                        <td><button class="delete-memmber not-delete" disabled>削除</button></td>
+                                    {% else %}
+                                        <td>
+                                            <button type="submit" form="delete-form-{{ memmber.id }}" class="delete-memmber">削除</button>
+                                        </td>
+                                    {% endif %}
+                                </tr>
+                                {% endfor %}
+                            </table>
+                        </div>
+                    </div>
+                </form>
+                <div class="bottom-space"></div>
+                <div class="delete-member-hide" style="display:none;">
+                    {% for memmber, form in member_forms %}
+                        {% if memmber.authority.authority_code != "owner" %}
+                        <form id="delete-form-{{ memmber.id }}"
+                            action="/index/settingroom/memmber/delete/{{ memmber.id }}/"
+                            method="POST">
+                            {% csrf_token %}
+                        </form>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

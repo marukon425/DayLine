@@ -1,0 +1,182 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>利用規約 | DayLine</title>
+  <link rel="stylesheet" href="{% static 'css/top/header.css' %}">
+  <link rel="stylesheet" href="{% static 'css/DayLine_style.css' %}">
+  <link rel="stylesheet" href="{% static 'css/top/terms.css' %}">
+</head>
+<body>
+  <header>
+    <a href="{% url 'DayLine_2_top:top' %}">
+      <div class="app-title"><img src="{% static 'img/DayLine2.svg' %}" alt="DayLine"></div>
+    </a>
+    <div class="header-content">
+      <a href="{% url 'DayLine_2_top:contact' %}">問い合わせ</a>
+      <a href="{% url 'DayLine_3_accounts:login' %}" id="app-login">ログイン</a>
+      <a href="{% url 'DayLine_3_accounts:signup' %}" id="app-start">始めてみる</a>
+    </div>
+  </header>
+
+  <div class="terms-page">
+
+    <div class="terms-hero">
+      <div class="hero-badge">
+        <div class="hero-badge-dot"></div>
+        最終更新：2026年4月
+      </div>
+      <h1>利用規約</h1>
+      <p class="hero-sub">DayLineをご利用いただく前に、以下の規約をご確認ください。</p>
+    </div>
+
+    <div class="terms-layout">
+
+      <!-- 目次 -->
+      <nav class="terms-toc">
+        <p class="toc-label">目次</p>
+        <ul>
+          <li><a href="#section-1">第1条　適用</a></li>
+          <li><a href="#section-2">第2条　サービスの概要</a></li>
+          <li><a href="#section-3">第3条　アカウント登録</a></li>
+          <li><a href="#section-4">第4条　禁止事項</a></li>
+          <li><a href="#section-5">第5条　データの取り扱い</a></li>
+          <li><a href="#section-6">第6条　サービスの停止・変更</a></li>
+          <li><a href="#section-7">第7条　免責事項</a></li>
+          <li><a href="#section-8">第8条　規約の変更</a></li>
+          <li><a href="#section-9">第9条　準拠法・管轄</a></li>
+        </ul>
+      </nav>
+
+      <!-- 本文 -->
+      <main class="terms-body">
+
+        <div class="terms-intro">
+          本利用規約（以下「本規約」）は、DayLine（以下「当サービス」）の利用条件を定めるものです。
+          ユーザーの皆さまには、本規約に同意いただいた上でご利用いただきます。
+          当サービスをご利用いただいた時点で、本規約に同意したものとみなします。
+        </div>
+
+        <section id="section-1">
+          <h2><span class="section-num">01</span>適用</h2>
+          <p>本規約は、当サービスの提供条件および当サービスとユーザーの間の権利義務関係を定めることを目的とし、ユーザーと当サービスの間の一切の関係に適用されます。</p>
+          <p>当サービスが別途定めるガイドラインや注意事項も、本規約の一部を構成します。これらと本規約の内容が異なる場合は、本規約が優先されます。</p>
+        </section>
+
+        <section id="section-2">
+          <h2><span class="section-num">02</span>サービスの概要</h2>
+          <p>DayLineは、スケジュール管理・共有を目的としたWebアプリケーションです。以下の機能を提供します。</p>
+          <ul class="terms-list">
+            <li>予定の登録・編集・削除</li>
+            <li>グループ（ルーム）の作成と他ユーザーへの招待</li>
+            <li>招待URLを通じたグループ参加</li>
+            <li>予定の検索・絞り込み</li>
+            <li>その他、当サービスが追加・変更する機能</li>
+          </ul>
+          <p>提供する機能・仕様は、予告なく変更される場合があります。</p>
+        </section>
+
+        <section id="section-3">
+          <h2><span class="section-num">03</span>アカウント登録</h2>
+          <p>当サービスの一部機能はアカウント登録が必要です。登録の際は、正確な情報をご入力ください。</p>
+          <p>アカウントの管理はユーザー自身の責任で行ってください。第三者による不正利用が発覚した場合は、速やかにご連絡ください。</p>
+          <div class="terms-note">
+            <span class="note-icon">💡</span>
+            パスワードは定期的に変更することをおすすめします。他サービスと同じパスワードの使い回しはセキュリティ上のリスクがあります。
+          </div>
+        </section>
+
+        <section id="section-4">
+          <h2><span class="section-num">04</span>禁止事項</h2>
+          <p>以下の行為を禁止します。当サービスが禁止行為と判断した場合、事前の通知なくアカウントの停止・削除等の措置を取ることがあります。</p>
+          <ul class="terms-list">
+            <li>法令または公序良俗に違反する行為</li>
+            <li>他のユーザーへの嫌がらせ・誹謗中傷</li>
+            <li>他者になりすます行為</li>
+            <li>第三者の著作権・プライバシーを侵害する行為</li>
+            <li>当サービスのシステムに過度な負荷をかける行為</li>
+            <li>不正アクセスやリバースエンジニアリング</li>
+            <li>スパムや商業目的での無断利用</li>
+            <li>その他、当サービスが不適切と判断する行為</li>
+          </ul>
+        </section>
+
+        <section id="section-5">
+          <h2><span class="section-num">05</span>データの取り扱い</h2>
+          <p>ユーザーが登録した予定やコンテンツの著作権は、引き続きユーザーに帰属します。</p>
+          <p>当サービスは、サービスの提供・改善に必要な範囲でユーザーデータを使用することがあります。個人情報の取り扱いについては、別途プライバシーポリシーに定めます。</p>
+          <p>当サービスは、ユーザーが登録したデータの保全を保証するものではありません。重要なデータはご自身でバックアップをお取りください。</p>
+        </section>
+
+        <section id="section-6">
+          <h2><span class="section-num">06</span>サービスの停止・変更</h2>
+          <p>以下の場合、事前の告知なくサービスの全部または一部を停止・変更することがあります。</p>
+          <ul class="terms-list">
+            <li>システムのメンテナンスや障害対応</li>
+            <li>天災・停電などの不可抗力</li>
+            <li>その他、当サービスが必要と判断した場合</li>
+          </ul>
+          <p>これらの措置によりユーザーに損害が生じた場合でも、当サービスは責任を負いません。</p>
+        </section>
+
+        <section id="section-7">
+          <h2><span class="section-num">07</span>免責事項</h2>
+          <p>当サービスは、サービスの完全性・正確性・有用性を保証するものではありません。</p>
+          <p>ユーザー同士のトラブルについては、当事者間で解決いただくものとし、当サービスは一切の責任を負いません。</p>
+          <p>ユーザーが本規約に違反して当サービスまたは第三者に損害を与えた場合、当該ユーザーが損害を賠償する責任を負います。</p>
+        </section>
+
+        <section id="section-8">
+          <h2><span class="section-num">08</span>規約の変更</h2>
+          <p>当サービスは、必要に応じて本規約を変更できます。変更後の規約は、当サービス上に掲載された時点で効力を生じます。</p>
+          <p>変更後もサービスを継続してご利用いただいた場合、変更後の規約に同意したものとみなします。</p>
+        </section>
+
+        <section id="section-9">
+          <h2><span class="section-num">09</span>準拠法・管轄</h2>
+          <p>本規約の準拠法は日本法とします。本規約に関する紛争については、日本の裁判所を管轄裁判所とします。</p>
+        </section>
+
+        <div class="terms-footer-note">
+          <p>制定：2026年4月</p>
+          <p>ご不明な点は<a href="{% url 'DayLine_2_top:contact' %}">お問い合わせページ</a>からご連絡ください。</p>
+        </div>
+
+      </main>
+    </div>
+  </div>
+
+  <script>
+    // スクロールで目次のアクティブ項目を追跡
+    const sections = document.querySelectorAll('section[id]');
+    const tocLinks = document.querySelectorAll('.terms-toc a');
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          tocLinks.forEach(link => link.classList.remove('active'));
+          const activeLink = document.querySelector(`.terms-toc a[href="#${entry.target.id}"]`);
+          if (activeLink) activeLink.classList.add('active');
+        }
+      });
+    }, { rootMargin: '-30% 0px -60% 0px' });
+
+    sections.forEach(s => observer.observe(s));
+
+    // スムーズスクロール（ヘッダー分のオフセット）
+    tocLinks.forEach(link => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        const target = document.querySelector(link.getAttribute('href'));
+        if (target) {
+          const offset = 80;
+          const top = target.getBoundingClientRect().top + window.scrollY - offset;
+          window.scrollTo({ top, behavior: 'smooth' });
+        }
+      });
+    });
+  </script>
+</body>
+</html>

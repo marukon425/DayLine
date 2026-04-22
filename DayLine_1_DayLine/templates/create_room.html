@@ -1,0 +1,53 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="icon" href="../img/favicon.ico">    <!-- FullCalendar CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.css" rel="stylesheet">
+    
+    <!-- 作成のcss -->
+    {% comment %} <link rel="stylesheet" href="../css/index/create-sidebar.css"> {% endcomment %}
+    
+    <!-- FullCalendar JS -->
+    <script  src="{% static 'js/main-settings.js' %}"  defer></script>
+    <!-- main.js の読み込み（href ではなく src） -->
+    <script  src="{% static 'js/index.global.js' %}"></script>
+    
+    
+    <!-- 全体のCSS -->
+    <link rel="stylesheet" href="{% static 'css/DayLine_style.css' %}">
+    <!-- ヘッダーのcss -->
+    <link rel="stylesheet" href="{% static 'css/index/header.css' %}">
+    <link rel="stylesheet" href="{% static 'css/createroom/main.css' %}">
+
+    
+</head>
+<body>
+    <header>
+        <div class="header-1">
+            <a href="{% url "DayLine_1_DayLine:index" %}"><img src="{% static 'img/DayLine2.svg' %}" alt="" height="30px"></a>
+        </div>
+    </header>
+    <main>
+
+        <div class="create-room-main">
+            <h2>カレンダーの作成</h1>
+                <form method="POST" action="" class="create-room-form">
+                    {% csrf_token %}
+                    <!--
+                        <input id="room-name" type="text" placeholder="カレンダーの名前を入力">
+                        <textarea id="room-info" name="" id="" placeholder="説明">
+                        </textarea>
+                    -->
+                        {{form.room_name}}
+                        {{form.room_description}}
+                    <button id="createroom-submit" type="submit">作成</button>
+                </form>
+        </div>
+    </main>
+
+</body>
+</html>

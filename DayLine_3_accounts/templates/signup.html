@@ -1,0 +1,72 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="{% static 'css/DayLine_style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/login_signup/login_signup.css' %}">
+    <script src="{% static 'js/other.js' %}"  defer>
+    </script>
+</head>
+<body>
+    <header>
+        <a href="{% url "DayLine_2_top:top" %}">
+            <div class="app-icon"><img src="{% static 'img/DayLine2.svg' %}" alt=""></div>
+        </a>        <div class="header-content">
+            <a href="{% url 'DayLine_2_top:contact' %}" id="contact">問い合わせ</a>
+            <a href="{% url 'DayLine_3_accounts:login' %}" class="change-signup-login">ログイン</a>
+        </div>
+    </header>
+    <main>
+        <div class="login-signup">
+            <div class="login-signup-header">サインアップ</div>
+            <form method="POST" action="" id="signup-form" class="signup-login-form">
+                {% csrf_token %}
+                <div id="signup-form-inputs">
+                    <div class="name-mail">
+                        <!--<input type="text" placeholder="ユーザー名" class="signup-form-input">-->
+                        {{form.username}}
+                        {% for error in form.username.errors %}
+                            <p class="signup-error">{{ error }}</p>
+                        {% endfor %}  
+                        
+                        <!--<input type="email" id="" placeholder="メールアドレス" class="signup-form-input">-->
+                        {{ form.email }}
+                        {% for error in form.email.errors %}
+                            <p class="signup-error">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                    <div class="passwords">
+                        {{  form.password1 }}
+                        {{  form.password2 }}
+                    </div>
+                    <div class="passwortd-condition">
+                        <ul>
+                            <li id="specified_length" class="passwortd-condition-list"><img src="{% static 'img/チェックマーク_未チェック.png' %}" alt=""><span>8〜20文字</span></li>
+                            <li id="specified_character" class="passwortd-condition-list"><img src="{% static 'img/チェックマーク_未チェック.png' %}" alt=""><span>半角英字、数字を使用</span></li>
+                            <li id="safety" class="passwortd-condition-list"><img src="{% static 'img/チェックマーク_未チェック.png' %}" alt=""><span>安全性が高い</span></li>
+                            <li id="password_matched" class="passwortd-condition-list"><img src="{% static 'img/チェックマーク_未チェック.png' %}" alt=""><span>確認用パスワードが一致</span></li>
+                        </ul>
+                        <p class="terms_of_use" id="terms_of_use-btn"><input type="checkbox" id="terms_of_use-check" class="signup-form-input"><a href="{% url 'DayLine_2_top:terms' %}">利用規約</a>に同意する</p>
+
+                        {% for error in form.password1.errors %}
+                            <p class="signup-error">{{ error }}</p>
+                        {% endfor %}
+                        {% for error in form.password2.errors %}
+                            <p class="signup-error">{{ error }}</p>
+                        {% endfor %}                    </div>
+                    <div>
+                        <button type="submit" class="signup-submit" id="signup-btn">サインアップ</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </main>
+</body>
+<script>
+    const CHECK_IMG = "{% static 'img/チェックマーク_チェック.png' %}";
+    const UNCHECK_IMG = "{% static 'img/チェックマーク_未チェック.png' %}";
+</script>
+</html>
