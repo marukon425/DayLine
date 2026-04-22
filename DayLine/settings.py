@@ -45,6 +45,10 @@ INSTALLED_APPS = [
     'DayLine_1_DayLine',
     'DayLine_2_top',
     'DayLine_3_accounts',
+
+    'cloudinary_storage',
+    'django.contrib.staticfiles',
+    'cloudinary',
 ]
 
 MIDDLEWARE = [
@@ -208,3 +212,12 @@ CSRF_TRUSTED_ORIGINS = [
 
 
 # DATABASE_URL = "postgresql://dayline_db_user:79vJlx4em64Wa10vr2OuFOctALCopXGY@dpg-d7k98q5ckfvc73bhhpmg-a/dayline_db"
+
+
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': os.environ.get('CLOUDINARY_CLOUD_NAME'),
+    'API_KEY': os.environ.get('CLOUDINARY_API_KEY'),
+    'API_SECRET': os.environ.get('CLOUDINARY_API_SECRET'),
+}
+
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
