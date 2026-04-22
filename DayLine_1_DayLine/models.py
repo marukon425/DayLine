@@ -78,13 +78,11 @@ class Room(models.Model):
     )
 
     room_img = cloudinary.models.CloudinaryField(
-        'image',
-        verbose_name="ルームアイコン",
+        resource_type='image',
         default='images/defaults/calendar/defalt_calendar_img.png',
-        null=True,
-        blank=True
+        blank=True,
+        null=True
     )
-
     owner = models.ForeignKey(
         CustomUser,
         verbose_name='作成者',
