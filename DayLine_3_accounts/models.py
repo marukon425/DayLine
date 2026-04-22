@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 import uuid
 import random
+import cloudinary.models
 
 
 # Create your models here.
@@ -38,10 +39,10 @@ class CustomUser(AbstractUser):
         blank=True
     )
 
-    icon = models.ImageField(
-        upload_to='images/user_icons',
-        default=f'images/defaults/user_icon/defalt-icon-{random.randint(1, 10)}.svg',
-        blank=True, 
+    icon = cloudinary.models.CloudinaryField(
+        'image',
+        default='images/defaults/user_icon/defalt-icon-1.svg',
+        blank=True,
         null=True
     )
     USERNAME_FIELD = 'email'

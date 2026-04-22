@@ -5,6 +5,7 @@ from django.urls import reverse
 import uuid
 # Create your models here.
 import uuid
+import cloudinary.models
 
 
 # ルーム
@@ -76,10 +77,10 @@ class Room(models.Model):
         blank=True
     )
 
-    room_img = models.ImageField(
+    room_img = cloudinary.models.CloudinaryField(
+        'image',
         verbose_name="ルームアイコン",
-        upload_to='images/calendar_icons',
-        default="images/defaults/calendar/defalt_calendar_img.png",
+        default='images/defaults/calendar/defalt_calendar_img.png',
         null=True,
         blank=True
     )
