@@ -26,8 +26,7 @@ SECRET_KEY = 'django-insecure-fmkooc)(4@u#1)zl!93=ho&je34o2!$gpor!o1do3(qvgjj=d=
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 
@@ -59,7 +58,7 @@ MIDDLEWARE = [
     # 自動リロード
     "django_browser_reload.middleware.BrowserReloadMiddleware",
     #Renderに必用
-    'whitenoise.storage.CompressedManifestStaticFilesStorage',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 
 ]
 
@@ -87,13 +86,21 @@ WSGI_APPLICATION = 'DayLine.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
 
+
+import dj_database_url
+
+DATABASES = {
+    'default': dj_database_url.config(
+        default=os.environ.get('DATABASE_URL')
+    )
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -199,4 +206,4 @@ CSRF_TRUSTED_ORIGINS = [
 
 
 
-DATABASE_URL = "postgresql://dayline_db_user:79vJlx4em64Wa10vr2OuFOctALCopXGY@dpg-d7k98q5ckfvc73bhhpmg-a/dayline_db"
+# DATABASE_URL = "postgresql://dayline_db_user:79vJlx4em64Wa10vr2OuFOctALCopXGY@dpg-d7k98q5ckfvc73bhhpmg-a/dayline_db"
