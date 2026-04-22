@@ -125,6 +125,9 @@ STATICFILES_DIRS = (
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 #Renderで必用
 STORAGES = {
+    "default": {
+        "BACKEND": "django.core.files.storage.FileSystemStorage",
+    },
     "staticfiles": {
         "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
     },
