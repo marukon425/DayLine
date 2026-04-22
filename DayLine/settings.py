@@ -36,19 +36,14 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'django.contrib.staticfiles',
-    # 自動リロード
+    'cloudinary_storage',          
+    'django.contrib.staticfiles', 
+    'cloudinary',
     'django_browser_reload',
-    # modelsでカラーコードを使える
     'colorfield',
-
     'DayLine_1_DayLine',
     'DayLine_2_top',
     'DayLine_3_accounts',
-
-    'cloudinary_storage',
-    'django.contrib.staticfiles',
-    'cloudinary',
 ]
 
 MIDDLEWARE = [
