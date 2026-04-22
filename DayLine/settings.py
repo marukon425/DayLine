@@ -94,6 +94,7 @@ WSGI_APPLICATION = 'DayLine.wsgi.application'
 # }
 
 
+import os
 import dj_database_url
 
 DATABASES = {
