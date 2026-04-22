@@ -24,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-fmkooc)(4@u#1)zl!93=ho&je34o2!$gpor!o1do3(qvgjj=d='
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = []
 
@@ -170,6 +170,7 @@ DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 import os
 GROQ_API_KEY = os.environ.get('GROQ_API_KEY', '')
 
+"""
 # 仮サーバーを立てるために必要な奴
 #サーバー実行手順 
 # 1. 1つ目のcmdでpython manage.py runserver 8000を実行
@@ -183,3 +184,8 @@ ALLOWED_HOSTS = [
 CSRF_TRUSTED_ORIGINS = [
     'https://nongarrulous-antone-overrighteous.ngrok-free.dev',
 ]
+"""
+
+
+
+DATABASE_URL = "postgresql://dayline_db_user:79vJlx4em64Wa10vr2OuFOctALCopXGY@dpg-d7k98q5ckfvc73bhhpmg-a/dayline_db"
