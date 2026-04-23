@@ -191,6 +191,7 @@ class EventApi(View):
 
                 event_obj = {
                     **common,
+                    "allDay": allday,
                     "rrule": {
                         "freq":    repeat_code,
                         "dtstart": dtstart,

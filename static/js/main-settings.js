@@ -278,7 +278,7 @@ document.addEventListener('DOMContentLoaded', function() {
             this.init();
         }
         
-        open(){
+        open(actionUrl = "/index/event/create/") {
             this.sidebar.classList.add("active");
             calendar.updateSize();
             document.getElementById("create-event-field").style.display = ""
@@ -295,7 +295,7 @@ document.addEventListener('DOMContentLoaded', function() {
             setTimeout(() => {
                 calendar.updateSize();
             }, 300);
-            document.getElementById("create-event-field").action = "/index/event/create/"
+            document.getElementById("create-event-field").action = actionUrl;
         }
         close(){
             this.sidebar.classList.remove("active");
