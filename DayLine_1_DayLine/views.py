@@ -170,7 +170,7 @@ class EventApi(View):
                     d_start = datetime.strptime(str(start_date), "%Y-%m-%d")
                     d_end   = datetime.strptime(str(end_date),   "%Y-%m-%d")
                     delta = d_end - d_start
-                    duration = f"P{delta.days + 1}D"
+                    duration = f"P{delta.days + 1}D"  # 元のコードに戻す
                 else:
                     d_start = datetime.strptime(f"{start_date}T{start_time}", "%Y-%m-%dT%H:%M:%S")
                     d_end   = datetime.strptime(f"{end_date}T{end_time}",     "%Y-%m-%dT%H:%M:%S")
@@ -178,7 +178,7 @@ class EventApi(View):
                     total_seconds = int(delta.total_seconds())
                     h, remainder = divmod(total_seconds, 3600)
                     m, s = divmod(remainder, 60)
-                    duration = f"{h:02}:{m:02}"  # "01:30" など
+                    duration = f"{h:02}:{m:02}"
 
                 event_obj = {
                     "id": id,
