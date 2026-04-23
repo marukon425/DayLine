@@ -50,7 +50,7 @@ class IndexView(TemplateView):
         context['user_name'] = self.request.user.username
         context["email"] = self.request.user.email
         icon = self.request.user.icon
-        context["icon"] = icon.url if icon else 'https://res.cloudinary.com/dzzwa22mq/image/upload/images/defaults/user_icon/defalt-icon-1.svg'
+        context["icon"] = icon.url if icon and str(icon) else None
         return context
 
     # prefix="create"
@@ -76,7 +76,7 @@ class CreateEvent(CreateView):
         context['user_name'] = self.request.user.username
         context["email"] = self.request.user.email
         icon = self.request.user.icon
-        context["icon"] = icon.url if icon else 'https://res.cloudinary.com/dzzwa22mq/image/upload/images/defaults/user_icon/defalt-icon-1.svg'
+        context["icon"] = icon.url if icon and str(icon) else None
         return context
 
     # CreateViewだとformにuserを渡すときにkwargsにuserが入らないらしい
