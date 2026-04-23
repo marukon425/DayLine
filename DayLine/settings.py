@@ -34,7 +34,16 @@ INSTALLED_APPS = [
     'DayLine_1_DayLine',
     'DayLine_2_top',
     'DayLine_3_accounts',
+    'cloudinary',
 ]
+
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': os.environ.get('CLOUDINARY_CLOUD_NAME'),
+    'API_KEY': os.environ.get('CLOUDINARY_API_KEY'),
+    'API_SECRET': os.environ.get('CLOUDINARY_API_SECRET'),
+}
+
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 if DEBUG:
     INSTALLED_APPS += ['django_browser_reload']
