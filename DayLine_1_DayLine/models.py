@@ -79,7 +79,6 @@ class Room(models.Model):
 
     room_img = cloudinary.models.CloudinaryField(
         resource_type='image',
-        default='images/defaults/calendar/defalt_calendar_img.png',
         blank=True,
         null=True
     )

@@ -14,6 +14,7 @@ from django.contrib.auth.views import PasswordResetView, PasswordResetDoneView, 
 # ログイン
 from django.contrib.auth.views import LoginView
 from django.contrib.auth.forms import SetPasswordForm
+from django.contrib.auth import login
 class LoginView(LoginView):
     template_name = 'login.html'
     next_page = reverse_lazy('DayLine_1_DayLine:index')
@@ -32,6 +33,7 @@ class SignupView(CreateView):
     # モデル(データベース)に保存する処理など
     def form_valid(self, form):
         user = form.save()
+        login(self.request, user)
         self.object = user
         return super().form_valid(form)
 

@@ -93,8 +93,11 @@
             <div id="index-profile" class="user-info">
                 <a class="user-setting" href="{% url 'DayLine_3_accounts:settings' %}"><img src="{% static "img/設定.svg" %}" alt=""></a>
                 <div class="user-info-icon">
+                {% if icon %}
                     <img src="{{icon}}" alt="">
-                    
+                {% else %}
+                    <img src="{% static 'img/defalt-icon-4.svg' %}" alt="">
+                {% endif %}
                 </div>
                 <div class="user-info-info">
                     <p class="user-name">{{ user_name }}</p>
@@ -126,8 +129,11 @@
                             <div class="clendar-out-checked"></div>
                             <img src="{% static "img/チェックマーク2.svg" %}" alt="">
                         </label>
+                        {% if room.room_img %}
                             <img src="{{ room.room_img.url }}" alt="">
-                        </div>
+                        {% else %}
+                            <img src="{% static 'img/defalt_calendar_img.png' %}" alt="">
+                        {% endif %}                        </div>
                         <div class="calendar-list-name">
                             {{room.room_name}}
                         </div>

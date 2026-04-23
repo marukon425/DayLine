@@ -40,8 +40,7 @@ class CustomUser(AbstractUser):
     )
 
     icon = cloudinary.models.CloudinaryField(
-        'image',
-        default='images/defaults/user_icon/defalt-icon-1.svg',
+        resource_type='image',
         blank=True,
         null=True
     )
