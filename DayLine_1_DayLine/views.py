@@ -50,10 +50,8 @@ class IndexView(TemplateView):
         context['user_name'] = self.request.user.username
         context["email"] = self.request.user.email
         icon = self.request.user.icon
-        print(f"=== icon値: {repr(str(icon))} ===")
-        print(f"=== icon bool: {bool(icon)} ===")
-        context["icon"] = icon.url if icon and str(icon) else None
-        print(f"=== context icon: {context['icon']} ===")
+        icon_str = str(icon)
+        context["icon"] = icon.url if icon and icon_str and not icon_str.startswith('images/') else None
         return context
 
     # prefix="create"
@@ -79,7 +77,8 @@ class CreateEvent(CreateView):
         context['user_name'] = self.request.user.username
         context["email"] = self.request.user.email
         icon = self.request.user.icon
-        context["icon"] = icon.url if icon and str(icon) else None
+        icon_str = str(icon)
+        context["icon"] = icon.url if icon and icon_str and not icon_str.startswith('images/') else None
         return context
 
     # CreateViewだとformにuserを渡すときにkwargsにuserが入らないらしい
