@@ -128,113 +128,94 @@ class PostDeletView(DeleteView):
 
 # json
 class EventApi(View):
-    # 自分が所属しているルームのイベントを全部表示する
     def get_queryset(self):
         return Event.objects.filter(
             room__roommember__user=self.request.user
-        ).order_by('start_date').distinct()
-    
+        ).select_related('room', 'created_by', 'color', 'repeat').order_by('start_date').distinct()
+
     def get(self, request, *args, **kwargs):
+        from datetime import datetime, timedelta, date
+
         events = self.get_queryset()
         data = []
+
         for i in events:
-            id = i.id
-            room = i.room.room_name
-            room_id = str(i.room.id)
-            title = i.title
-            created_by = i.created_by.username
-            start_date = i.start_date
-            start_time = i.start_time
-            end_date = i.end_date
-            end_time = i.end_time
-            allday = i.allday
-            user = i.created_by.username
+            start_date  = i.start_date
+            end_date    = i.end_date
+            start_time  = i.start_time
+            end_time    = i.end_time
+            allday      = i.allday
             repeat_code = i.repeat.repeat_code if i.repeat else None
             repeat_name = i.repeat.repeat_name if i.repeat else None
-            url = i.url
-            locate = i.location
-            memo = None if i.memo == "" else i.memo
+            color       = i.color.color if i.color else ""
+            memo        = i.memo if i.memo else None
 
-            color = i.color.color if i.color else ""
+            # 全イベント共通の詳細情報\uff08モーダル表示用\uff09
+            common = {
+                "id":         i.id,
+                "user":       i.created_by.username,
+                "calendar":   i.room.room_name,
+                "room_id":    str(i.room.id),
+                "title":      i.title,
+                "created_by": i.created_by.username,
+                "color":      color,
+                "start_date": str(start_date),
+                "end_date":   str(end_date),
+                "start_time": str(start_time),
+                "end_time":   str(end_time),
+                "repeat":     repeat_name,
+                "event_url":  i.url,
+                "locate":     i.location,
+                "memo":       memo,
+            }
 
-            # 繰り返しあり → rrule形式で返す
+            # \u2500\u2500 繰り返しあり \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
             if repeat_code and repeat_code != "none":
-                if allday:
-                    dtstart = str(start_date).replace("-", "")
-                else:
-                    dtstart = f"{start_date}T{start_time}"
 
-                # durationを計算（start〜endの差分）
-                from datetime import datetime, timedelta
                 if allday:
-                    d_start = datetime.strptime(str(start_date), "%Y-%m-%d")
-                    d_end   = datetime.strptime(str(end_date),   "%Y-%m-%d")
-                    delta = d_end - d_start
-                    duration = f"P{delta.days + 2}D"
+                    # dtstart: ハイフンなし日付形式\uff08rruleプラグイン要件\uff09
+                    dtstart  = str(start_date).replace("-", "")
+                    # duration: end_dateの翌日までの日数\uff08FullCalendarはexclusive\uff09
+                    days     = (end_date - start_date).days + 1
+                    duration = f"P{days}D"
                 else:
-                    d_start = datetime.strptime(f"{start_date}T{start_time}", "%Y-%m-%dT%H:%M:%S")
-                    d_end   = datetime.strptime(f"{end_date}T{end_time}",     "%Y-%m-%dT%H:%M:%S")
-                    delta = d_end - d_start
-                    total_seconds = int(delta.total_seconds())
-                    h, remainder = divmod(total_seconds, 3600)
-                    m, s = divmod(remainder, 60)
-                    duration = f"{h:02}:{m:02}"  # "01:30" など
+                    dtstart  = f"{start_date}T{start_time}"
+                    # 時間指定イベントはHH:MM形式でdurationを渡す
+                    d_start  = datetime.combine(start_date, start_time)
+                    d_end    = datetime.combine(end_date,   end_time)
+                    delta    = d_end - d_start
+                    total_s  = int(delta.total_seconds())
+                    h, rem   = divmod(total_s, 3600)
+                    m, _     = divmod(rem, 60)
+                    duration = f"{h:02}:{m:02}"
 
                 event_obj = {
-                    "id": id,
-                    "user": user,
-                    "calendar": room,
-                    "room_id": room_id,
-                    "title": title,
-                    "created_by": created_by,
+                    **common,
                     "rrule": {
-                        "freq": repeat_code,   # "daily" / "weekly" / "monthly" / "yearly"
+                        "freq":    repeat_code,
                         "dtstart": dtstart,
                     },
                     "duration": duration,
-                    "color": color,
-                    # extendedProps（詳細モーダル用）
-                    "start_date": str(start_date),
-                    "end_date": str(end_date),
-                    "start_time": str(start_time),
-                    "end_time": str(end_time),
-                    "repeat": repeat_name,
-                    "event_url": url,
-                    "locate": locate,
-                    "memo": memo,
                 }
 
-            # 繰り返しなし → 従来通り
+            # \u2500\u2500 繰り返しなし \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
             else:
                 if allday:
-                    from datetime import timedelta
+                    # FullCalendarのendはexclusiveなので+1日
                     start = str(start_date)
-                    end = str(end_date + timedelta(days=1))
+                    end   = str(end_date + timedelta(days=1))
                 else:
                     start = f"{start_date}T{start_time}"
-                    end = f"{end_date}T{end_time}"
+                    end   = f"{end_date}T{end_time}"
 
                 event_obj = {
-                    "id": id,
-                    "user": user,
-                    "calendar": room,
-                    "room_id": room_id,
-                    "title": title,
-                    "created_by": created_by,
+                    **common,
                     "start": start,
-                    "end": end,
-                    "start_date": str(start_date),
-                    "end_date": str(end_date),
-                    "start_time": str(start_time),
-                    "end_time": str(end_time),
-                    "color": color,
-                    "repeat": repeat_name,
-                    "event_url": url,
-                    "locate": locate,
-                    "memo": memo,
+                    "end":   end,
                 }
 
             data.append(event_obj)
+
         return JsonResponse(data, safe=False)
 #日本の祝日を取得する
 class HolidayApi(View):
