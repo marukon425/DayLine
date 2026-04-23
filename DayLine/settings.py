@@ -38,7 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'cloudinary',
-    'django_browser_reload',
+    # 'django_browser_reload',
     'colorfield',
     'DayLine_1_DayLine',
     'DayLine_2_top',
@@ -54,7 +54,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     # 自動リロード
-    "django_browser_reload.middleware.BrowserReloadMiddleware",
+    # "django_browser_reload.middleware.BrowserReloadMiddleware",
     #Renderに必用
     'whitenoise.middleware.WhiteNoiseMiddleware',
 
