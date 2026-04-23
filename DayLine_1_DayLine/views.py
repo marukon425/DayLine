@@ -50,7 +50,10 @@ class IndexView(TemplateView):
         context['user_name'] = self.request.user.username
         context["email"] = self.request.user.email
         icon = self.request.user.icon
+        print(f"=== icon値: {repr(str(icon))} ===")
+        print(f"=== icon bool: {bool(icon)} ===")
         context["icon"] = icon.url if icon and str(icon) else None
+        print(f"=== context icon: {context['icon']} ===")
         return context
 
     # prefix="create"
