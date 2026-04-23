@@ -43,7 +43,11 @@
                         </div>
                         <div class="setting-area area-bottom">
                             <div class="setting-area-name">アイコン</div>
-                            <img class="room-icon" src="{{ object.room_img.url }}" alt="" style="">
+                        {% if room.room_img %}
+                            <img class="room-icon" src="{{ room.room_img.url }}" alt="">
+                        {% else %}
+                            <img class="room-icon" src="{% static 'img/defalt_calendar_img.png' %}" alt="">
+                        {% endif %}
                             <input class="edit-room-icon" type="file" name="room_img" accept="image/*" style="display:none;">
                         </div>
                         <div class="setting-save-cancel">
