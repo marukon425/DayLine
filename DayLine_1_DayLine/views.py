@@ -49,7 +49,8 @@ class IndexView(TemplateView):
         context['colors'] = Color.objects.all()
         context['user_name'] = self.request.user.username
         context["email"] = self.request.user.email
-        context["icon"] = self.request.user.icon.url if self.request.user.icon else '/media/defaults/user_icon.png'
+        icon = self.request.user.icon
+        context["icon"] = icon.url if icon else 'https://res.cloudinary.com/dzzwa22mq/image/upload/images/defaults/user_icon/defalt-icon-1.svg'
         return context
 
     # prefix="create"
@@ -74,8 +75,8 @@ class CreateEvent(CreateView):
         context['colors'] = Color.objects.all()
         context['user_name'] = self.request.user.username
         context["email"] = self.request.user.email
-        context["icon"] = self.request.user.icon.url if self.request.user.icon else '/media/defaults/user_icon.png'
-
+        icon = self.request.user.icon
+        context["icon"] = icon.url if icon else 'https://res.cloudinary.com/dzzwa22mq/image/upload/images/defaults/user_icon/defalt-icon-1.svg'
         return context
 
     # CreateViewだとformにuserを渡すときにkwargsにuserが入らないらしい
