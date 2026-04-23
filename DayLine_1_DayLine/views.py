@@ -170,7 +170,7 @@ class EventApi(View):
                     d_start = datetime.strptime(str(start_date), "%Y-%m-%d")
                     d_end   = datetime.strptime(str(end_date),   "%Y-%m-%d")
                     delta = d_end - d_start
-                    duration = f"{delta.days + 1}D"
+                    duration = f"P{delta.days + 1}D"
                 else:
                     d_start = datetime.strptime(f"{start_date}T{start_time}", "%Y-%m-%dT%H:%M:%S")
                     d_end   = datetime.strptime(f"{end_date}T{end_time}",     "%Y-%m-%dT%H:%M:%S")
