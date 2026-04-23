@@ -691,7 +691,7 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById("create-event-field").action = `/index/event/${id}/edit/`;
 
         // サイドバーを開く
-        create_sidebar.open();
+        create_sidebar.open(`/index/event/${id}/edit/`);
 
         // フィールドに既存データを流し込む
         getFp("#create-start-date input").setDate(props.start_date, false);
