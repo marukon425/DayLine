@@ -160,7 +160,7 @@ class EventApi(View):
             # 繰り返しあり → rrule形式で返す
             if repeat_code and repeat_code != "none":
                 if allday:
-                    dtstart = str(start_date)
+                    dtstart = str(start_date).replace("-", "")
                 else:
                     dtstart = f"{start_date}T{start_time}"
 
