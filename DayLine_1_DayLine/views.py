@@ -170,7 +170,7 @@ class EventApi(View):
                     d_start = datetime.strptime(str(start_date), "%Y-%m-%d")
                     d_end   = datetime.strptime(str(end_date),   "%Y-%m-%d")
                     delta = d_end - d_start
-                    duration = f"P{delta.days + 1}D"  # 元のコードに戻す
+                    duration = f"P{delta.days + 1}D"
                 else:
                     d_start = datetime.strptime(f"{start_date}T{start_time}", "%Y-%m-%dT%H:%M:%S")
                     d_end   = datetime.strptime(f"{end_date}T{end_time}",     "%Y-%m-%dT%H:%M:%S")
@@ -178,7 +178,7 @@ class EventApi(View):
                     total_seconds = int(delta.total_seconds())
                     h, remainder = divmod(total_seconds, 3600)
                     m, s = divmod(remainder, 60)
-                    duration = f"{h:02}:{m:02}"
+                    duration = f"{h:02}:{m:02}"  # "01:30" など
 
                 event_obj = {
                     "id": id,
@@ -187,7 +187,6 @@ class EventApi(View):
                     "room_id": room_id,
                     "title": title,
                     "created_by": created_by,
-                    "allDay": allday,
                     "rrule": {
                         "freq": repeat_code,   # "daily" / "weekly" / "monthly" / "yearly"
                         "dtstart": dtstart,
@@ -208,8 +207,9 @@ class EventApi(View):
             # 繰り返しなし → 従来通り
             else:
                 if allday:
+                    from datetime import timedelta
                     start = str(start_date)
-                    end = str(end_date)
+                    end = str(end_date + timedelta(days=1))
                 else:
                     start = f"{start_date}T{start_time}"
                     end = f"{end_date}T{end_time}"
