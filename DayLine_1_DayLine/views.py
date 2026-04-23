@@ -90,7 +90,6 @@ class EditEvent(UpdateView):
     form_class = EditEventForm
     template_name = 'index.html'
     success_url = reverse_lazy('DayLine_1_DayLine:index')
-    prefix="create"
 
     def form_valid(self, form):
         form.instance.created_by = self.request.user

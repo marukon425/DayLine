@@ -7,8 +7,9 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('DayLine_3_accounts', '0005_alter_customuser_icon'),
+        ('DayLine_3_accounts', '0004_alter_customuser_icon'),
     ]
+
 
     operations = [
         migrations.AlterField(

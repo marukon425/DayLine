@@ -7,7 +7,7 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('DayLine_1_DayLine', '0005_alter_room_room_img_alter_roommember_authority'),
+        ('DayLine_1_DayLine', '0004_event_created_at_event_updated_at_roommember_join_at_and_more'),
     ]
 
     operations = [

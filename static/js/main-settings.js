@@ -278,7 +278,7 @@ document.addEventListener('DOMContentLoaded', function() {
             this.init();
         }
         
-        open(){
+        open(actionUrl = "/index/event/create/") {
             this.sidebar.classList.add("active");
             calendar.updateSize();
             document.getElementById("create-event-field").style.display = ""
@@ -295,7 +295,7 @@ document.addEventListener('DOMContentLoaded', function() {
             setTimeout(() => {
                 calendar.updateSize();
             }, 300);
-            document.getElementById("create-event-field").action = "/index/event/create/"
+            document.getElementById("create-event-field").action = actionUrl;
         }
         close(){
             this.sidebar.classList.remove("active");
@@ -687,20 +687,20 @@ document.addEventListener('DOMContentLoaded', function() {
         // 詳細モーダルを閉じる
         document.getElementById("detail-event-modal").classList.remove("hidden");
 
-        // 作成フォームのactionを編集用URLに差し替え
-        document.getElementById("create-event-field").action = `/index/event/${id}/edit/`;
-
         // サイドバーを開く
-        create_sidebar.open();
+        create_sidebar.open(`/index/event/${id}/edit/`);
+        console.log(document.getElementById("create-event-field").action)
 
         // フィールドに既存データを流し込む
         getFp("#create-start-date input").setDate(props.start_date, false);
         getFp("#create-end-date input").setDate(props.end_date, false);
-        getFp("#create-start-time input").setDate(props.start_time, false);
-        getFp("#create-end-time input").setDate(props.end_time, false);
+        const startTimeFp = document.querySelector("#create-start-time input")?._flatpickr;
+        const endTimeFp = document.querySelector("#create-end-time input")?._flatpickr;
+        if (startTimeFp) startTimeFp.setDate(props.start_time, false);
+        if (endTimeFp) endTimeFp.setDate(props.end_time, false);
 
         // タイトル
-        document.querySelector("#id_title").value = event.title;
+        document.querySelector(".id_title").value = event.title;
 
         // 終日
         const alldayCheck = document.querySelector(".event-allday");

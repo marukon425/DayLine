@@ -165,6 +165,10 @@ class EditEventForm(forms.ModelForm):
             roommember__user=user
         ).distinct().order_by("-is_personal", "room_name")
 
+        # 追加
+        self.fields["start_time"].required = False
+        self.fields["end_time"].required = False
+
 # ルーム作成
 class CreateRoomForm(forms.ModelForm):
     class Meta:
