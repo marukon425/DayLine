@@ -89,7 +89,12 @@
             </div>
         </div>
         <div class="header-2">
-            <div class="header-icon-space"><img src="{{icon}}" alt=""></div>
+            <div class="header-icon-space">
+                {% if icon %}
+                    <img src="{{icon}}" alt="">
+                {% else %}
+                    <img src="{% static 'img/defalt-icon-4.svg' %}" alt="">
+                {% endif %}            </div>
             <div id="index-profile" class="user-info">
                 <a class="user-setting" href="{% url 'DayLine_3_accounts:settings' %}"><img src="{% static "img/設定.svg" %}" alt=""></a>
                 <div class="user-info-icon">
