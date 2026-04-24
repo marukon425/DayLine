@@ -272,7 +272,7 @@
                                     <div class="custom-select-options">
                                         <!-- 選custom-select-options択肢 ※最初から選択状態にする場合は必ずis-selectedをクラスとして追加する-->
                                         {% for repeat in form.fields.repeat.queryset  %}
-                                        {% if repeat.id == 1 %}
+                                        {% if repeat.repeat_code == "none" %}
                                         <div class="custom-select-option is-selected" data-value="{{repeat.id}}">
                                             {{repeat.repeat_name}}
                                         </div>
