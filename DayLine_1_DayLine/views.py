@@ -49,7 +49,9 @@ class IndexView(TemplateView):
         context['colors'] = Color.objects.all()
         context['user_name'] = self.request.user.username
         context["email"] = self.request.user.email
-        context["icon"] = self.request.user.icon.url if self.request.user.icon else '/media/defaults/user_icon.png'
+        icon = self.request.user.icon
+        icon_str = str(icon)
+        context["icon"] = icon.url if icon and icon_str and not icon_str.startswith('images/') else None
         return context
 
     # prefix="create"
