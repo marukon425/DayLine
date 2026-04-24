@@ -3,6 +3,7 @@ from DayLine_3_accounts.models import *
 import datetime
 from django.urls import reverse
 import uuid
+import cloudinary.models
 # Create your models here.
 import uuid
 
@@ -76,12 +77,10 @@ class Room(models.Model):
         blank=True
     )
 
-    room_img = models.ImageField(
-        verbose_name="ルームアイコン",
-        upload_to='images/calendar_icons',
-        default="images/defaults/calendar/defalt_calendar_img.png",
-        null=True,
-        blank=True
+    room_img = cloudinary.models.CloudinaryField(
+        resource_type='image',
+        blank=True,
+        null=True
     )
 
     owner = models.ForeignKey(

@@ -43,7 +43,6 @@ CLOUDINARY_STORAGE = {
     'API_SECRET': os.environ.get('CLOUDINARY_API_SECRET'),
 }
 
-DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 if DEBUG:
     INSTALLED_APPS += ['django_browser_reload']
@@ -125,3 +124,20 @@ EMAIL_HOST_PASSWORD = 'fiyr tcpw ugff lasd'
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 GROQ_API_KEY = os.environ.get('GROQ_API_KEY', '')
+
+import cloudinary
+
+cloudinary.config(
+    cloud_name=os.environ.get('CLOUDINARY_CLOUD_NAME'),
+    api_key=os.environ.get('CLOUDINARY_API_KEY'),
+    api_secret=os.environ.get('CLOUDINARY_API_SECRET'),
+)
+
+STORAGES = {
+    "default": {
+        "BACKEND": "django.core.files.storage.FileSystemStorage",
+    },
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedStaticFilesStorage",
+    },
+}
