@@ -27,6 +27,13 @@
         <div class="main-setting">
             <div class="room-main-setting">
                 <h2>メンバー情報</h2>
+                <div class="setting-space">
+                    <p class="setting-name">招待URL</p>
+                    <div style="display:flex; align-items:center; gap:10px;">
+                        <input type="text" id="invite-url" value="{{request.scheme}}://{{request.get_host}}/index/room/join/{{room.join_url}}/" readonly style="width:400px; padding:8px;">
+                        <button type="button" onclick="copyInviteUrl()">コピー</button>
+                    </div>
+                </div>
                 <form method="POST">
                     {% csrf_token %}
                     <div class="setting-space members">
@@ -90,5 +97,13 @@
             </div>
         </div>
     </main>
+<script>
+function copyInviteUrl() {
+    const url = document.getElementById("invite-url").value;
+    navigator.clipboard.writeText(url).then(() => {
+        alert("招待URLをコピーしました");
+    });
+}
+</script>
 </body>
 </html>

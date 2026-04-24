@@ -369,6 +369,7 @@ class SettingRoomMember(UpdateView):
         context['member_forms'] = member_forms
         context['member_count'] = member_info.count()
         # ...他のcontextも同様
+        context['room'] = self.object 
         context['is_admin'] = member.authority.authority_code in ["admin", "owner"]
         context['room_name'] = self.object.room_name
         context['room_description'] = self.object.room_description
