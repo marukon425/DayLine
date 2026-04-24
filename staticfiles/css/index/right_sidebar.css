@@ -1,0 +1,172 @@
+/* 右サイドバーのcss */
+
+.sidebar{
+    width: 300px;
+    background-color: rgba(127, 255, 212, 0.501);
+    transition: width 0.3s ease;
+}
+
+.calendar-container{
+    flex: 1;
+    transition: all 0.3s ease;
+}
+
+.sidebar.closed{
+    width: 80px;
+}
+
+
+
+
+
+#right-sidebar-overlay{
+    width: 0px;
+    /* width: 400px; */
+    height: 100%;    
+    transition: 0.3s;
+}
+#right-sidebar{
+    position: fixed;
+    left: -400px;
+    width: 400px;
+    height: 100%;
+    transition: 0.3s;
+}
+#right-sidebar.active{
+    left: 0px;
+
+}
+#right-sidebar-overlay.active{
+    width: 400px;
+}
+
+.calendar-list-hader{
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+}
+
+#calendar-lists{
+    width: 100%;
+    margin: 10px 0;
+}
+
+.calendar-list, #add-calendar{
+    padding: 10px;
+    width: calc(100% - 30px);
+    display: flex;
+    align-items: center;
+    height: 100px;
+    gap: 20px;
+    transition: 0.2s;
+}
+.calendar-list:hover, #add-calendar:hover{
+    background-color: rgba(75, 75, 75, 0.082);
+}
+.calendar-list-img{
+    position: relative;
+}
+.clendar-out-check{
+    position: absolute;
+    z-index: 1000;
+    width: 130px;
+    height: 100px;
+    background: none;
+    border-radius: 20px;
+}
+.clendar-out-check input{
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    display: none;
+    border-radius: 20px;
+}
+.clendar-out-checked{
+    position: absolute;
+    width: 130px;
+    height: 100px;
+    background-color: rgba(114, 114, 114, 0.438);
+    bottom: 0px;
+    display: none;
+    border-radius: 20px;
+    transition: 0.2s;
+}
+.clendar-out-check img{
+    position: absolute;
+    display: none;
+    transition: 0.2s;
+}
+.clendar-out-check input:checked ~ .clendar-out-checked{
+    display: flex;
+} 
+.clendar-out-check input:checked ~  img{
+    display: flex;
+} 
+.calendar-list-img, #ass-calendar-img{
+    display: flex;
+    align-items: center;
+}
+.calendar-list-img img, #ass-calendar-img img{
+    height: 100px;
+    width: 130px;
+    object-fit: cover;
+    border-radius: 20px;
+}
+
+#ass-calendar-img img{
+    border: 1px solid rgba(0, 0, 0, 0.082);
+}
+
+.calendar-list-name, #calendar-add-mane{
+    font-weight: 500;
+}
+
+.calendar-settings{
+    margin-left: auto;
+    margin-right: 10px;
+    position: relative;
+}
+.calendar-settings a img{
+    height: 25px;
+}
+.calendar-settings-balloon{
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    background-color: rgb(6, 6, 36);
+    color: white;
+    font-size: 10px;
+    width: 200%;
+    height: 20px;
+    border-radius: 5px;
+    bottom: 35px;
+    left: -10px;
+    display: none;
+    transition: 0.2s;
+}
+
+.calendar-settings:hover .calendar-settings-balloon{
+    display: flex;
+}
+
+
+
+@media (max-width: 580px) {
+    #right-sidebar-overlay.active{
+        width:100%;
+        background-color: white;
+    }
+    #right-sidebar.active{
+        width: 100%;
+        background-color: white;
+    }
+
+    #create-sidebar.active {
+        position: relative;
+        z-index: 6000;
+        background-color: white;
+        width: 100%;
+    }
+}

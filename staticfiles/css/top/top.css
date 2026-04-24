@@ -1,0 +1,264 @@
+ul{
+    list-style: none;
+    padding-left: 0;
+}
+
+body{
+    overflow-y: scroll;
+    padding-bottom: env(safe-area-inset-bottom);
+}
+header{
+    display: flex;
+    align-items: center;
+    width: calc(100vw - 20px);
+    height: 50px;
+    padding: 10px;
+    overflow: hidden;
+    position: fixed;
+    z-index: 5000;
+    background-color: rgba(255, 255, 255, 0.452);
+    top: 0;
+}
+
+main{
+    padding-bottom: 100px;
+}
+
+.app-title img{
+    height: 25px;
+}
+
+.header-content{
+    display: flex;
+    align-items: center;
+    margin-left: auto;
+    font-size: 12px;
+    gap: 15px;
+}
+.header-content a{
+    font-weight: 600;
+    transition: 0.2s;
+}
+.header-content a:hover{
+    color: orange;
+}
+
+
+#app-start{
+    display: flex;
+    align-items: center;
+    color: white;
+    background-color: rgb(1, 29, 69);
+    height: 15px;
+    padding: 15px;
+    border-radius: 8px;
+    transition: 0.2s;
+}
+#app-start:hover{
+    background-color: orange;
+    color: white;
+}
+
+
+.top-words{
+    margin-top: 70px;
+    width: 100%;
+    height: 100vh;
+    position: static;
+}
+.top-words-wrap{
+    width: 100%;
+    height: calc(100vh - 70px);
+    position: relative;
+}
+.top-words-back-img img {
+    height: calc(130vh - 70px);
+    width: 100vw;
+}
+
+.top-words-hidden{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: rgba(128, 128, 128, 0.379);
+    color: white;
+    width: 100%;
+    height: 130%;
+    font-size: 50px;
+}
+.top-words-hidden h1, .top-words-hidden h3{
+    margin: 0 40px ;
+}
+.top-words-hidden h1{
+    font-size: 300%;
+    font-weight: 900;
+}
+.top-words-hidden h3{
+    font-weight: 500;
+    font-size: 50px;
+}
+
+.road-output{
+  opacity:0;
+  transform:translateY(20px);
+  transition:1s;
+}
+
+.road-output.show{
+  opacity:1;
+  transform:translateY(0);
+}
+
+.top-descriptions-wrap{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.top-descriptions{
+    width: 80%;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 40px;
+
+}
+
+.sub-words{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 300px;
+    margin-bottom: 100px;
+    position: relative;
+    z-index: 2000;
+    box-shadow: 0px -150px 110px 100px rgb(255, 255, 255);
+}
+.sub-words h1{
+    font-size: 70px;
+}
+
+.description{
+    height: 450px;
+    width: 500px;
+    max-width: 100%;
+}
+
+.description-img{
+    transition: 0.2s;
+}
+.description-img img{
+    width: 500px;
+    max-width: 100%;
+    height: 300px;
+    max-height: 30%;
+    object-fit: cover; /*画像の見える位置を調整する*/
+    border-radius: 30px;
+
+    /* opacity:0;
+    transform:translateY(20px);
+    transition:1s; */
+}
+
+/* .description-img img.show{
+    opacity:1;
+    transform:translateY(0);
+} */
+
+.description-img:hover{
+    transform:translateY(-20px);
+}
+
+footer{
+    background-color: rgb(1, 29, 69);
+    color: rgb(182, 182, 182);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.footer-contents{
+    display: flex;
+    padding-top: 100px;
+    padding-bottom: 100px;
+    justify-content: center;
+    gap: 10%;
+}
+
+.footer-sns{
+    display: block;
+}
+
+.footer-sns p{
+    margin: 0;
+}
+
+.footer-sns img{
+    width: 150px;
+}
+
+.footer-content{
+    width: 300px;
+}
+
+.footer-content h4{
+    margin: 0;
+    color: white;
+}
+
+.copy-field{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    height: 100px;
+    border: 0.5px solid;
+    border-color: rgba(182, 182, 182, 0.495);
+    width: 100%;
+}
+
+@media (max-width: 680px) {
+    .top-words-hidden h1{
+        font-size: 50px;
+        position: absolute;
+        top: 200px;
+        z-index: 100;
+    }
+    .top-words-hidden h3 {
+        font-size: 30px;
+        position: absolute;
+        top: 370px;
+        z-index: 100;
+    }
+    .top-words-back-img img{
+    height: 100vh;
+    object-fit: cover;
+    height: 100% calc(100% - 30%);
+    }
+
+    .sub-words{
+        margin-top: 150px;
+    }
+
+    .sub-words h1{
+        font-size: 70px;
+        text-align: center;
+    }
+
+    .sub-words h4{
+        font-size: 30px;
+        text-align: center;
+    }
+
+    .footer-contents{
+        display: grid;
+        gap: 50px;
+    }
+
+    .copy-field{
+        font-size: 10px;
+    }
+}

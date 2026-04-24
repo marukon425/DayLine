@@ -1,0 +1,267 @@
+/* ヘッダーのcss */
+
+header{
+    display: flex;
+    height: 50px;
+    align-items: center;
+    padding-left:10px;
+}
+.header-1{
+    width: 100%;
+    display: flex;
+    align-items: center;
+}
+#title{
+    margin-right: auto;
+}
+#hamburger{
+    height: 100%;
+    padding-right: 10px;
+}
+.header-tool-2{
+    display: flex;
+    margin: 0 auto;
+    align-items: center;
+}
+#current-date-wrapper{
+    position: relative;
+    
+}
+#current-date{
+    font-weight: 500;
+    font-size: 20px;
+    cursor: pointer;
+}
+#date-jump-dropdown{
+    display:none;
+    position:absolute;
+    z-index:1000;
+    right: -30px;
+    background:#fff;
+    border:1px solid #ccc;
+    border-radius:8px;
+    padding:8px;
+    height: 30px;
+    width: 150px;
+    gap: 10px;
+}
+#jump-year{
+    width: 60%;
+    border: none;
+    background-color: #969a9c2c;
+    text-align: center;
+    border-radius: 5px;
+}
+#jump-month{
+    width: 40%;
+    border: none;
+    text-align: center;
+    background-color: #969a9c2c;
+    border-radius: 5px;
+}
+#root-today{
+    height: 35px;
+    width: 55px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(128, 128, 128, 0.388);
+    border-radius: 10px;
+    margin-right: 20px;
+}
+
+#prev, #next{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    background: none;
+    width: 35px;
+    height: 35px;
+    transition: 0.2s;
+    border-radius: 1000px;
+}
+#prev:hover, #next:hover{
+    background-color: rgba(124, 124, 124, 0.1);
+}
+
+
+.header-tool-1{
+    display: flex;
+    align-items: center;
+    margin-left: auto;
+    gap: 10px;
+}
+#create-sidebar-open{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    height: 35px;
+    width: 35px;
+    border-radius: 10px;
+    /* border-color: #969A9C; */
+    border: 1px solid rgba(128, 128, 128, 0.388);
+}
+#create-sidebar-open:hover{
+    background-color: rgba(255, 166, 0, 0.1);
+}
+#create-sidebar-open img{
+    transition: 0.2s;
+    padding: 7px;
+    height: 20px;
+    width: auto;
+}
+#create-sidebar-open img:hover{
+    content: url(../../img/＋_orange.svg);
+}
+
+#serch-event{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 35px;
+    width: 35px;
+    border: 1px solid;
+    border-radius: 10px;
+    border-color: rgba(128, 128, 128, 0.388);
+    transition: 0.2s;
+}
+#serch-event:hover{
+    background-color: rgba(255, 166, 0, 0.1);
+}
+#serch-event-img{
+    height: 20px;
+    transition: 0.2s;
+    padding: 7px;
+}
+#serch-event-img:hover{
+    content: url("../../img/検索_orange.svg");
+}
+
+
+.header-icon-space{
+    width: 50px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+.header-icon-space img{
+    height: 40px;
+    width: 40px;
+    object-fit: cover;
+    border-radius: 100px;
+    transform: scale(1);
+    will-change: transform;
+}
+#index-profile{
+    display: none;
+    position: fixed;
+    background-color: rgb(255, 255, 255);
+    width: 200px;
+    min-height: 200px;
+    /* left: 1700px; */
+    z-index: 9000;
+    border-radius: 20px;
+    box-shadow:4px 4px 10px 0 rgba(0, 0, 0, 0.249), -2px -2px 10px 0 rgba(0, 0, 0, 0.249);
+    /* display: none; */
+    flex-direction: column;
+    align-items: center;
+    transition: 0.2s;
+    position: absolute;
+    top: 60px;
+    right: 10px;
+    padding: 10px;
+}
+.user-setting{
+    width: 100%;
+}
+.user-setting img{
+    margin-right: auto;
+    margin-right: 5px;
+    height: 20px;
+
+    
+}
+.user-setting img:hover{
+    content: url(../../img/設定_ホバー.svg);
+}
+.user-info-icon{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 70px;
+    margin-top: 20px
+}
+.user-info-icon img{
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 100px;
+    image-rendering: auto;
+}
+.user-info-info{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.user-info-info p{
+    height: 10px;
+}
+.user-name{
+    font-size: 15px;
+}
+.user-email{
+    font-size: 10px;
+}
+.user-logput{
+    font-size: 10px;
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    color: #969A9C;
+}
+.user-logput img{
+    height: 10px;
+}
+.user-logput:hover{
+    color: #E73B3B;
+}
+.user-logput:hover img{
+    content: url(../../img/ログアウト_ホバー.svg);
+}
+/* .header-2:hover .user-info,
+.user-info:hover {
+    display: flex;
+} */
+/* 表示切替 */
+.caltool-daytime-grid{
+    width: 100px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    border: 1px solid rgba(128, 128, 128, 0.388);
+    border-radius: 10px;
+    height: 35px;
+    transition: 0.2s;
+}
+.caltool-daytime-grid:hover{
+    background-color: rgba(255, 166, 0, 0.1);
+}
+#caltool-daytime-grid-selected{
+    transition: 0.2s;
+}
+#caltool-daytime-grid-selected:hover{
+    color: #ffa500;
+}
+#caltool-daytime-grid-options{
+    width: 200px;
+}
+
+@media (max-width: 700px) {
+    #main-logo, #root-today, #prev, #next, .caltool-daytime-grid{
+        display: none;
+    }
+}

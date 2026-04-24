@@ -1,0 +1,183 @@
+/* 全体のcss */
+
+html, body{
+    margin: 0;
+    color: rgb(1, 29, 69);
+    /* overflow-x: hidden; */
+    height: 100%;
+    width: 100%;
+    background-color: rgb(255, 255, 255);
+    font-family: 'Noto Sans JP', 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 
+              'BIZ UDPGothic', Meiryo, sans-serif;
+}
+
+a {
+  color: inherit;       /* 親要素の文字色を引き継ぐ */
+  text-decoration: none; /* 下線を消す */
+}
+
+input * :focus{
+  outline: none !important;
+}
+
+/* チェックボックス */
+.toggle-button-2 {
+    display: inline-block;
+    position: relative;
+    width: 35px;          /* 100 → 約1/3 */
+    height: 19px;         /* 50 → 約1/3 */
+    border-radius: 19px;  /* 50 → 約1/3 */
+    border: 2px solid #dddddd; /* 細めに調整 */
+    box-sizing: content-box;
+    cursor: pointer;
+    transition: border-color .2s;
+}
+
+.toggle-button-2:has(:checked) {
+    border-color: #ffa500;
+}
+
+.toggle-button-2::after {
+    position: absolute;
+    top: 50%;
+    left: 4px;            /* 5 → 約1/3 */
+    transform: translateY(-50%);
+    width: 16px;          /* 45 → 約1/3 */
+    height: 16px;         /* 45 → 約1/3 */
+    border-radius: 50%;
+    background-color: #dddddd;
+    content: '';
+    transition: left .4s;
+}
+
+.toggle-button-2:has(:checked)::after {
+    left: 17px;           /* 50 → 約1/3 */
+    background-color: #ffa500;
+}
+
+.toggle-button-2 input {
+    display: none;
+}
+
+.checkbox input:checked ~ .checked {
+  display: inline-flex;
+}
+
+
+
+
+
+
+/*------------------------------- カスタムセレクト -------------------------------*/
+.custom-select {
+  position: relative;
+  width: 100%;
+  border: none;
+}
+
+/* カスタムセレクトの子要素全部に適用 */
+.custom-select * {
+  box-sizing: border-box;
+}
+
+/* カスタムセレクトの選択してる値 */
+.custom-select-selected {
+  padding: 0.7em 1em;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.custom-select-selected:active {
+  background: transparent;
+}
+
+/* カスタムセレクトの選択部(全体) */
+.custom-select-options {
+  position: absolute;
+  left: 0;
+  z-index: 100;
+  width: 100%;
+  max-height: 10em;
+  overflow-x: visible;
+  overflow-y: auto;
+  background-color: #fff;
+  border-radius: 6px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+  /* フェードイン */
+  opacity: 0;
+  /* hiddenで隠してる状態にする */
+  visibility: hidden;
+  transform: translateY(-6px);
+  transition:
+    opacity .25s ease,
+    transform .25s ease,
+    visibility .25s;
+}
+/* 開いてる状態 */
+.custom-select-options.is-open {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+/* カスタムセレクトの選択部(項目) */
+.custom-select-option {
+  position: relative;
+  padding: 0.5em 1em 0.5em 2em;
+  cursor: pointer;
+}
+
+.custom-select-option:active {
+  background: transparent;
+}
+
+/* 項目を選択してるときのチェックボックス */
+.custom-select-option.is-selected::before {
+  position: absolute;
+  top: 50%;
+  left: 1em;
+  width: 1em;
+  height: 1em;
+  background-image: url('data:image/svg+xml;utf8,<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 8L7 11L12 5" stroke="%23222" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>');
+  background-size: contain;
+  background-repeat: no-repeat;
+  transform: translate(-50%, -50%);
+  content: "";
+}
+
+/* 項目のホバー時 */
+.custom-select-option:hover {
+  background-color: #f0f0f0;
+}
+
+
+
+/* モーダル */
+.modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.176);
+  z-index: 1000;
+}
+
+.modal-content {
+  background: #fff;
+  width: 300px;
+  margin: 10vh auto;
+  padding: 20px;
+  border-radius: 8px;
+
+}
+
+.close {
+  float: right;
+  cursor: pointer;
+  font-size: 20px;
+}
+
+.modal-head{
+  text-align: center;
+  margin-bottom: 50px;
+}

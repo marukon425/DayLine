@@ -1,0 +1,278 @@
+/* 作成サイドバーのcss */
+
+input :focus{
+    outline: none !important;
+}
+
+
+
+/* タイトル */
+.create-title{
+    display: flex;
+    justify-content: center;
+    width: calc(100% - 20px);
+    height: 30px;
+}
+.id_title{
+    width: 90%;
+    margin: 0 auto;
+    background: none;
+    padding: 10px;
+    border: none;
+    font-size: 25px;
+    border-bottom: 1px solid;
+    border-color: rgb(132, 132, 132);
+    transition: 0.2s ease;
+    font-weight: 600;
+
+}
+.id_title:focus{
+    outline: none !important;
+    border-bottom: 3px solid;
+    border-color: orange;
+
+}
+.id_title::placeholder{
+    color: rgb(88, 88, 88);
+}
+
+/* 作成(設定欄) */
+.create-options{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 10px;
+    margin-top: 20px;
+    position: relative;
+}
+/* 作成サイドバーのアイコン設定 */
+.create-icon{
+    width: 35px;
+    display: flex;
+}
+.create-icon img{
+    height: 20px;
+    width: auto;
+    margin: auto;
+    justify-content: center; /* 横方向の中央 */
+    align-items: center;      /* 縦方向の中央 */
+
+}
+
+/* 時間の設定 */
+.create-costom-options{
+    width: 90%;
+    margin: 10px;
+    /* background-color: bisque; */
+    border: 1px solid rgb(199, 199, 199);
+    border-radius: 15px;
+    padding: 10px;
+    background-color: rgba(248, 248, 248, 0.719);
+    font-weight: 500;
+}
+
+.create-date-time{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.create-date-time p{
+    margin-right: 10px;
+}
+
+
+
+/* 終日設定 */
+.create-allDy{
+    display: flex;
+    align-items: center;
+    height: 20px;
+    gap: 10px;
+    width: 100%;
+    margin: 10px 0;
+}
+.create-allDy label{
+    left: 60%;
+}
+
+/* 時間入力の設定 */
+.create-datetime-input{
+    height: 40px;
+    border: none;
+    border-radius: 10px ;
+    transition: 0.1s;
+}
+/* #id_start_time, #id_end_time{
+    display: none;
+} */
+.create-datetime-input:hover{
+    background-color: #E6EAED;
+}
+
+
+.create-datetime-input input[type="date-local"]{
+    appearance: none;
+    -webkit-appearance: none;
+    outline: none !important;
+}
+.create-datetime-input input[type="time"] :focus{
+    outline: none !important;
+
+}
+
+/* その他の設定(複数要素) */
+.other-options{
+    width: 100%;
+    height: 40px;
+    display: flex;
+    align-items: center;
+}
+
+.create-ohter-selecter{
+    display: flex;
+    align-items: center;
+    width: calc(100% - 10%);
+    height: calc(90% - 20px);
+    padding: 10px 5px;
+    border-radius: 10px;
+    transition: 0.1s;
+}
+.create-ohter-selecter:hover{
+    background-color: #E6EAED;
+}
+
+.create-ohter-selecter input{
+    height: 100%;
+    width: 100%;
+    font-size: 15px;
+    background: none;
+    border: none;
+}
+.create-ohter-selecter input:focus {
+    outline: none;
+}
+
+
+
+
+
+/* メモのオプション */
+#create-memo button{
+    border: none;
+    background: none;
+    width: 300px;
+    padding: 0;
+    /* display: flex;
+    align-items: center;
+    width: calc(100% - 10%);
+    height: calc(90% - 20px);
+    padding: 10px 5px;
+    border-radius: 10px; */
+}
+#create-memo-options{
+    width: 97%;
+}
+/* #creatre-memo-modal{
+    width: 800px ;
+} */
+.modal-input-form{
+    display: flex;
+}
+
+.modal-input-form textarea{
+    width: 100%;
+    height: 300px;
+    resize: none;
+    border: none;
+    background-color: #e6eaed8a;
+    border-radius: 10px;
+    padding: 20px;
+    font-size: 15px;
+    line-height: 1.5; /* 数値でもpxでもOK */
+}
+.modal-input-form textarea:focus{
+    outline: none;
+}
+
+#creatre-memo-content{
+    width: 600px;
+}
+#memo-output{
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+
+
+/* 保存とキャンセルボタン */
+.sbmit-cancel-btn{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    height: 40px;
+    margin-right: 20px;
+    justify-content: flex-end; /* 子要素を右に寄せる */
+    position: absolute;
+    right: 0;
+    bottom: -50px;
+}
+.cancel-btn{
+    height: 100%;
+    width: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    color: rgb(135, 135, 135);
+    transition: 0.2s;
+}
+.cancel-btn:hover{
+    background-color: #E6EAED;
+    color: rgb(1, 29, 69);
+}
+.create-submit-btn{
+    height: 100%;
+    width: 80px;
+    border: none;
+    background-color: rgb(64, 64, 64);
+    color: white;
+    border-radius: 8px;
+    font-size: 15px;
+    transition: 0.2s;
+}
+.create-submit-btn:hover{
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.148);
+    background-color: orange;
+}
+
+.flatpickr-input{
+    font-weight: 700;
+    text-align: center;
+}
+
+
+.create-opotion-area{
+    background-color: rgba(248, 248, 248, 0.719);
+    border-radius: 15px;
+    border: 1px solid rgb(199, 199, 199);
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.create-other-option{
+    display: none;
+}
+
+.other-optuin-hidden{
+    text-align: center;
+    color: orange;
+    margin-bottom: 70px;
+}
+
+.other-optuin-hidden:hover{
+    text-decoration: underline;
+}
