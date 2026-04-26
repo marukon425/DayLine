@@ -1,0 +1,29 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}DayLine{% endblock %}</title>
+  <link rel="stylesheet" href="{% static 'css/DayLine_style.css' %}">
+  {% block extra_css %}{% endblock %}
+</head>
+<body>
+  <header>
+    <a href="{% url 'DayLine_2_top:top' %}">
+      <div class="app-title">
+        <img src="{% static 'img/DayLine2.svg' %}" alt="DayLine">
+      </div>
+    </a>
+    <div class="header-content">
+      <a href="{% url 'DayLine_2_top:contact' %}">問い合わせ</a>
+      <a href="{% url 'DayLine_3_accounts:login' %}" id="app-login">ログイン</a>
+      <a href="{% url 'DayLine_3_accounts:signup' %}" id="app-start">始めてみる</a>
+    </div>
+  </header>
+
+  {% block content %}{% endblock %}
+
+  {% block extra_js %}{% endblock %}
+</body>
+</html>

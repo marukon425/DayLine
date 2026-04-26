@@ -1,26 +1,12 @@
+{% extends 'DayLine_2_top/base.html' %}
 {% load static %}
 
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="{% static 'css/DayLine_style.css' %}">
-    <link rel="stylesheet" href= "{% static 'css/top/top.css' %}">
-    <script src="{% static "js/toppage.js" %}"></script>
-</head>
-<body>
-    <header>
-        <a href="{% url 'DayLine_2_top:top' %}"></a>
-        <div class="app-title"><img src="{% static 'img/DayLine2.svg' %}" alt=""></div>
-        <div class="header-content">
+{% block title %}DayLine{% endblock %}
 
-            <a href="{% url 'DayLine_2_top:contact' %}">問い合わせ</a>
-            <a href="{% url 'DayLine_3_accounts:login' %}" id="app-login">ログイン</a>
-            <a href="{% url 'DayLine_3_accounts:signup' %}" id="app-start">始めてみる</a>
-        </div>
-    </header>
+{% block extra_css %}
+    <link rel="stylesheet" href= "{% static 'css/top/top.css' %}">{% endblock %}
+
+{% block content %}
     <main>
         <div class="top-words">
             <div class="top-words-wrap">
@@ -100,6 +86,8 @@
             <p>&copy; 2026 DayLine. All rights reserved.</p>
         </div>
     </footer>
-</body>
+{% endblock %}
 
-</html>
+{% block extra_js %}
+  <script src="{% static 'js/toppage.js' %}"></script>
+{% endblock %}

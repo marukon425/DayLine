@@ -1,26 +1,14 @@
+{% extends 'DayLine_2_top/base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>利用規約 | DayLine</title>
-  <link rel="stylesheet" href="{% static 'css/top/header.css' %}">
-  <link rel="stylesheet" href="{% static 'css/DayLine_style.css' %}">
-  <link rel="stylesheet" href="{% static 'css/top/terms.css' %}">
-</head>
-<body>
-  <header>
-    <a href="{% url 'DayLine_2_top:top' %}">
-      <div class="app-title"><img src="{% static 'img/DayLine2.svg' %}" alt="DayLine"></div>
-    </a>
-    <div class="header-content">
-      <a href="{% url 'DayLine_2_top:contact' %}">問い合わせ</a>
-      <a href="{% url 'DayLine_3_accounts:login' %}" id="app-login">ログイン</a>
-      <a href="{% url 'DayLine_3_accounts:signup' %}" id="app-start">始めてみる</a>
-    </div>
-  </header>
 
+{% block title %}利用規約 | DayLine{% endblock %}
+
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'css/top/header.css' %}">
+  <link rel="stylesheet" href="{% static 'css/top/terms.css' %}">
+{% endblock %}
+
+{% block content %}
   <div class="terms-page">
 
     <div class="terms-hero">
@@ -147,7 +135,9 @@
       </main>
     </div>
   </div>
+{% endblock %}
 
+{% block extra_js %}
   <script>
     // スクロールで目次のアクティブ項目を追跡
     const sections = document.querySelectorAll('section[id]');
@@ -178,5 +168,4 @@
       });
     });
   </script>
-</body>
-</html>
+{% endblock %}
