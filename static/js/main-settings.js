@@ -138,15 +138,22 @@ document.addEventListener('DOMContentLoaded', function() {
             function formatTime(TiemStr){
                 const [h, n, s] = TiemStr.split(':');
                 return `${Number(h)}時${Number(n)}分`;
-            }
+            } 
+            
             user.textContent = props.user || "";
             start_date.textContent = formatDate(props.start_date);
-            end_date.textContent = formatDate(props.end_date);
+            const endDateObj = new Date(props.end_date);
+            endDateObj.setDate(endDateObj.getDate() - 1);
+            end_date.textContent = formatDate(endDateObj.toISOString().split('T')[0]);
             start_time.textContent = formatTime(props.start_time);
             end_time.textContent = formatTime(props.end_time);
             allday_start_date.textContent = `${Number(props.start_date.slice(5, 7))}月${Number(props.start_date.slice(8, 10))}日`;
-            allday_end_date.textContent = `${Number(props.end_date.slice(5, 7))}月${Number(props.end_date.slice(8, 10))}日`;
-            allday_start_year.textContent = `${Number(props.start_date.slice(0, 4))}年`;
+            const ey = endDateObj.getFullYear();
+            const em = endDateObj.getMonth() + 1;
+            const ed = endDateObj.getDate();
+            end_date.textContent = formatDate(`${ey}-${String(em).padStart(2,'0')}-${String(ed).padStart(2,'0')}`);
+            allday_end_date.textContent = `${em}月${ed}日`;
+            allday_end_year.textContent = `${ey}年`;
             allday_end_year.textContent = `${Number(props.end_date.slice(0, 4))}年`
             if(props.repeat=="繰り返しなし"){document.getElementById("detail-repeat").style.display="none"}else{document.getElementById("detail-repeat").style.display="flex"; repeat.textContent = props.repeat || "";}
             if(props.event_url==null){document.getElementById("detail-url").style.display="none"}else{document.getElementById("detail-url").style.display="flex"; event_url.textContent = props.event_url || "";}
@@ -278,7 +285,7 @@ document.addEventListener('DOMContentLoaded', function() {
             this.init();
         }
         
-        open(){
+        open(actionUrl = "/index/event/create/") {
             this.sidebar.classList.add("active");
             calendar.updateSize();
             document.getElementById("create-event-field").style.display = ""
@@ -295,7 +302,7 @@ document.addEventListener('DOMContentLoaded', function() {
             setTimeout(() => {
                 calendar.updateSize();
             }, 300);
-            document.getElementById("create-event-field").action = "/index/event/create/"
+            document.getElementById("create-event-field").action = actionUrl;
         }
         close(){
             this.sidebar.classList.remove("active");
@@ -687,20 +694,20 @@ document.addEventListener('DOMContentLoaded', function() {
         // 詳細モーダルを閉じる
         document.getElementById("detail-event-modal").classList.remove("hidden");
 
-        // 作成フォームのactionを編集用URLに差し替え
-        document.getElementById("create-event-field").action = `/index/event/${id}/edit/`;
-
         // サイドバーを開く
-        create_sidebar.open();
+        create_sidebar.open(`/index/event/${id}/edit/`);
+        console.log(document.getElementById("create-event-field").action)
 
         // フィールドに既存データを流し込む
         getFp("#create-start-date input").setDate(props.start_date, false);
         getFp("#create-end-date input").setDate(props.end_date, false);
-        getFp("#create-start-time input").setDate(props.start_time, false);
-        getFp("#create-end-time input").setDate(props.end_time, false);
+        const startTimeFp = document.querySelector("#create-start-time input")?._flatpickr;
+        const endTimeFp = document.querySelector("#create-end-time input")?._flatpickr;
+        if (startTimeFp) startTimeFp.setDate(props.start_time, false);
+        if (endTimeFp) endTimeFp.setDate(props.end_time, false);
 
         // タイトル
-        document.querySelector("#id_title").value = event.title;
+        document.querySelector(".id_title").value = event.title;
 
         // 終日
         const alldayCheck = document.querySelector(".event-allday");
