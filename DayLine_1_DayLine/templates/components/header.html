@@ -1,7 +1,7 @@
 {% load static %}
 <header>
     <div class="header-1">
-        <div id="hamburger" onclick="toggleSidebar()"><img src="{% static 'img/ハンバーガー.svg' %}" alt="" style="height: 30px;"></div>
+        <div id="hamburger"><img src="{% static 'img/ハンバーガー.svg' %}" alt="" style="height: 30px;"></div>
         <img id="main-logo" src="{% static 'img/DayLine2.svg' %}" alt="" height="30px">
         <div class="header-tool-2">
             <div id="root-today">今日</div>
@@ -27,7 +27,7 @@
                 </div>
             </div>
             <a href="{% url "DayLine_1_DayLine:search_event" %}" id="serch-event"><img id="serch-event-img" src="{% static "img/検索.svg" %}" alt=""></a>
-            <button id="create-sidebar-open" onclick="toggleSidebar()" defer><img src="{% static 'img/追加.svg' %}" alt=""></button>
+            <button id="create-sidebar-open" defer><img src="{% static 'img/追加.svg' %}" alt=""></button>
             <button id="create-sidebar-close" style="display: none;">サイドバー閉じるボタン</button>
         </div>
     </div>

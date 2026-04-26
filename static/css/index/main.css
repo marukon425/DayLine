@@ -36,7 +36,6 @@ main{
 /* サイドバー */
 #create-sidebar{
     width: 0;                 
-    width: 350 ;
     height: 100%;
     overflow: hidden;         /* 中身はみ出さない */
     transition: width 0.2s ease-out;

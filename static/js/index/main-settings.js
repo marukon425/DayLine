@@ -183,7 +183,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 });
             }
             // 現在クリックされているイベント情報を保持する変数に格納
-            currentEvent = { id: info.event.id, props: props, event: info.event };
+            currentEvent = { id: info.event.id, props: props, fcEvent: info.event };
 
         },
         // 表示中のカレンダーの日付をセット
@@ -194,7 +194,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // 日付セルをクリックしたときの挙動
         dateClick: function(info) {
             // 作成モーダルの呼び出し
-            create_sidebar.open()
+            sidebar.open('create' );
             // 日付をセット（start）
             getFp("#create-start-date input").setDate(info.dateStr, false);
             // end も同日にする（初期値）
@@ -276,95 +276,124 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
     // サイドバー(イベント作成)の開閉
-    class Create_sidebar{
+    class CreateEditSide{
         constructor(){
             this.sidebar = document.getElementById("create-sidebar");
-            this.open_btn = document.getElementById("create-sidebar-open");
+            this.form = document.getElementById("create-event-field")
+            this.cancel_btns = document.querySelectorAll("cancel-btn");
             this.close_btn = document.querySelectorAll(".cancel-btn");
             this.allday_cehck = document.querySelectorAll(".event-allday");
+            this.open_btn = document.getElementById("create-sidebar-open")
             this.init();
         }
-        
-        open(actionUrl = "/index/event/create/") {
+        open(mode, event) {
+            // イベント作成
+            if (mode === 'create') {
+                this.setCreateMode();
+            // イベント編集
+            } else if (mode === 'edit') {
+                this.setEditMode(event);
+            }
+
+            this.show();
+        }
+        close() {
+            this.sidebar.classList.remove("active");
+            this.form.action = "";
+            this.form.reset();
+            getFp("#create-start-date input").clear();
+            getFp("#create-end-date input").clear();
+            document.querySelector(".create-other-option").style.display = "none";
+            document.querySelector(".other-optuin-hidden").style.display = "block";
+            setTimeout(() => {
+                calendar.updateSize();
+                window.dispatchEvent(new Event('resize'));
+            }, 100);
+        }
+        // 内部メソッド---------------------------------
+        // サイドバーを開く
+        show(){
             this.sidebar.classList.add("active");
             calendar.updateSize();
-            document.getElementById("create-event-field").style.display = ""
+            setTimeout(() => calendar.updateSize(), 300);
+        }
+        // イベント作成用メソッド
+        setCreateMode() {
+            this.form.action = "/index/event/create/";
+            this.form.reset();
+
+            // 時間入力を非表示
             document.querySelectorAll(".create-time").forEach(el => {
                 el.style.display = "none";
             });
-            const d = new Date();
-            const year = d.getFullYear();
-            const month = String(d.getMonth() + 1).padStart(2, "0");
-            const date = String(d.getDate()).padStart(2, "0");
-            const today = `${year}-${month}-${date}`;
+
+            // 今日の日付をセット
+            const today = this.getTodayStr();
             getFp("#create-start-date input").setDate(today, false);
             getFp("#create-end-date input").setDate(today, false);
-            setTimeout(() => {
-                calendar.updateSize();
-            }, 300);
-            document.getElementById("create-event-field").action = actionUrl;
         }
-        close(){
-            this.sidebar.classList.remove("active");
-            calendar.updateSize();
-            // formのactionをリセット（編集後に作成モードに戻す）
-            document.getElementById("create-event-field").action = "";
-            document.getElementById("create-event-field").reset();
-            getFp("#create-start-date input").clear();
-            getFp("#create-end-date input").clear();
-            setTimeout(() => {
-                calendar.updateSize();
-            }, 300);
-        }
+        // イベント編集用メソッド
+        setEditMode(event) {
+            const { id, props, fcEvent } = event;
 
-    allday(){
+            actionにユーザーidを代入
+            this.form.action = `/index/event/${id}/edit/`;
 
-        const alldays = document.querySelectorAll(".event-allday");
+            // 編集するイベントの日付を代入
+            getFp("#create-start-date input").setDate(props.start_date, false);
+            getFp("#create-end-date input").setDate(props.end_date, false);
 
-        alldays.forEach(cb => {
+            // 編集するイベントの時間を代入
+            const startTimeFp = document.querySelector("#create-start-time input")?._flatpickr;
+            const endTimeFp = document.querySelector("#create-end-time input")?._flatpickr;
+            if (startTimeFp) startTimeFp.setDate(props.start_time, false);
+            if (endTimeFp) endTimeFp.setDate(props.end_time, false);
 
-            const timeOptions = cb.closest(".time-options");
+            // タイトルを代入
+            document.querySelector(".id_title").value = fcEvent.title;
 
-            const startTime = timeOptions.querySelector(".create-start .create-time");
-            const endTime = timeOptions.querySelector(".create-end .create-time");
+            // 終日
+            const alldayCheck = document.querySelector(".event-allday");
+            alldayCheck.checked = fcEvent.allDay;
+            this.allday();
 
-            if(cb.checked){
-                startTime.style.display = "none";
-                endTime.style.display = "none";
-                console.log("チェック")
-                console.log(startTime.style.display)
-            }else{
-                startTime.style.display = "";
-                endTime.style.display = "";
-                console.log("未チェック")
-                console.log(startTime.style.display)
-            }
-
-        });
-
-    }
-
-        init(){
-            /* 
-            アロー関数(pythonのlamda)を使うことで
-            thisがhtml要素のクラスを指すようにする
-            メソッドを実行させるメソッド
-            */
-            this.open_btn.addEventListener("click", () => {
-                this.open();
+            // 色
+            document.querySelectorAll(".custom-select-option").forEach(el => {
+                if (el.dataset.value == props.color_id) {
+                    el.classList.add("is-selected");
+                    const customSelect = el.closest(".custom-select");
+                    customSelect.querySelector(".custom-select-selected").textContent = el.textContent.trim();
+                    customSelect.querySelector(".custom-select-value").value = el.dataset.value;
+                }
             });
 
-            this.close_btn.forEach((e) => {
-                e.addEventListener("click", () => this.close());
+            // URL・場所・メモ
+            if (props.event_url) document.querySelector("#id_url").value = props.event_url;
+            if (props.locate) document.querySelector("#id_location").value = props.locate;
+            if (props.memo) document.querySelector("#id_memo").value = props.memo;
+        }
+        // 今日の日付を取得するメソッド
+        getTodayStr() {
+            const d = new Date();
+            const y = d.getFullYear();
+            const m = String(d.getMonth() + 1).padStart(2, "0");
+            const day = String(d.getDate()).padStart(2, "0");
+            return `${y}-${m}-${day}`;
+        }
+        init() {
+            this.open_btn.addEventListener("click", () => this.open('create'));
+
+            // キャンセルボタンが押されたら閉じる
+            this.cancel_btns.forEach(btn => {
+                btn.addEventListener("click", () => this.close());
             });
 
-            this.allday_cehck.forEach((e) => {
-                e.addEventListener("change", () => this.allday());
+            this.allday_cehck.forEach(cb => {
+                cb.addEventListener("change", () => this.allday());
             });
         }
     }
-    // インスタンス化して使えるようにする
-    const create_sidebar = new Create_sidebar();
+    const sidebarfunc = new CreateEditSide();
 
     // aiチャットのサイドバー展開
     document.querySelector(".ai-function").addEventListener("click", function(e){
@@ -621,6 +650,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // キャンセルボタンの挙動
     const create_cancel = document.getElementById("create-cancel-btn")
     create_cancel.addEventListener("click", () => {
+        sidebarfunc.close()
         document.getElementById("create-event-field").reset();
         document.getElementById("create-sidebar").classList.remove("active")
         document.querySelector(".create-other-option").style.display = "none";
@@ -685,18 +715,19 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     })
 
-    // 編集ボタン（detail-edit）のリスナーは1回だけ登録
+    // 編集ボタンを押したときの挙動
     document.getElementById("detail-edit").addEventListener("click", function(e){
         if (!currentEvent) return;
 
-        const { id, props, event } = currentEvent;
 
         // 詳細モーダルを閉じる
         document.getElementById("detail-event-modal").classList.remove("hidden");
 
         // サイドバーを開く
-        create_sidebar.open(`/index/event/${id}/edit/`);
-        console.log(document.getElementById("create-event-field").action)
+        sidebarfunc.open(
+            'edit',
+            currentEvent
+        )
 
         // フィールドに既存データを流し込む
         getFp("#create-start-date input").setDate(props.start_date, false);
