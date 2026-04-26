@@ -1,0 +1,52 @@
+{% load static %}
+<header>
+    <div class="header-1">
+        <div id="hamburger" onclick="toggleSidebar()"><img src="{% static 'img/ハンバーガー.svg' %}" alt="" style="height: 30px;"></div>
+        <img id="main-logo" src="{% static 'img/DayLine2.svg' %}" alt="" height="30px">
+        <div class="header-tool-2">
+            <div id="root-today">今日</div>
+            <button id="prev"><img src="{% static "img/prev.svg" %}" alt="" style="height: 20px; transition: 0.3s; padding: 13px;"></button>
+            <button id="next"><img src="{% static "img/next.svg" %}" alt="" style="height: 20px; transition: 0.3s; padding: 13px;"></button>
+            <div id="current-date-wrapper">
+                <span id="current-date"></span>
+                <div id="date-jump-dropdown">
+                    <select id="jump-year"></select>
+                    <select id="jump-month"></select>
+                </div>
+            </div>
+        </div>
+        <div class="header-tool-1">
+            <div class="caltool-daytime-grid">
+                <div class="custom-select">
+                    <div id="caltool-daytime-grid-selected" class="custom-select-selected"></div>
+                    <div id="caltool-daytime-grid-options" class="custom-select-options" style="position: absolute; z-index: 1000;">
+                        <button id="monthBtn" class="custom-select-option is-selected" data-value="option1">月</button>
+                        <button id="weekBtn" class="custom-select-option" data-value="option2">週</button>
+                    </div>
+                    <input name="name1" class="custom-select-value" type="hidden" value="">
+                </div>
+            </div>
+            <a href="{% url "DayLine_1_DayLine:search_event" %}" id="serch-event"><img id="serch-event-img" src="{% static "img/検索.svg" %}" alt=""></a>
+            <button id="create-sidebar-open" onclick="toggleSidebar()" defer><img src="{% static 'img/追加.svg' %}" alt=""></button>
+            <button id="create-sidebar-close" style="display: none;">サイドバー閉じるボタン</button>
+        </div>
+    </div>
+    <div class="header-2">
+        <div class="header-icon-space"><img src="{{icon}}" alt=""></div>
+        <div id="index-profile" class="user-info">
+            <a class="user-setting" href="{% url 'DayLine_3_accounts:settings' %}"><img src="{% static "img/設定.svg" %}" alt=""></a>
+            <div class="user-info-icon">
+                <img src="{{icon}}" alt="">
+            </div>
+            <div class="user-info-info">
+                <p class="user-name">{{ user_name }}</p>
+                <p class="user-email">{{email}}</p>
+                <form action="{% url 'DayLine_3_accounts:logout' %}" method="POST">{% csrf_token %}
+                    <button type="submit" style="border:none; background:none;" class="user-logput">
+                        <img src="{% static 'img/ログアウト.svg' %}" alt="">ログアウト
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</header>

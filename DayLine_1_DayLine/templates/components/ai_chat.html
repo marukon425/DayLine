@@ -1,0 +1,32 @@
+{% load static %}
+<div class="ai-chat-wrapper">
+    <div class="ai-chat">
+        <div class="ai-chat-header">
+            <div>
+                <div style="font-weight:700; font-size:20px;">AIアシスタント</div>
+                <div style="color: rgb(120, 120, 120);">予定の管理をサポートします</div>
+            </div>
+            <div class="ai-chat-close-btn">
+                <img src="{% static "img/閉じる.svg" %}" alt="">
+            </div>
+        </div>
+        <div class="ai-chat-chat">
+            <div style="width: 100%;height:30px;"></div>
+            <div class="chat-for-ai ai-chat-chat" style="display:none;">
+                <p></p>
+            </div>
+            <div class="chat-for-user ai-chat-chat" style="display:none;">
+                <p></p>
+            </div>
+        </div>
+        <div class="chat-input">
+            <div class="chat-input-child">
+                <div class="chat-input-textarea">
+                    <div class="chat-input-textarea-dummy"></div>
+                    <textarea class="chat-input-textarea-textarea" placeholder="テスト"></textarea>
+                    <button><img src="{% static "img/ai-chat-submit-1.svg" %}" alt=""></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

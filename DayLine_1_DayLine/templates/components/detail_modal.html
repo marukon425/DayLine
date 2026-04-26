@@ -1,0 +1,47 @@
+{% load static %}
+<div id="detail-event-modal">
+    <div class="detail-toolbar">
+        <div type="" id="detail-edit" class="detail-tool"><img src="{% static "img/編集.svg" %}" alt=""></div>
+        <form action="" method="POST" id="delete-event-form">
+            {% csrf_token %}
+            <button type="submit" id="detail-delete" class="detail-tool"><img src="{% static "img/ゴミ箱.svg" %}" alt=""></button>
+        </form>
+        <div id="detail-close" class="detail-tool"><img src="{% static "img/閉じる.svg" %}" alt=""></div>
+    </div>
+    <div id="detail-user" class="detail-add-user"><p></p></div>
+    <div id="detail-title" class="detail-event-title"></div>
+    <div class="detail-datetime">
+        <div class="un-check-allday detail-datetime-start detail-datetimes">
+            <div id="detail-start-date" class="detail-datetime-start-date">2026/2/12</div>
+            <div id="detail-start-time" class="detail-datetime-start-time">12:40</div>
+        </div>
+        <div class="check-allday detail-datetime-start detail-datetimes">
+            <div id="check-detail-start-year" class="check-detail-year">2026年</div>
+            <div id="check-detail-start-date" class="check-detail-date">2月12日</div>
+        </div>
+        <div class="detail-when"><img src="{% static "img/いつまで.svg" %}" alt=""></div>
+        <div class="un-check-allday detail-datetime-end detail-datetimes">
+            <div id="detail-end-date" class="detail-datetime-end-date">2026/2/12</div>
+            <div id="detail-end-time" class="detail-datetime-end-time">9:40分</div>
+        </div>
+        <div class="check-allday detail-datetime-end detail-datetimes">
+            <div id="check-detail-end-year" class="check-detail-year">2026年</div>
+            <div id="check-detail-end-date" class="check-detail-date">2月12日</div>
+        </div>
+    </div>
+    <div class="detail-other-options">
+        <div id="detail-repeat" class="detail-other-option"><img src="{% static "img/繰り返し.svg" %}" alt=""><p>毎日</p></div>
+        <div id="detail-url" class="detail-other-option"><img src="{% static "img/url.svg" %}" alt=""><p>http://example.com</p></div>
+        <div id="detail-locate" class="detail-other-option"><img src="{% static "img/マップ.svg" %}" alt=""><p>東京都千代田区</p></div>
+        <div id="detail-memo" class="detail-other-option" style="cursor:pointer;"><img src="{% static "img/メモ.svg" %}" alt=""><p>東京都千代田区</p></div>
+    </div>
+    <div id="memo-detail-overlay" class="memo-detail-overlay">
+        <div id="memo-detail-modal" class="memo-detail-modal">
+            <div class="memo-detail-header">
+                <div class="memo-detail-title">メモ</div>
+                <div id="memo-detail-close" class="memo-detail-close">&times;</div>
+            </div>
+            <div id="memo-detail-content" class="memo-detail-content"></div>
+        </div>
+    </div>
+</div>

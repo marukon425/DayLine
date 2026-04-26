@@ -35,11 +35,8 @@ def get_context_data(self, **kwargs):
 
 
 '''
-
-# メイン
-@method_decorator(login_required, name='dispatch')
-class IndexView(TemplateView):
-    template_name = 'index.html'
+# Pythonはクラスを2回定義すると後から定義した方で上書きされるからここのクラスであらかじめ定義しておく
+class IndexContext:
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['form'] = CreateEventForm(user=self.request.user)
@@ -48,14 +45,17 @@ class IndexView(TemplateView):
         ).distinct()
         context['colors'] = Color.objects.all()
         context['user_name'] = self.request.user.username
-        context["email"] = self.request.user.email
-        context["icon"] = self.request.user.icon.url if self.request.user.icon else '/media/defaults/user_icon.png'
+        context['email'] = self.request.user.email
+        context['icon'] = self.request.user.icon.url if self.request.user.icon else '/media/defaults/user_icon.png'
         return context
 
-    # prefix="create"
+# メイン
+@method_decorator(login_required, name='dispatch')
+class IndexView(IndexContext,TemplateView):
+    template_name = 'index.html'
 
 # イベント作成
-class CreateEvent(CreateView):
+class CreateEvent(IndexContext, CreateView):
     template_name = 'index.html'
     model = Event
     form_class = CreateEventForm
@@ -65,19 +65,6 @@ class CreateEvent(CreateView):
         form.instance.created_by = self.request.user
         return super().form_valid(form)
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['my_rooms'] = Room.objects.filter(
-            roommember__user=self.request.user
-        ).distinct()
-
-        context['colors'] = Color.objects.all()
-        context['user_name'] = self.request.user.username
-        context["email"] = self.request.user.email
-        context["icon"] = self.request.user.icon.url if self.request.user.icon else '/media/defaults/user_icon.png'
-
-        return context
-
     # CreateViewだとformにuserを渡すときにkwargsにuserが入らないらしい
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
@@ -85,7 +72,7 @@ class CreateEvent(CreateView):
         return kwargs
 
 # イベント編集
-class EditEvent(UpdateView):
+class EditEvent(IndexContext, UpdateView):
     model = Event
     form_class = EditEventForm
     template_name = 'index.html'
@@ -94,18 +81,6 @@ class EditEvent(UpdateView):
     def form_valid(self, form):
         form.instance.created_by = self.request.user
         return super().form_valid(form)
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['my_rooms'] = Room.objects.filter(
-            roommember__user=self.request.user
-        ).distinct()
-
-        context['colors'] = Color.objects.all()
-        context['user_name'] = self.request.user.username
-        context["email"] = self.request.user.email
-
-        return context
 
     # CreateViewだとformにuserを渡すときにkwargsにuserが入らないらしい
     def get_form_kwargs(self):
@@ -233,79 +208,6 @@ class EventApi(View):
             data.append(event_obj)
         return JsonResponse(data, safe=False)
 
-
-#日本の祝日を取得する
-class HolidayApi(View):
-    def get(self, request, *args, **kwargs):
-        from datetime import date
-        year_param = request.GET.get('year')
-
-        if year_param:
-            years = [int(year_param)]
-        else:
-            today = date.today()
-            years = [today.year, today.year + 1]
-
-        data = []
-        for year in years:
-            url = f"https://date.nager.at/api/v3/PublicHolidays/{year}/JP"
-            try:
-                req = urllib.request.Request(url, headers={"User-Agent": "DayLine/1.0"})
-                with urllib.request.urlopen(req, timeout=5) as response:
-                    holidays = json.loads(response.read().decode())
-                for h in holidays:
-                    data.append({
-                        "title": h.get("localName") or h.get("name"),
-                        "start": h["date"],
-                        "allDay": True,
-                        "classNames": ["holiday-event"],
-                        "extendedProps": {
-                            "is_holiday": True,
-                        }
-                    })
-            except Exception:
-                pass  # API失敗時はスキップ、カレンダーは動き続ける
-
-        return JsonResponse(data, safe=False)
-
-
-# ルーム
-class CreateRoom(CreateView):
-    template_name = 'create_room.html'
-    model = Room
-    form_class = CreateRoomForm
-    success_url = reverse_lazy('DayLine_1_DayLine:index')
-
-    # get_context_data関数をオーバーラード
-    def get_context_data(self, **kwargs):
-        ctx = super().get_context_data(**kwargs)
-
-        # 2つ目のモデルを指定
-        ctx["RoomMember"] = RoomMember.objects.all()
-        return ctx
-    
-    # フィールドに初期値を入れる
-    def form_valid(self, form):
-        with transaction.atomic():
-            # ① ルーム保存
-            room = form.save(commit=False)
-            room.save()
-
-            # ② admin権限を取得（安全版）
-            admin_authority = Authority.objects.filter(authority_code="owner").first()
-
-            if not admin_authority:
-                raise ValueError("admin権限がAuthorityテーブルに存在しません")
-
-            # ③ 作成者をRoomMemberとして登録
-            RoomMember.objects.create(
-                room=room,
-                user=self.request.user,
-                authority=admin_authority
-            )
-
-        return redirect(self.success_url)
-    
 
 #日本の祝日を取得する
 class HolidayApi(View):

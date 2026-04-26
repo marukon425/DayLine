@@ -1,0 +1,136 @@
+{% load static %}
+<div class="create-sidebar" id="create-sidebar">
+    <form method="POST" id="create-event-field" action="">
+        {% csrf_token %}
+        <div class="create-title">
+            {{form.title}}
+        </div>
+        <div class="create-options">
+            <div class="create-time-select create-costom-options">
+                <div class="time-options">
+                    <div class="create-allDy">
+                        <p>終日</p>
+                        <label class="toggle-button-2">
+                            {{form.allday}}
+                        </label>
+                    </div>
+                    <div class="create-start create-date-time">
+                        <p>開始</p>
+                        <div class="create-day" id="create-start-date">{{form.start_date}}</div>
+                        <div class="create-time" id="create-start-time">{{form.start_time}}</div>
+                    </div>
+                    <div class="create-end create-date-time">
+                        <p>終了</p>
+                        <div class="create-day" id="create-end-date">{{form.end_date}}</div>
+                        <div class="create-time" id="create-end-time">{{form.end_time}}</div>
+                    </div>
+                </div>
+            </div>
+            <div class="create-main-option create-opotion-area">
+                <div id="create-selectroom" class="other-options">
+                    <div class="create-icon" id="create-room">
+                        <img src="{% static "img/ルーム.svg" %}" alt="">
+                    </div>
+                    <div id="create-selectroom" class="other-options create-ohter-selecter">
+                        <div class="custom-select">
+                            <div class="custom-select-selected" id="create-color-nowselect"></div>
+                            <div class="custom-select-options">
+                                {% for room in form.fields.room.queryset %}
+                                {% if forloop.first %}
+                                <div class="custom-select-option is-selected" data-value="{{ room.id }}">{{ room.room_name }}</div>
+                                {% else %}
+                                <div class="custom-select-option" data-value="{{ room.id }}">{{ room.room_name }}</div>
+                                {% endif %}
+                                {% endfor %}
+                            </div>
+                            {{form.room}}
+                        </div>
+                    </div>
+                </div>
+                <div id="create-selectcplor" class="create-selectcplor other-options">
+                    <div class="create-icon" id="create-clock">
+                        <img src="{% static 'img/色選択.svg' %}" alt="">
+                    </div>
+                    <div id="create-color-options" class="create-color-options create-ohter-selecter">
+                        <div class="custom-select">
+                            <div class="custom-select-selected" id="create-color-nowselect"></div>
+                            <div class="custom-select-options">
+                                {% for color in form.fields.color.queryset %}
+                                {% if color.id == 1 %}
+                                <div class="custom-select-option is-selected" data-value="{{color.id}}">{{color.color_name}}</div>
+                                {% else %}
+                                <div class="custom-select-option" data-value="{{color.id}}">{{color.color_name}}</div>
+                                {% endif %}
+                                {% endfor %}
+                            </div>
+                            {{form.color}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <p class="other-optuin-hidden">オプションを表示</p>
+            <div class="create-other-option create-opotion-area">
+                <div id="create-repeat" class="create-repeat other-options">
+                    <div class="create-icon">
+                        <img src="{% static 'img/繰り返し.svg' %}" alt="">
+                    </div>
+                    <div id="create-repeat-options" class="create-repeat-options create-ohter-selecter">
+                        <div class="custom-select">
+                            <div class="custom-select-selected"></div>
+                            <div class="custom-select-options">
+                                {% for repeat in form.fields.repeat.queryset %}
+                                {% if repeat.id == 1 %}
+                                <div class="custom-select-option is-selected" data-value="{{repeat.id}}">{{repeat.repeat_name}}</div>
+                                {% else %}
+                                <div class="custom-select-option" data-value="{{repeat.id}}">{{repeat.repeat_name}}</div>
+                                {% endif %}
+                                {% endfor %}
+                            </div>
+                            {{form.repeat}}
+                        </div>
+                    </div>
+                </div>
+                <div id="create-url" class="create-url other-options">
+                    <div class="create-icon">
+                        <img src="{% static "img/url.svg" %}" alt="">
+                    </div>
+                    <div id="create-url-options" class="create-url-options create-ohter-selecter">
+                        {{form.url}}
+                    </div>
+                </div>
+                <div id="create-locate" class="create-locate other-options">
+                    <div class="create-icon">
+                        <img src="{% static 'img/マップ.svg' %}" alt="">
+                    </div>
+                    <div id="create-locate-options" class="create-locate-options create-ohter-selecter">
+                        {{form.location}}
+                    </div>
+                </div>
+                <div id="create-memo" class="create-memo other-options">
+                    <div class="create-icon">
+                        <img src="{% static 'img/メモ.svg' %}" alt="">
+                    </div>
+                    <button type="button" id="memo-openModal" class="open-modal">
+                        <div id="create-memo-options" class="create-memo-options create-ohter-selecter">
+                            <span id="memo-output">メモ</span>
+                        </div>
+                    </button>
+                    <div id="creatre-memo-modal" class="modal">
+                        <div id="creatre-memo-content" class="modal-content">
+                            <h2 class="modal-head">メモ</h2>
+                            <div class="modal-input-form">
+                                {{form.memo}}
+                            </div>
+                            <div class="close-modal">閉じる</div>
+                        </div>
+                    </div>
+                </div>
+                <div id="create-todo" class="create-todo"></div>
+            </div>
+            <div class="sbmit-cancel-btn">
+                <div class="cancel-btn" id="create-cancel-btn">キャンセル</div>
+                <input id="id_create-submit-btn" class="create-submit-btn" type="submit" value="保存">
+            </div>
+        </div>
+    </form>
+</div>
