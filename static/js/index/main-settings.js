@@ -92,8 +92,6 @@ document.addEventListener('DOMContentLoaded', function() {
             // 祝日のイベントクリックを不可能にする
             if (info.event.source?.url === "/index/json/holidays/") return;
 
-            // 以降は既存の処理
-            info.jsEvent.stopPropagation()
             // イベントをクリックしたら閉じる処理が同時に起きるからクリックしたときに伝播を止める
             info.jsEvent.stopPropagation();
             // 詳細モーダルを展開する
@@ -194,7 +192,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // 日付セルをクリックしたときの挙動
         dateClick: function(info) {
             // 作成モーダルの呼び出し
-            sidebar.open('create' );
+            sidebarfunc.open('create' );
             // 日付をセット（start）
             getFp("#create-start-date input").setDate(info.dateStr, false);
             // end も同日にする（初期値）
@@ -280,7 +278,7 @@ document.addEventListener('DOMContentLoaded', function() {
         constructor(){
             this.sidebar = document.getElementById("create-sidebar");
             this.form = document.getElementById("create-event-field")
-            this.cancel_btns = document.querySelectorAll("cancel-btn");
+            this.cancel_btns = document.querySelectorAll(".cancel-btn");
             this.close_btn = document.querySelectorAll(".cancel-btn");
             this.allday_cehck = document.querySelectorAll(".event-allday");
             this.open_btn = document.getElementById("create-sidebar-open")
@@ -336,12 +334,16 @@ document.addEventListener('DOMContentLoaded', function() {
         setEditMode(event) {
             const { id, props, fcEvent } = event;
 
-            actionにユーザーidを代入
+            //actionにユーザーidを代入
             this.form.action = `/index/event/${id}/edit/`;
 
             // 編集するイベントの日付を代入
             getFp("#create-start-date input").setDate(props.start_date, false);
-            getFp("#create-end-date input").setDate(props.end_date, false);
+
+            const endDateObj = new Date(props.end_date);
+            endDateObj.setDate(endDateObj.getDate() - 1);
+            const endDateStr = endDateObj.toISOString().split('T')[0];
+            getFp("#create-end-date input").setDate(endDateStr, false);
 
             // 編集するイベントの時間を代入
             const startTimeFp = document.querySelector("#create-start-time input")?._flatpickr;
@@ -379,6 +381,16 @@ document.addEventListener('DOMContentLoaded', function() {
             const m = String(d.getMonth() + 1).padStart(2, "0");
             const day = String(d.getDate()).padStart(2, "0");
             return `${y}-${m}-${day}`;
+        }
+        allday() {
+            const alldays = document.querySelectorAll(".event-allday");
+            alldays.forEach(cb => {
+                const timeOptions = cb.closest(".time-options");
+                const startTime = timeOptions.querySelector(".create-start .create-time");
+                const endTime = timeOptions.querySelector(".create-end .create-time");
+                startTime.style.display = cb.checked ? "none" : "";
+                endTime.style.display = cb.checked ? "none" : "";
+            });
         }
         init() {
             this.open_btn.addEventListener("click", () => this.open('create'));
@@ -728,46 +740,6 @@ document.addEventListener('DOMContentLoaded', function() {
             'edit',
             currentEvent
         )
-
-        // フィールドに既存データを流し込む
-        getFp("#create-start-date input").setDate(props.start_date, false);
-        getFp("#create-end-date input").setDate(props.end_date, false);
-        const startTimeFp = document.querySelector("#create-start-time input")?._flatpickr;
-        const endTimeFp = document.querySelector("#create-end-time input")?._flatpickr;
-        if (startTimeFp) startTimeFp.setDate(props.start_time, false);
-        if (endTimeFp) endTimeFp.setDate(props.end_time, false);
-
-        // タイトル
-        document.querySelector(".id_title").value = event.title;
-
-        // 終日
-        const alldayCheck = document.querySelector(".event-allday");
-        alldayCheck.checked = event.allDay;
-        create_sidebar.allday();
-
-        // 色のカスタムセレクト
-        document.querySelectorAll(".custom-select-option").forEach((el) => {
-            const hiddenInput = el.querySelector("input[type='hidden']");
-            if (hiddenInput && hiddenInput.value == event.backgroundColor) {
-                el.classList.add("is-selected");
-                const customSelect = el.closest(".custom-select");
-                customSelect.querySelector(".custom-select-selected").textContent = el.textContent.trim();
-                customSelect.querySelector(".custom-select-value").value = el.dataset.value;
-            }
-        });
-
-        // url
-        if(props.event_url){
-            document.querySelector("#id_url").value = props.event_url;
-        }
-        // 場所
-        if(props.locate){
-            document.querySelector("#id_location").value = props.locate;
-        }
-        // メモ
-        if(props.memo){
-            document.querySelector("#id_memo").value = props.memo;
-        }
     });
 
     const sidebar = document.querySelector(".sidebar");

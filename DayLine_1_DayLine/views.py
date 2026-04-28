@@ -659,3 +659,69 @@ def ai_chat(request):
         #拾ったjsonからメッセージを抽出してjsonで返す
         return JsonResponse({"reply": ai_text, "action_result": action_result})
     
+
+
+#todo機能系の関数ビュー
+# todo作成
+@login_required
+def todo_create(request):
+    if request.method != 'POST':
+        return JsonResponse({'error': 'POST only'}, status=405)
+    else: #todoを保存
+        
+        # フォームにPOSTデータを渡す
+        # フォームが有効なら保存してJsonResponseで返す
+        # 返すデータは id と title
+        todo = ToDoEventForm(request.POST)# POSTデータでフォームを作る
+        if todo.is_valid():
+            saved = todo.save()# DBに保存
+            todoId = saved.id
+            title = saved.title
+        
+        return JsonResponse({"id":todoId, "title":title}, status=400)
+
+# tod削除
+@login_required
+def todo_delete(request, pk):
+    # ToDoを取得
+    question = get_object_or_404(ToDoEvent, pk=pk)
+    if request.method != 'POST':
+        return JsonResponse({'error': 'POST only'}, status=405)
+    else:
+        #削除
+        question.delete()
+        #削除できたことを伝える
+        return JsonResponse({'success': True})
+    # 返すデータは success: True
+
+#todoのオンオフを処理する
+@login_required
+def todo_check(request, pk):
+    # ToDoを取得
+    question = get_object_or_404(ToDoEvent, pk=pk)
+    if request.method != 'POST':
+        return JsonResponse({'error': 'POST only'}, status=405)
+    else:
+        # checkフィールドをトグル（Trueならfalse、FalseならTrue）
+        question.check = not question.check
+        question.save()# 現在の状態を保存
+        # 返すデータは check の現在の状態
+        return JsonResponse({'check':question.check})
+
+#todoを取得するメソッド
+@login_required
+def todo_list(request, event_id):
+    if request.method != 'GET':
+        return JsonResponse({'error': 'GET only'}, status=405)
+    else:
+        # event_idに紐づくToDoを全部取得
+        todos = ToDoEvent.objects.filter(event_id=event_id)
+        data = []
+        for i in todos:
+            data.append({
+                'id': str(i.id),
+                'title': i.title,
+                'check': i.check
+            })
+        # 返すデータは id・title・check のリスト
+        return JsonResponse(data, safe=False)

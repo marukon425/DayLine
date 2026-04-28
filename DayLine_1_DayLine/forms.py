@@ -222,3 +222,20 @@ class EditRoomMemberForm(forms.ModelForm):
                 "id": "authority",
             })
         }
+
+#ToDo ※各イベントとDBでつながってるがリレーショナルの関係で独立フォームにする
+class ToDoEventForm(forms.ModelForm):
+    class Meta:
+        model = ToDoEvent
+        fields = (
+            "event",
+            "title",
+            #チェックボックスはAjaxで別途更新するからフォームに含めない
+        )
+
+        widgets = {
+            "event": forms.HiddenInput(attrs={
+            }),
+            "title": forms.TextInput(attrs={
+            })
+        }

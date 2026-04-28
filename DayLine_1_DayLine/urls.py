@@ -20,6 +20,11 @@ urlpatterns = [
     path('settingroom/memmber/<uuid:pk>/', views.SettingRoomMember.as_view(), name='settingroom_memmber'),
     path('settingroom/memmber/delete/<uuid:pk>/', views.DeleteRoomMember.as_view(), name='settingroom_memmber_delete'),
     path('json/holidays/', views.HolidayApi.as_view(), name='holidays_api'),
+    path('json/todo/create/', views.todo_create, name='todo_create'),
+    path('json/todo/delete/<uuid:pk>/', views.todo_delete, name='todo_delete'),
+    path('json/todo/check/<uuid:pk>/', views.todo_check, name='todo_check'),
+    path('json/todo/list/<uuid:event_id>/', views.todo_list, name='todo_list'),
+
 ]
 
 # http://127.0.0.1:8000/index/room/join/5fcf91100a/

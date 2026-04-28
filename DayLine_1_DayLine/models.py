@@ -313,3 +313,31 @@ class Event(models.Model):
     def get_absolute_url(self):
         return reverse("Event_detail", kwargs={"pk": self.pk})
 
+
+# todoリスト
+class ToDoEvent(models.Model):
+    class Meta:
+        verbose_name = "ToDo"
+        verbose_name_plural = "ToDo"
+    
+    id = models.UUIDField(
+        primary_key=True,
+        default=uuid.uuid4,
+    )
+
+    event = models.ForeignKey(
+        Event,
+        verbose_name="イベント",
+        on_delete=models.CASCADE,
+        null=True
+    )
+
+    title = models.CharField(
+        verbose_name="タイトル",
+        max_length=50
+    )
+
+    checkTodo = models.BooleanField(
+        verbose_name="チェック",
+        default=False
+    )

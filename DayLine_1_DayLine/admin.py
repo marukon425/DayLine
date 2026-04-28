@@ -139,3 +139,14 @@ class RoomMemberAdmin(admin.ModelAdmin):
         "authority",
     )
 
+class ToDo(admin.ModelAdmin):
+    list_display = (
+        "id",
+        "event",
+        "title",
+        "checkTodo",
+    )
+
+    list_display_links = (
+        "id",
+    )
