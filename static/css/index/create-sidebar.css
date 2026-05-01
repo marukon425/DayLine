@@ -214,9 +214,6 @@ input :focus{
     height: 40px;
     margin-right: 20px;
     justify-content: flex-end; /* 子要素を右に寄せる */
-    position: absolute;
-    right: 0;
-    bottom: -50px;
 }
 .cancel-btn{
     height: 100%;

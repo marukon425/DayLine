@@ -128,6 +128,8 @@ class EventApi(View):
             memo = None if i.memo == "" else i.memo
 
             color = i.color.color if i.color else ""
+            color_id = i.color.id if i.color else None
+            repeat_id = i.repeat.id if i.repeat else None
 
             # 繰り返しあり → rrule形式で返す
             if repeat_code and repeat_code != "none":
@@ -174,6 +176,8 @@ class EventApi(View):
                     "event_url": url,
                     "locate": locate,
                     "memo": memo,
+                    "color_id": color_id,
+                    "repeat_id": repeat_id,
                 }
 
             # 繰り返しなし → 従来通り
@@ -203,6 +207,8 @@ class EventApi(View):
                     "event_url": url,
                     "locate": locate,
                     "memo": memo,
+                    "color_id": color_id,
+                    "repeat_id": repeat_id,
                 }
 
             data.append(event_obj)

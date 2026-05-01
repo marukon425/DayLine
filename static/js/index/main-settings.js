@@ -510,24 +510,22 @@ document.addEventListener('DOMContentLoaded', function() {
         setEditMode(event) {
             const { id, props, fcEvent } = event;
 
-            //actionにユーザーidを代入
+            // actionにイベントIDを代入
             this.form.action = `/index/event/${id}/edit/`;
 
-            // 編集するイベントの日付を代入
+            // 日付
             getFp("#create-start-date input").setDate(props.start_date, false);
-
             const endDateObj = new Date(props.end_date);
             endDateObj.setDate(endDateObj.getDate() - 1);
-            const endDateStr = endDateObj.toISOString().split('T')[0];
-            getFp("#create-end-date input").setDate(endDateStr, false);
+            getFp("#create-end-date input").setDate(endDateObj.toISOString().split('T')[0], false);
 
-            // 編集するイベントの時間を代入
+            // 時刻
             const startTimeFp = document.querySelector("#create-start-time input")?._flatpickr;
-            const endTimeFp = document.querySelector("#create-end-time input")?._flatpickr;
+            const endTimeFp   = document.querySelector("#create-end-time input")?._flatpickr;
             if (startTimeFp) startTimeFp.setDate(props.start_time, false);
-            if (endTimeFp) endTimeFp.setDate(props.end_time, false);
+            if (endTimeFp)   endTimeFp.setDate(props.end_time, false);
 
-            // タイトルを代入
+            // タイトル
             document.querySelector(".id_title").value = fcEvent.title;
 
             // 終日
@@ -535,20 +533,65 @@ document.addEventListener('DOMContentLoaded', function() {
             alldayCheck.checked = fcEvent.allDay;
             this.allday();
 
+            // ルーム
+            // ※ #create-selectroom 内だけ対象にしてrepeat/colorのセレクタと混在しないようにする
+            const roomSelectWrapper = document.querySelector("#create-selectroom .custom-select");
+            if (roomSelectWrapper && props.room_id) {
+                roomSelectWrapper.querySelectorAll(".custom-select-option").forEach(el => {
+                    el.classList.remove("is-selected");
+                    if (el.dataset.value == props.room_id) {
+                        el.classList.add("is-selected");
+                        roomSelectWrapper.querySelector(".custom-select-selected").textContent = el.textContent.trim();
+                        roomSelectWrapper.querySelector(".custom-select-value").value = el.dataset.value;
+                    }
+                });
+            }
+
             // 色
-            document.querySelectorAll(".custom-select-option").forEach(el => {
-                if (el.dataset.value == props.color_id) {
-                    el.classList.add("is-selected");
-                    const customSelect = el.closest(".custom-select");
-                    customSelect.querySelector(".custom-select-selected").textContent = el.textContent.trim();
-                    customSelect.querySelector(".custom-select-value").value = el.dataset.value;
-                }
-            });
+            // ※ #create-color-options 内だけ対象にする
+            const colorSelectWrapper = document.querySelector("#create-color-options .custom-select");
+            if (colorSelectWrapper && props.color_id) {
+                colorSelectWrapper.querySelectorAll(".custom-select-option").forEach(el => {
+                    el.classList.remove("is-selected");
+                    if (el.dataset.value == props.color_id) {
+                        el.classList.add("is-selected");
+                        colorSelectWrapper.querySelector(".custom-select-selected").textContent = el.textContent.trim();
+                        colorSelectWrapper.querySelector(".custom-select-value").value = el.dataset.value;
+                    }
+                });
+            }
+
+            // 繰り返し
+            // ※ #create-repeat-options 内だけ対象にする
+            const repeatSelectWrapper = document.querySelector("#create-repeat-options .custom-select");
+            if (repeatSelectWrapper && props.repeat_id) {
+                repeatSelectWrapper.querySelectorAll(".custom-select-option").forEach(el => {
+                    el.classList.remove("is-selected");
+                    if (el.dataset.value == props.repeat_id) {
+                        el.classList.add("is-selected");
+                        repeatSelectWrapper.querySelector(".custom-select-selected").textContent = el.textContent.trim();
+                        repeatSelectWrapper.querySelector(".custom-select-value").value = el.dataset.value;
+                    }
+                });
+            }
 
             // URL・場所・メモ
             if (props.event_url) document.querySelector("#id_url").value = props.event_url;
-            if (props.locate) document.querySelector("#id_location").value = props.locate;
-            if (props.memo) document.querySelector("#id_memo").value = props.memo;
+            if (props.locate)    document.querySelector("#id_location").value = props.locate;
+            if (props.memo)      document.querySelector("#id_memo").value = props.memo;
+
+            // メモのUI表示も更新
+            const memoOutput = document.getElementById("memo-output");
+            if (memoOutput) {
+                memoOutput.textContent = props.memo || "メモ";
+                memoOutput.style.color = props.memo ? "" : "grey";
+            }
+
+            // 編集モードではオプション領域を常に展開する
+            const otherOption = document.querySelector(".create-other-option");
+            const hiddenBtn   = document.querySelector(".other-optuin-hidden");
+            if (otherOption) otherOption.style.display = "block";
+            if (hiddenBtn)   hiddenBtn.style.display = "none";
         }
         // 今日の日付を取得するメソッド
         getTodayStr() {
