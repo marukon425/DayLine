@@ -128,6 +128,7 @@ document.addEventListener('DOMContentLoaded', function() {
             title.textContent = info.event.title;
             // extendedProps から取得
             const props = info.event.extendedProps;
+            const id = info.event.id
 
             function formatDate(dateStr){
                 const [y, m, d] = dateStr.split('-');
@@ -182,6 +183,181 @@ document.addEventListener('DOMContentLoaded', function() {
             }
             // 現在クリックされているイベント情報を保持する変数に格納
             currentEvent = { id: info.event.id, props: props, fcEvent: info.event };
+            // todoを拾う
+            fetch(`/index/json/todo/list/${id}/`)  // DjangoのURL
+            .then(response => {
+                if (!response.ok) throw new Error('通信失敗');
+                return response.json();  // ← これが必要
+            })
+            .then(data => {
+                // todoがあるか確認
+                if (data.length == 0){
+                    document.getElementById("detail-todo").style.display = "none"
+                }else{
+                    document.getElementById("detail-todo").style.display = "flex"
+                }
+                const incomplete = document.querySelector(".incomplete");
+                const completed = document.querySelector(".completed");
+
+                // カウント更新関数
+                function updateCount() {
+                    let checked = document.querySelectorAll(
+                        ".todo-detail-content .todo-check:checked"
+                    ).length;
+                    document.querySelectorAll(".task-on").forEach(e => {
+                        e.textContent = checked;
+                    })
+                }
+
+                // イベントリスナーの登録を関数にまとめる
+                function attachTodoEvents(div) {
+                    // todoの削除
+                    div.querySelector(".todo-delete button").addEventListener("click", function() {
+                        const todoId = this.dataset.id;
+                        fetch(`/index/json/todo/delete/${todoId}/`, {
+                            method: 'POST',
+                            headers: {
+                                // djangoのセキュリティのために必要
+                                'X-CSRFToken': getCookie('csrftoken')
+                            },
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            // 成功したらDOMから削除
+                            if(data.success) {
+                                div.remove();
+                                updateCount();
+                            }
+                        })
+                        .catch(error => console.error('エラー:', error));
+                    });
+
+                    // todoのチェックボックスの切り替え
+                    div.querySelector(".todo-check").addEventListener("change", function() {
+                        const todoId = this.dataset.id;
+                        fetch(`/index/json/todo/check/${todoId}/`, {
+                            method: 'POST',
+                            headers: {
+                                // djangoのセキュリティのために必要
+                                'X-CSRFToken': getCookie('csrftoken')
+                            },
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            // チェック状態をコンソールで確認
+                            console.log('check:', data.check);
+                        })
+                        .catch(error => console.error('エラー:', error));
+
+                        // completed/incompleteへの移動
+                        const todoItem = this.closest(".todo-content");
+                        updateCount();
+                        if(this.checked){
+                            completed.appendChild(todoItem);
+                        } else {
+                            incomplete.appendChild(todoItem);
+                        }
+                    });
+
+                    // todoのタイトル変更
+                    div.querySelector(".todo-title").addEventListener("blur", function() {
+                        const todoId = this.dataset.id;
+                        fetch(`/index/json/todo/edit/title/${todoId}/`, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRFToken': getCookie('csrftoken')
+                            },
+                            body: JSON.stringify({ title: this.value })  // ← 新しいタイトルを送る
+                        })
+                        .then(response => response.json())
+                        .then(data => {})
+                        .catch(error => console.error('エラー:', error));
+                    });
+                }
+                let checked = document.querySelectorAll(
+                    ".todo-detail-content .todo-check:checked"
+                ).length;
+                incomplete.innerHTML = "";
+                completed.querySelectorAll(".todo-content").forEach(el => el.remove());
+
+                // todoリストの生成
+                data.forEach(todo => {
+                    // todoのdiv要素を作る
+                    const div = document.createElement("div");
+                    div.className = "todo-content";
+                    div.innerHTML = `
+                        <input class="todo-check" type="checkbox" data-id="${todo.id}" ${todo.check ? 'checked' : ''}>
+                        <input class="todo-title" data-id="${todo.id}" type="text" value="${todo.title}">
+                        <div class="todo-delete"><button data-id="${todo.id}">&times;</button></div>
+                    `;
+                    // 完了済みのフィールドに持ってくるか処理する
+                    if(todo.check) {
+                        completed.appendChild(div);
+                    } else {
+                        incomplete.appendChild(div);
+                    }
+                    attachTodoEvents(div);
+                });
+                // todoの合計を出力
+                document.querySelectorAll(".task-sum").forEach(e =>{
+                    e.textContent = data.length;
+                })
+                updateCount();
+                // 詳細モーダルからのtodo新規作成
+                (function() {
+                    const title_area = document.querySelector(".add-todo-input");
+
+                    function add_todo() {
+                        // 空なら何もしない
+                        if (!title_area.value.trim()) return;
+
+                        fetch(`/index/json/todo/create/`, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRFToken': getCookie('csrftoken')
+                            },
+                            body: JSON.stringify({
+                                title: title_area.value,
+                                event: id  // イベントのidを送る
+                            })
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            // DOMに追加
+                            const div = document.createElement("div");
+                            div.className = "todo-content";
+                            div.innerHTML = `
+                                <input class="todo-check" type="checkbox" data-id="${data.id}">
+                                <input class="todo-title" data-id="${data.id}" type="text" value="${data.title}">
+                                <div class="todo-delete"><button data-id="${data.id}">&times;</button></div>
+                            `;
+                            incomplete.appendChild(div);
+                            // イベントリスナーを登録
+                            attachTodoEvents(div);
+                            // inputをリセット
+                            title_area.value = "";
+                            updateCount();
+                        })
+                        .catch(error => console.error('エラー:', error));
+                    }
+
+                    // blurで追加
+                    title_area.addEventListener("blur", add_todo);
+
+                    // Enterキーでも追加
+                    title_area.addEventListener('keydown', (e) => {
+                        if (e.key === 'Enter') {
+                            e.preventDefault();
+                            add_todo();
+                        }
+                    });
+                })();
+            })
+            .catch(error => {
+                console.error('エラー:', error);
+            });
 
         },
         // 表示中のカレンダーの日付をセット
@@ -974,7 +1150,7 @@ document.querySelector('.chat-input-textarea-textarea')
         const overlay     = document.getElementById("memo-detail-overlay");
         const closeBtn    = document.getElementById("memo-detail-close");
         const contentArea = document.getElementById("memo-detail-content");
-
+        
         detailMemo.addEventListener("click", function(e) {
             e.stopPropagation();
             contentArea.textContent = detailMemo.querySelector("p").textContent;
@@ -986,45 +1162,26 @@ document.querySelector('.chat-input-textarea-textarea')
     // todo詳細モーダル
     (function() {
         //  チェックリスト ?/?完了の表示-------------------------------------------
+        const detailtodo = document.getElementById("detail-todo")
+        const overlay     = document.querySelector(".todo-detail-overlay");
         let task_sum = document.querySelectorAll(".todo-detail-content .todo-check");
         const completed = document.querySelector(".completed");
         const incomplete = document.querySelector(".incomplete");
-        function updateCount() {
-            let checked = document.querySelectorAll(
-                ".todo-detail-content .todo-check:checked"
-            ).length;
-            document.querySelector(".task-on").textContent = checked;
-        }
-        // 初期表示
-        document.querySelector(".task-sum").textContent = task_sum.length;
-        updateCount();
-        // チェックしたら更新
-        task_sum.forEach((e) => {
-            e.addEventListener("change", function(){
-                updateCount();
-                // 自分が所属している1タスク(.todo-content)を取得
-                const todoItem = this.closest(".todo-content");
-                // チェックされたら completedへ移動
-                if(this.checked){
-                    completed.appendChild(todoItem);
-                }
-                // チェック外されたら incompleteへ戻す
-                else{
-                    incomplete.appendChild(todoItem);
-                }
-            });
+        detailtodo.addEventListener("click", function(e) {
+            e.stopPropagation();
+            overlay.classList.add("active");
         });
         // 閉じる
         document.addEventListener('click', function(e) {
             const overlay = document.querySelector(".todo-detail-overlay");
             // 閉じるボタン
             if (e.target.closest('.todo-detail-close')) {
-                overlay.classList.add("hidden");
+                overlay.classList.remove("active");
                 return;
             }
             // モーダル外クリック
             if (!e.target.closest('.todo-detail-modal')) {
-                overlay.classList.add("hidden");
+                overlay.classList.remove("active");
             }
         });
         // ----------------------------------------------------------------------

@@ -1,5 +1,5 @@
 {% load static %}
-<div id="detail-event-modal" style="display:block;" class="hidden">
+<div id="detail-event-modal" style="display:block;">
     <div class="detail-toolbar">
         <div type="" id="detail-edit" class="detail-tool"><img src="{% static "img/編集.svg" %}" alt=""></div>
         <form action="" method="POST" id="delete-event-form">
@@ -34,7 +34,7 @@
         <div id="detail-url" class="detail-other-option"><img src="{% static "img/url.svg" %}" alt=""><p>http://example.com</p></div>
         <div id="detail-locate" class="detail-other-option"><img src="{% static "img/マップ.svg" %}" alt=""><p>東京都千代田区</p></div>
         <div id="detail-memo" class="detail-other-option" style="cursor:pointer;"><img src="{% static "img/メモ.svg" %}" alt=""><p>東京都千代田区</p></div>
-        <div id="detail-todo" class="detail-other-option" style="cursor:pointer;"><img src="{% static "img/todo_チェック.svg" %}" alt=""><p>チェックリスト 0/0完了</p></div>
+        <div id="detail-todo" class="detail-other-option" style="cursor:pointer;"><img src="{% static "img/todo_チェック.svg" %}" alt=""><p>チェックリスト <span class="task-on">0</span>/<span class="task-sum">0</span>完了</p></div>
     </div>
     <div id="memo-detail-overlay" class="memo-detail-overlay">
         <div id="memo-detail-modal" class="memo-detail-modal">
@@ -59,7 +59,7 @@
                         <div class="todo-delete"><button>&times;</button></div>
                     </div>
                 </div>
-                <div class="add-todo"></div>
+                <div class="add-todo"><img src="{% static "img/＋_orange.svg" %}" alt=""><input class="add-todo-input" type="text" placeholder="項目を追加"></div>
                 <div class="completed">
                     <div class="completed-count">完了済み</div>
                 </div>

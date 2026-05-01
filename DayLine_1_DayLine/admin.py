@@ -139,6 +139,7 @@ class RoomMemberAdmin(admin.ModelAdmin):
         "authority",
     )
 
+@admin.register(ToDoEvent)
 class ToDo(admin.ModelAdmin):
     list_display = (
         "id",

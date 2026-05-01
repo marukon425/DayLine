@@ -24,6 +24,7 @@ urlpatterns = [
     path('json/todo/delete/<uuid:pk>/', views.todo_delete, name='todo_delete'),
     path('json/todo/check/<uuid:pk>/', views.todo_check, name='todo_check'),
     path('json/todo/list/<uuid:event_id>/', views.todo_list, name='todo_list'),
+    path('json/todo/edit/title/<uuid:pk>/', views.todo_edit_title, name='todo_edit_title'),
 
 ]
 

@@ -667,19 +667,26 @@ def ai_chat(request):
 def todo_create(request):
     if request.method != 'POST':
         return JsonResponse({'error': 'POST only'}, status=405)
-    else: #todoを保存
-        
-        # フォームにPOSTデータを渡す
-        # フォームが有効なら保存してJsonResponseで返す
-        # 返すデータは id と title
-        todo = ToDoEventForm(request.POST)# POSTデータでフォームを作る
-        if todo.is_valid():
-            saved = todo.save()# DBに保存
-            todoId = saved.id
-            title = saved.title
-        
-        return JsonResponse({"id":todoId, "title":title}, status=400)
+    
+    # request.bodyからJSONを取り出す
+    body = json.loads(request.body)
+    title = body.get('title')
+    event_id = body.get('event')
 
+    # バリデーション
+    if not title or not event_id:
+        return JsonResponse({'error': 'invalid data'}, status=400)
+
+    # イベントを取得
+    event = get_object_or_404(Event, pk=event_id)
+
+    # DBに保存
+    todo = ToDoEvent.objects.create(
+        title=title,
+        event=event,
+    )
+
+    return JsonResponse({"id": str(todo.id), "title": todo.title})
 # tod削除
 @login_required
 def todo_delete(request, pk):
@@ -702,11 +709,23 @@ def todo_check(request, pk):
     if request.method != 'POST':
         return JsonResponse({'error': 'POST only'}, status=405)
     else:
+
+        print(f"変更前: {question.checkTodo}")
         # checkフィールドをトグル（Trueならfalse、FalseならTrue）
+        before = question.checkTodo
+        toggled = not before
+        print(f"before: {before}, type: {type(before)}")
+        print(f"toggled: {toggled}, type: {type(toggled)}")
+        question.checkTodo = toggled
+        
         question.check = not question.check
         question.save()# 現在の状態を保存
+
+        check = ToDoEvent.objects.get(pk=pk)
+        print(f"変更後: {question.checkTodo}")
+        print(f"DB確認: {check.checkTodo}")
         # 返すデータは check の現在の状態
-        return JsonResponse({'check':question.check})
+        return JsonResponse({'check': question.checkTodo})
 
 #todoを取得するメソッド
 @login_required
@@ -721,7 +740,26 @@ def todo_list(request, event_id):
             data.append({
                 'id': str(i.id),
                 'title': i.title,
-                'check': i.check
+                'check': i.checkTodo
             })
         # 返すデータは id・title・check のリスト
         return JsonResponse(data, safe=False)
+    
+#todoのタイトルを変更するメソッド
+@login_required
+def todo_edit_title(request, pk):
+    # ToDoを取得
+    question = get_object_or_404(ToDoEvent, pk=pk)
+    if request.method != 'POST':
+        return JsonResponse({'error': 'POST only'}, status=405)
+    else:
+        # リクエストのbodyからタイトルを取得
+        body = json.loads(request.body)
+        new_title = body.get('title')
+        # タイトルを更新
+        question.title = new_title
+        question.save()# 現在の状態を保存
+
+        check = ToDoEvent.objects.get(pk=pk)
+        # 返すデータは check の現在の状態
+        return JsonResponse({'title': question.title})
