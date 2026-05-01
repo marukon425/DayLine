@@ -982,8 +982,51 @@ document.querySelector('.chat-input-textarea-textarea')
         });
         closeBtn.addEventListener("click", () => overlay.classList.remove("active"));
         document.addEventListener("click", () => overlay.classList.remove("active"));
-        document.addEventListener("keydown", (e) => {
-            if (e.key === "Escape") overlay.classList.remove("active");
+    })();
+    // todo詳細モーダル
+    (function() {
+        //  チェックリスト ?/?完了の表示-------------------------------------------
+        let task_sum = document.querySelectorAll(".todo-detail-content .todo-check");
+        const completed = document.querySelector(".completed");
+        const incomplete = document.querySelector(".incomplete");
+        function updateCount() {
+            let checked = document.querySelectorAll(
+                ".todo-detail-content .todo-check:checked"
+            ).length;
+            document.querySelector(".task-on").textContent = checked;
+        }
+        // 初期表示
+        document.querySelector(".task-sum").textContent = task_sum.length;
+        updateCount();
+        // チェックしたら更新
+        task_sum.forEach((e) => {
+            e.addEventListener("change", function(){
+                updateCount();
+                // 自分が所属している1タスク(.todo-content)を取得
+                const todoItem = this.closest(".todo-content");
+                // チェックされたら completedへ移動
+                if(this.checked){
+                    completed.appendChild(todoItem);
+                }
+                // チェック外されたら incompleteへ戻す
+                else{
+                    incomplete.appendChild(todoItem);
+                }
+            });
         });
+        // 閉じる
+        document.addEventListener('click', function(e) {
+            const overlay = document.querySelector(".todo-detail-overlay");
+            // 閉じるボタン
+            if (e.target.closest('.todo-detail-close')) {
+                overlay.classList.add("hidden");
+                return;
+            }
+            // モーダル外クリック
+            if (!e.target.closest('.todo-detail-modal')) {
+                overlay.classList.add("hidden");
+            }
+        });
+        // ----------------------------------------------------------------------
     })();
 });
