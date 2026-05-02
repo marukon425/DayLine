@@ -159,7 +159,7 @@ input * :focus{
   position: fixed;
   inset: 0;
   background: rgba(0, 0, 0, 0.176);
-  z-index: 1000;
+  z-index: 3000;
 }
 
 .modal-content {

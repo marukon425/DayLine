@@ -1,0 +1,12 @@
+<!-- 日付クリック -->
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/index/day_lists.css' %}">
+<div id="day-events-overlay" onclick="closeDayEventsModal()">
+    <div id="day-events-modal" onclick="event.stopPropagation()">
+        <div class="day-modal-header">
+            <h2 id="day-modal-title"></h2>
+            <button class="day-modal-close" onclick="closeDayEventsModal()">✕</button>
+        </div>
+        <div id="day-modal-list"></div>
+    </div>
+</div>

@@ -27,6 +27,12 @@ header{
     position: relative;
     
 }
+#current-dates{
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    cursor: pointer;
+}
 #current-date{
     font-weight: 500;
     font-size: 20px;

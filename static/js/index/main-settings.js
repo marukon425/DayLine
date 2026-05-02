@@ -41,7 +41,6 @@ document.addEventListener('DOMContentLoaded', function() {
         headerToolbar: false,
         initialView: 'dayGridMonth',
         fixedWeekCount: false, // 次月の週を非表示にする
-        navLinks: true, // can click day/week names to navigate views
         businessHours: true, // display business hours
         editable: true,
         handleWindowResize: true,
@@ -64,6 +63,10 @@ document.addEventListener('DOMContentLoaded', function() {
         dayMaxEvents: true,
         handleWindowResize: true,
         longPressDelay: 100, // スマホ用
+        // navLinksを無効にする（デフォルトの日クリック遷移を防ぐ）
+        navLinks: false,
+
+        
 
         eventDidMount: function(info) {
             // JSONのextendedPropsからroom_idを取得
@@ -80,307 +83,336 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             }
         },
+        
+        // 日付セルをクリックしたときの挙動
+        dateClick: function(info) {
+            // クリックした日付をローカルタイムで "YYYY-MM-DD" 形式に変換
+            const [y, m, d] = info.dateStr.split("-");
+            const clickedDate = info.dateStr;
 
-        dateClick: function(info){
-        console.log(test_console("dateclick"))
-        new Create.open();
+            // カレンダーの全イベントから「クリックした日に該当するもの」だけ抽出
+            const events = calendar.getEvents().filter(event => {
+                // 祝日は除外
+                if (event.source?.url === "/index/json/holidays/") return false;
+
+                const start = new Date(event.startStr.slice(0, 10));
+                const endStr = event.endStr ? event.endStr.slice(0, 10) : event.startStr.slice(0, 10);
+                const end = new Date(endStr);
+                const clicked = new Date(clickedDate);
+
+                // start以上 end未満 → 複数日またがるイベントも正しく判定できる
+                return clicked >= start && clicked < end;
+            });
+
+            // モーダルのタイトルを "YYYY年MM月DD日（曜日）" 形式で表示
+            const weekdays = ["日", "月", "火", "水", "木", "金", "土"];
+            const dateObj = new Date(clickedDate);
+            const week = weekdays[dateObj.getDay()];
+            document.getElementById("day-modal-title").textContent = `${Number(y)}年${Number(m)}月${Number(d)}日（${week}）`;
+
+            // イベントリストの描画エリアをリセット
+            const listEl = document.getElementById("day-modal-list");
+            listEl.innerHTML = "";
+
+            if (events.length === 0) {
+                // 予定がない場合
+                listEl.innerHTML = '<p class="day-modal-empty">予定なし</p>';
+            } else {
+                // 開始時刻の早い順にソート
+                events.sort((a, b) => new Date(a.startStr) - new Date(b.startStr));
+
+                events.forEach(event => {
+                    const item = document.createElement("div");
+                    item.className = "day-modal-item";
+
+                    // 終日イベントは "終日"、時間指定イベントは "HH:MM" を表示
+                    const timeStr = event.allDay ? "終日" : event.startStr.slice(11, 16);
+
+                    // イベントの色を取得（未設定ならデフォルトのブルー）
+                    const color = event.backgroundColor || "#4285f4";
+
+                    item.innerHTML = `
+                        <span class="day-modal-dot" style="background:${color}"></span>
+                        <span class="day-modal-time">${timeStr}</span>
+                        <span class="day-modal-name">${event.title}</span>
+                    `;
+
+                    // リストのアイテムをクリック → モーダルを閉じて詳細モーダルを開く
+                    item.addEventListener("click", () => {
+                        closeDayEventsModal();
+                        openDetailModal(event);
+                    });
+
+                    listEl.appendChild(item);
+                });
+            }
+
+            // オーバーレイに active クラスを付けてモーダルを表示
+            document.getElementById("day-events-overlay").classList.add("active");
         },
 
         // イベントをクリックしたとき
-        // 
         eventClick: function(info) {
-            // 祝日のイベントクリックを不可能にする
+            // 祝日は無効化
             if (info.event.source?.url === "/index/json/holidays/") return;
-
-            // イベントをクリックしたら閉じる処理が同時に起きるからクリックしたときに伝播を止める
             info.jsEvent.stopPropagation();
-            // 詳細モーダルを展開する
-            document.getElementById("detail-event-modal").classList.add("hidden");
-
-            // actionに削除用のurlを設定する
-            const deleteForm = document.getElementById("delete-event-form");
-            deleteForm.action = `/index/event/${info.event.id}/delete/`;
-            deleteForm.addEventListener("submit", function(e) {
-                e.preventDefault(); // 一旦送信を止める
-                if (confirm("このイベントを削除しますか？")) {
-                    this.submit(); // OKなら送信
-                }
-            });
-            // event/<int:pk>/delete/
-            // 要素取得
-            
-            const title = document.getElementById("detail-title"); 
-            const user = document.getElementById("detail-user"); 
-            const start_date = document.getElementById("detail-start-date")
-            const allday_start_date = document.getElementById("check-detail-start-date")
-            const allday_start_year = document.getElementById("check-detail-start-year")
-            const end_date = document.getElementById("detail-end-date") 
-            const allday_end_date = document.getElementById("check-detail-end-date")
-            const allday_end_year = document.getElementById("check-detail-end-year")            
-            const start_time = document.getElementById("detail-start-time") 
-            const end_time = document.getElementById("detail-end-time") 
-            const repeat = document.querySelector("#detail-repeat p") 
-            const event_url = document.querySelector("#detail-url p") 
-            const locate = document.querySelector("#detail-locate p") 
-            const memo = document.querySelector("#detail-memo p")
-
-            // 基本情報
-            title.textContent = info.event.title;
-            // extendedProps から取得
-            const props = info.event.extendedProps;
-            const id = info.event.id
-
-            function formatDate(dateStr){
-                const [y, m, d] = dateStr.split('-');
-                return `${Number(y)}年${Number(m)}月${Number(d)}日`;
-            }
-            function formatTime(TiemStr){
-                const [h, n, s] = TiemStr.split(':');
-                return `${Number(h)}時${Number(n)}分`;
-            } 
-            
-            user.textContent = props.user || "";
-            start_date.textContent = formatDate(props.start_date);
-            const endDateObj = new Date(props.end_date);
-            endDateObj.setDate(endDateObj.getDate() - 1);
-            end_date.textContent = formatDate(endDateObj.toISOString().split('T')[0]);
-            start_time.textContent = formatTime(props.start_time);
-            end_time.textContent = formatTime(props.end_time);
-            allday_start_date.textContent = `${Number(props.start_date.slice(5, 7))}月${Number(props.start_date.slice(8, 10))}日`;
-            const ey = endDateObj.getFullYear();
-            const em = endDateObj.getMonth() + 1;
-            const ed = endDateObj.getDate();
-            end_date.textContent = formatDate(`${ey}-${String(em).padStart(2,'0')}-${String(ed).padStart(2,'0')}`);
-            allday_end_date.textContent = `${em}月${ed}日`;
-            allday_end_year.textContent = `${ey}年`;
-            allday_end_year.textContent = `${Number(props.end_date.slice(0, 4))}年`
-            if(props.repeat=="繰り返しなし"){document.getElementById("detail-repeat").style.display="none"}else{document.getElementById("detail-repeat").style.display="flex"; repeat.textContent = props.repeat || "";}
-            if(props.event_url==null){document.getElementById("detail-url").style.display="none"}else{document.getElementById("detail-url").style.display="flex"; event_url.textContent = props.event_url || "";}
-            if(props.locate==null){document.getElementById("detail-locate").style.display="none"}else{document.getElementById("detail-locate").style.display="flex"; locate.textContent = props.locate || "";}
-            if(props.memo==null){document.getElementById("detail-memo").style.display="none"}else{document.getElementById("detail-memo").style.display="flex"; memo.textContent = props.memo || "";}
-
-            // タイトルの色を変える
-            document.getElementById("detail-title").style.color = info.event.backgroundColor
-            
-
-            // まず全部表示に戻す
-            document.querySelectorAll(".un-check-allday").forEach(e => {
-                e.style.display = "";
-            });
-            document.querySelectorAll(".check-allday").forEach(e => {
-                e.style.display = "";
-            });
-
-            // そのあと条件分岐
-            if(info.event.allDay){
-                document.querySelectorAll(".un-check-allday").forEach(e => {
-                    e.style.display = "none";
-                });
-            }else{
-                document.querySelectorAll(".check-allday").forEach(e => {
-                    e.style.display = "none";
-                });
-            }
-            // 現在クリックされているイベント情報を保持する変数に格納
-            currentEvent = { id: info.event.id, props: props, fcEvent: info.event };
-            // todoを拾う
-            fetch(`/index/json/todo/list/${id}/`)  // DjangoのURL
-            .then(response => {
-                if (!response.ok) throw new Error('通信失敗');
-                return response.json();  // ← これが必要
-            })
-            .then(data => {
-                // todoがあるか確認
-                if (data.length == 0){
-                    document.getElementById("detail-todo").style.display = "none"
-                }else{
-                    document.getElementById("detail-todo").style.display = "flex"
-                }
-                const incomplete = document.querySelector(".incomplete");
-                const completed = document.querySelector(".completed");
-
-                // カウント更新関数
-                function updateCount() {
-                    let checked = document.querySelectorAll(
-                        ".todo-detail-content .todo-check:checked"
-                    ).length;
-                    document.querySelectorAll(".task-on").forEach(e => {
-                        e.textContent = checked;
-                    })
-                }
-
-                // イベントリスナーの登録を関数にまとめる
-                function attachTodoEvents(div) {
-                    // todoの削除
-                    div.querySelector(".todo-delete button").addEventListener("click", function() {
-                        const todoId = this.dataset.id;
-                        fetch(`/index/json/todo/delete/${todoId}/`, {
-                            method: 'POST',
-                            headers: {
-                                // djangoのセキュリティのために必要
-                                'X-CSRFToken': getCookie('csrftoken')
-                            },
-                        })
-                        .then(response => response.json())
-                        .then(data => {
-                            // 成功したらDOMから削除
-                            if(data.success) {
-                                div.remove();
-                                updateCount();
-                            }
-                        })
-                        .catch(error => console.error('エラー:', error));
-                    });
-
-                    // todoのチェックボックスの切り替え
-                    div.querySelector(".todo-check").addEventListener("change", function() {
-                        const todoId = this.dataset.id;
-                        fetch(`/index/json/todo/check/${todoId}/`, {
-                            method: 'POST',
-                            headers: {
-                                // djangoのセキュリティのために必要
-                                'X-CSRFToken': getCookie('csrftoken')
-                            },
-                        })
-                        .then(response => response.json())
-                        .then(data => {
-                            // チェック状態をコンソールで確認
-                            console.log('check:', data.check);
-                        })
-                        .catch(error => console.error('エラー:', error));
-
-                        // completed/incompleteへの移動
-                        const todoItem = this.closest(".todo-content");
-                        updateCount();
-                        if(this.checked){
-                            completed.appendChild(todoItem);
-                        } else {
-                            incomplete.appendChild(todoItem);
-                        }
-                    });
-
-                    // todoのタイトル変更
-                    div.querySelector(".todo-title").addEventListener("blur", function() {
-                        const todoId = this.dataset.id;
-                        fetch(`/index/json/todo/edit/title/${todoId}/`, {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'X-CSRFToken': getCookie('csrftoken')
-                            },
-                            body: JSON.stringify({ title: this.value })  // ← 新しいタイトルを送る
-                        })
-                        .then(response => response.json())
-                        .then(data => {})
-                        .catch(error => console.error('エラー:', error));
-                    });
-                }
-                let checked = document.querySelectorAll(
-                    ".todo-detail-content .todo-check:checked"
-                ).length;
-                incomplete.innerHTML = "";
-                completed.querySelectorAll(".todo-content").forEach(el => el.remove());
-
-                // todoリストの生成
-                data.forEach(todo => {
-                    // todoのdiv要素を作る
-                    const div = document.createElement("div");
-                    div.className = "todo-content";
-                    div.innerHTML = `
-                        <input class="todo-check" type="checkbox" data-id="${todo.id}" ${todo.check ? 'checked' : ''}>
-                        <input class="todo-title" data-id="${todo.id}" type="text" value="${todo.title}">
-                        <div class="todo-delete"><button data-id="${todo.id}">&times;</button></div>
-                    `;
-                    // 完了済みのフィールドに持ってくるか処理する
-                    if(todo.check) {
-                        completed.appendChild(div);
-                    } else {
-                        incomplete.appendChild(div);
-                    }
-                    attachTodoEvents(div);
-                });
-                // todoの合計を出力
-                document.querySelectorAll(".task-sum").forEach(e =>{
-                    e.textContent = data.length;
-                })
-                updateCount();
-                // 詳細モーダルからのtodo新規作成
-                (function() {
-                    const title_area = document.querySelector(".add-todo-input");
-
-                    function add_todo() {
-                        // 空なら何もしない
-                        if (!title_area.value.trim()) return;
-
-                        fetch(`/index/json/todo/create/`, {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'X-CSRFToken': getCookie('csrftoken')
-                            },
-                            body: JSON.stringify({
-                                title: title_area.value,
-                                event: id  // イベントのidを送る
-                            })
-                        })
-                        .then(response => response.json())
-                        .then(data => {
-                            // DOMに追加
-                            const div = document.createElement("div");
-                            div.className = "todo-content";
-                            div.innerHTML = `
-                                <input class="todo-check" type="checkbox" data-id="${data.id}">
-                                <input class="todo-title" data-id="${data.id}" type="text" value="${data.title}">
-                                <div class="todo-delete"><button data-id="${data.id}">&times;</button></div>
-                            `;
-                            incomplete.appendChild(div);
-                            // イベントリスナーを登録
-                            attachTodoEvents(div);
-                            // inputをリセット
-                            title_area.value = "";
-                            updateCount();
-                        })
-                        .catch(error => console.error('エラー:', error));
-                    }
-
-                    // blurで追加
-                    title_area.addEventListener("blur", add_todo);
-
-                    // Enterキーでも追加
-                    title_area.addEventListener('keydown', (e) => {
-                        if (e.key === 'Enter') {
-                            e.preventDefault();
-                            add_todo();
-                        }
-                    });
-                })();
-            })
-            .catch(error => {
-                console.error('エラー:', error);
-            });
-
+            openDetailModal(info.event);  // ← 関数呼ぶだけ
         },
         // 表示中のカレンダーの日付をセット
         datesSet: function() {
             document.getElementById('current-date').textContent =
             calendar.view.title;
         },
-        // 日付セルをクリックしたときの挙動
-        dateClick: function(info) {
-            // 作成モーダルの呼び出し
-            sidebarfunc.open('create' );
-            // 日付をセット（start）
-            getFp("#create-start-date input").setDate(info.dateStr, false);
-            // end も同日にする（初期値）
-            getFp("#create-end-date input").setDate(info.dateStr, false);
-        },    
+
     });
     
     
     // ここ↓の中には何も書かない(反映させるだけの部品)
     calendar.render();
 
-    // カレンダーをスワイプできるようにする
+    //詳細モーダルのメソッド
+    function openDetailModal(event) {
+        // 詳細モーダルを展開する
+        document.getElementById("detail-event-modal").classList.add("hidden");
+
+        // actionに削除用のurlを設定する
+        const deleteForm = document.getElementById("delete-event-form");
+        deleteForm.action = `/index/event/${event.id}/delete/`;
+        deleteForm.addEventListener("submit", function(e) {
+            e.preventDefault(); // 一旦送信を止める
+            if (confirm("このイベントを削除しますか？")) {
+                this.submit(); // OKなら送信
+            }
+        });
+
+        // 要素取得
+        const title = document.getElementById("detail-title"); 
+        const user = document.getElementById("detail-user"); 
+        const start_date = document.getElementById("detail-start-date");
+        const allday_start_date = document.getElementById("check-detail-start-date");
+        const allday_start_year = document.getElementById("check-detail-start-year");
+        const end_date = document.getElementById("detail-end-date"); 
+        const allday_end_date = document.getElementById("check-detail-end-date");
+        const allday_end_year = document.getElementById("check-detail-end-year");
+        const start_time = document.getElementById("detail-start-time"); 
+        const end_time = document.getElementById("detail-end-time"); 
+        const repeat = document.querySelector("#detail-repeat p"); 
+        const event_url = document.querySelector("#detail-url p"); 
+        const locate = document.querySelector("#detail-locate p"); 
+        const memo = document.querySelector("#detail-memo p");
+
+        // 基本情報（info.event → event に統一）
+        title.textContent = event.title;
+        // extendedProps から取得
+        const props = event.extendedProps;
+        const id = event.id;
+
+        function formatDate(dateStr){
+            const [y, m, d] = dateStr.split('-');
+            return `${Number(y)}年${Number(m)}月${Number(d)}日`;
+        }
+        function formatTime(timeStr){
+            const [h, n, s] = timeStr.split(':');
+            return `${Number(h)}時${Number(n)}分`;
+        }
+
+        user.textContent = props.user || "";
+        start_date.textContent = formatDate(props.start_date);
+        const endDateObj = new Date(props.end_date);
+        endDateObj.setDate(endDateObj.getDate() - 1);
+        const ey = endDateObj.getFullYear();
+        const em = endDateObj.getMonth() + 1;
+        const ed = endDateObj.getDate();
+        end_date.textContent = formatDate(`${ey}-${String(em).padStart(2,'0')}-${String(ed).padStart(2,'0')}`);
+        start_time.textContent = formatTime(props.start_time);
+        end_time.textContent = formatTime(props.end_time);
+        allday_start_date.textContent = `${Number(props.start_date.slice(5, 7))}月${Number(props.start_date.slice(8, 10))}日`;
+        allday_end_date.textContent = `${em}月${ed}日`;
+        allday_end_year.textContent = `${Number(props.end_date.slice(0, 4))}年`;
+
+        if(props.repeat=="繰り返しなし"){document.getElementById("detail-repeat").style.display="none";}else{document.getElementById("detail-repeat").style.display="flex"; repeat.textContent = props.repeat || "";}
+        if(props.event_url==null){document.getElementById("detail-url").style.display="none";}else{document.getElementById("detail-url").style.display="flex"; event_url.textContent = props.event_url || "";}
+        if(props.locate==null){document.getElementById("detail-locate").style.display="none";}else{document.getElementById("detail-locate").style.display="flex"; locate.textContent = props.locate || "";}
+        if(props.memo==null){document.getElementById("detail-memo").style.display="none";}else{document.getElementById("detail-memo").style.display="flex"; memo.textContent = props.memo || "";}
+
+        // タイトルの色を変える
+        document.getElementById("detail-title").style.color = event.backgroundColor;
+
+        // まず全部表示に戻す
+        document.querySelectorAll(".un-check-allday").forEach(e => { e.style.display = ""; });
+        document.querySelectorAll(".check-allday").forEach(e => { e.style.display = ""; });
+
+        // そのあと条件分岐
+        if(event.allDay){
+            document.querySelectorAll(".un-check-allday").forEach(e => { e.style.display = "none"; });
+        }else{
+            document.querySelectorAll(".check-allday").forEach(e => { e.style.display = "none"; });
+        }
+
+        // 現在クリックされているイベント情報を保持する変数に格納
+        currentEvent = { id: event.id, props: props, fcEvent: event };
+
+        // todoを拾う
+        fetch(`/index/json/todo/list/${id}/`)  // DjangoのURL
+        .then(response => {
+            if (!response.ok) throw new Error('通信失敗');
+            return response.json();
+        })
+        .then(data => {
+            // todoがあるか確認
+            if (data.length == 0){
+                document.getElementById("detail-todo").style.display = "none";
+            }else{
+                document.getElementById("detail-todo").style.display = "flex";
+            }
+            const incomplete = document.querySelector(".incomplete");
+            const completed = document.querySelector(".completed");
+
+            // カウント更新関数
+            function updateCount() {
+                let checked = document.querySelectorAll(".todo-detail-content .todo-check:checked").length;
+                document.querySelectorAll(".task-on").forEach(e => { e.textContent = checked; });
+            }
+
+            // イベントリスナーの登録を関数にまとめる
+            function attachTodoEvents(div) {
+                // todoの削除
+                div.querySelector(".todo-delete button").addEventListener("click", function() {
+                    const todoId = this.dataset.id;
+                    fetch(`/index/json/todo/delete/${todoId}/`, {
+                        method: 'POST',
+                        headers: {
+                            // djangoのセキュリティのために必要
+                            'X-CSRFToken': getCookie('csrftoken')
+                        },
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        // 成功したらDOMから削除
+                        if(data.success) {
+                            div.remove();
+                            updateCount();
+                        }
+                    })
+                    .catch(error => console.error('エラー:', error));
+                });
+
+                // todoのチェックボックスの切り替え
+                div.querySelector(".todo-check").addEventListener("change", function() {
+                    const todoId = this.dataset.id;
+                    fetch(`/index/json/todo/check/${todoId}/`, {
+                        method: 'POST',
+                        headers: {
+                            // djangoのセキュリティのために必要
+                            'X-CSRFToken': getCookie('csrftoken')
+                        },
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        // チェック状態をコンソールで確認
+                        console.log('check:', data.check);
+                    })
+                    .catch(error => console.error('エラー:', error));
+
+                    // completed/incompleteへの移動
+                    const todoItem = this.closest(".todo-content");
+                    updateCount();
+                    if(this.checked){ completed.appendChild(todoItem); } else { incomplete.appendChild(todoItem); }
+                });
+
+                // todoのタイトル変更
+                div.querySelector(".todo-title").addEventListener("blur", function() {
+                    const todoId = this.dataset.id;
+                    fetch(`/index/json/todo/edit/title/${todoId}/`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRFToken': getCookie('csrftoken')
+                        },
+                        body: JSON.stringify({ title: this.value })  // ← 新しいタイトルを送る
+                    })
+                    .then(response => response.json())
+                    .then(data => {})
+                    .catch(error => console.error('エラー:', error));
+                });
+            }
+
+            incomplete.innerHTML = "";
+            completed.querySelectorAll(".todo-content").forEach(el => el.remove());
+
+            // todoリストの生成
+            data.forEach(todo => {
+                // todoのdiv要素を作る
+                const div = document.createElement("div");
+                div.className = "todo-content";
+                div.innerHTML = `
+                    <input class="todo-check" type="checkbox" data-id="${todo.id}" ${todo.check ? 'checked' : ''}>
+                    <input class="todo-title" data-id="${todo.id}" type="text" value="${todo.title}">
+                    <div class="todo-delete"><button data-id="${todo.id}">&times;</button></div>
+                `;
+                // 完了済みのフィールドに持ってくるか処理する
+                if(todo.check){ completed.appendChild(div); } else { incomplete.appendChild(div); }
+                attachTodoEvents(div);
+            });
+
+            // todoの合計を出力
+            document.querySelectorAll(".task-sum").forEach(e => { e.textContent = data.length; });
+            updateCount();
+
+            // 詳細モーダルからのtodo新規作成
+            (function() {
+                const title_area = document.querySelector(".add-todo-input");
+
+                function add_todo() {
+                    // 空なら何もしない
+                    if (!title_area.value.trim()) return;
+
+                    fetch(`/index/json/todo/create/`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRFToken': getCookie('csrftoken')
+                        },
+                        body: JSON.stringify({
+                            title: title_area.value,
+                            event: id  // イベントのidを送る
+                        })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        // DOMに追加
+                        const div = document.createElement("div");
+                        div.className = "todo-content";
+                        div.innerHTML = `
+                            <input class="todo-check" type="checkbox" data-id="${data.id}">
+                            <input class="todo-title" data-id="${data.id}" type="text" value="${data.title}">
+                            <div class="todo-delete"><button data-id="${data.id}">&times;</button></div>
+                        `;
+                        incomplete.appendChild(div);
+                        // イベントリスナーを登録
+                        attachTodoEvents(div);
+                        // inputをリセット
+                        title_area.value = "";
+                        updateCount();
+                    })
+                    .catch(error => console.error('エラー:', error));
+                }
+
+                // blurで追加
+                title_area.addEventListener("blur", add_todo);
+
+                // Enterキーでも追加
+                title_area.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+                        add_todo();
+                    }
+                });
+            })();
+        })
+        .catch(error => { console.error('エラー:', error); });
+    }
+    // カレzンダーをスワイプできるようにする
     let startX = 0;
     calendarEl.addEventListener('touchstart', (e) => {
         startX = e.touches[0].clientX;
@@ -1160,7 +1192,7 @@ document.querySelector('.chat-input-textarea-textarea')
     syncJumpSelect();
 
     // current-dateクリックでドロップダウン開閉
-    document.getElementById("current-date").addEventListener("click", function(e) {
+    document.getElementById("current-dates").addEventListener("click", function(e) {
         e.stopPropagation();
         syncJumpSelect();
         dropdown.style.display = dropdown.style.display === "none" ? "flex" : "none";
@@ -1229,4 +1261,9 @@ document.querySelector('.chat-input-textarea-textarea')
         });
         // ----------------------------------------------------------------------
     })();
+    document.getElementById("calendar").addEventListener("click", () => console.log("calendar clicked"));
 });
+
+function closeDayEventsModal() {
+    document.getElementById("day-events-overlay").classList.remove("active");
+}
