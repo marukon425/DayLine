@@ -85,8 +85,29 @@ input * :focus{
   padding: 0.7em 1em;
   border-radius: 4px;
   cursor: pointer;
-}
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 
+}
+.custom-select-selected img{
+  height: 30px;
+  aspect-ratio: 130 / 100;
+  object-fit: cover;
+  border-radius: 5px;
+}
+.custom-select-selected span{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+}
 .custom-select-selected:active {
   background: transparent;
 }
@@ -126,8 +147,21 @@ input * :focus{
   position: relative;
   padding: 0.5em 1em 0.5em 2em;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
 }
-
+.custom-select-option img{
+  width: 50px;
+  aspect-ratio: 130 / 100;
+  object-fit: cover;
+  border-radius: 5px;
+}
+.custom-select-option span{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
 .custom-select-option:active {
   background: transparent;
 }

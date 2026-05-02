@@ -228,6 +228,7 @@ document.addEventListener('DOMContentLoaded', function() {
         end_time.textContent = formatTime(props.end_time);
         allday_start_date.textContent = `${Number(props.start_date.slice(5, 7))}月${Number(props.start_date.slice(8, 10))}日`;
         allday_end_date.textContent = `${em}月${ed}日`;
+        allday_start_year.textContent = `${Number(props.start_date.slice(0, 4))}年`;
         allday_end_year.textContent = `${Number(props.end_date.slice(0, 4))}年`;
 
         if(props.repeat=="繰り返しなし"){document.getElementById("detail-repeat").style.display="none";}else{document.getElementById("detail-repeat").style.display="flex"; repeat.textContent = props.repeat || "";}
@@ -751,7 +752,7 @@ document.addEventListener('DOMContentLoaded', function() {
             optionEl.classList.add('is-selected');
         }
 
-        selectedTextEl.textContent = optionEl.textContent;
+        selectedTextEl.innerHTML = optionEl.innerHTML;
         if (hiddenInput){
             hiddenInput.value = value;
             console.log("更新されたname:", hiddenInput.name, "value:", value);
@@ -771,8 +772,8 @@ document.addEventListener('DOMContentLoaded', function() {
             customSelect.querySelector('.custom-select-selected');
         const hiddenInput =
             customSelect.querySelector('.custom-select-value');
-
-        selectedTextEl.textContent = defaultOption.textContent;
+        // html要素ごと選択済みに追加する
+        selectedTextEl.innerHTML = defaultOption.innerHTML;
         if (hiddenInput) {
             hiddenInput.value = defaultOption.dataset.value;
         }
@@ -1238,11 +1239,16 @@ document.querySelector('.chat-input-textarea-textarea')
     (function() {
         //  チェックリスト ?/?完了の表示-------------------------------------------
         const detailtodo = document.getElementById("detail-todo")
+        const todo_icon = document.getElementById("todo-icon")
         const overlay     = document.querySelector(".todo-detail-overlay");
         let task_sum = document.querySelectorAll(".todo-detail-content .todo-check");
         const completed = document.querySelector(".completed");
         const incomplete = document.querySelector(".incomplete");
         detailtodo.addEventListener("click", function(e) {
+            e.stopPropagation();
+            overlay.classList.add("active");
+        });
+        todo_icon.addEventListener("click", function(e) {
             e.stopPropagation();
             overlay.classList.add("active");
         });

@@ -1,6 +1,7 @@
 {% load static %}
 <div id="detail-event-modal">
     <div class="detail-toolbar">
+        <div class="detail-tool" id="todo-icon"><img src="{% static "img/todo_チェック.svg" %}" alt=""></div>
         <div type="" id="detail-edit" class="detail-tool"><img src="{% static "img/編集.svg" %}" alt=""></div>
         <form action="" method="POST" id="delete-event-form">
             {% csrf_token %}
