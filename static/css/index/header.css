@@ -37,6 +37,7 @@ header{
     font-weight: 500;
     font-size: 20px;
     cursor: pointer;
+    font-weight: 600;
 }
 #date-jump-dropdown{
     display:none;
@@ -270,4 +271,71 @@ header{
     #main-logo, #root-today, #prev, #next, .caltool-daytime-grid{
         display: none;
     }
+}
+
+.change-month-week{
+    border: 1px solid rgb(199, 199, 199);
+    border-radius: 10px;
+    padding: 2px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.change-month-week button{
+    background: none;
+    border-radius: 7px;
+    width: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.change-month-week-label{
+    height: calc(35px - 6px);
+    border: 1px solid  rgb(199, 199, 199);
+    border-width: 0.7px;
+    display: flex;
+    align-items: center;
+    display: flex;
+    gap: 3px;
+    padding: 3px;
+    border-radius: 7px;
+    position: relative;
+}
+.change-element{
+    border-width: 0.7px;
+    width: 70px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 100%;
+    border-radius: 6px;
+    position: relative;
+    z-index: 20;
+    font-weight: 600;
+    user-select: none;
+    transition: 0.2s;
+}
+.change-back {
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 72px;
+    height: 30px;
+    background: orange;
+    border-radius: 6px;
+    transition: 0.3s;
+    z-index: 10;
+}
+
+#change-month-week:checked + .change-month-week-label .change-back {
+    transform: translateX(72px);
+}
+#change-month-week:checked + .change-month-week-label .element-week{
+    color: white;
+}
+#change-month-week:not(:checked) + .change-month-week-label .element-month{
+    color: white;
 }

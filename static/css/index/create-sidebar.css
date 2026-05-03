@@ -62,7 +62,6 @@ input :focus{
 /* 時間の設定 */
 .create-costom-options{
     width: 90%;
-    margin: 10px;
     /* background-color: bisque; */
     border: 1px solid rgb(199, 199, 199);
     border-radius: 15px;
@@ -93,7 +92,7 @@ input :focus{
     margin: 10px 0;
 }
 .create-allDy label{
-    left: 60%;
+    margin-left: auto;
 }
 
 /* 時間入力の設定 */
@@ -272,4 +271,11 @@ input :focus{
 
 .other-optuin-hidden:hover{
     text-decoration: underline;
+}
+
+.create-divider-border{
+    width: 100%;
+    border: 1px solid rgb(199, 199, 199);
+    border-bottom: 0;
+    border-width: 0.8px;
 }

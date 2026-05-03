@@ -10,7 +10,16 @@ html, body{
     font-family: 'Noto Sans JP', 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 
               'BIZ UDPGothic', Meiryo, sans-serif;
 }
-
+/* 英数字・見出し・ボタン・日付 */
+h1, h2, h3, h4,
+.app-title,
+button,
+#app-login,
+#app-start,
+.fc-daygrid-day-number,
+.fc-col-header-cell-cushion {
+    font-family: 'Nunito', 'Noto Sans JP', sans-serif;
+}
 a {
   color: inherit;       /* 親要素の文字色を引き継ぐ */
   text-decoration: none; /* 下線を消す */

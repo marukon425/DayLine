@@ -33,7 +33,7 @@ class CreateEventForm(forms.ModelForm):
                 "class": "custom-select-value"
             }),
             "title": forms.TextInput(attrs={
-                "placeholder": "title",
+                "placeholder": "タイトルを入力",
                 "class":"id_title"
             }),
             "start_date": forms.DateInput(attrs={

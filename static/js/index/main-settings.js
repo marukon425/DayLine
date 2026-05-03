@@ -470,15 +470,15 @@ document.addEventListener('DOMContentLoaded', function() {
         calendar.next();
     })
 
-    // 月表示
-    document.getElementById("monthBtn").addEventListener("click", () => {
-        calendar.changeView("dayGridMonth");
-    });
-
-    //週表示
-    document.getElementById("weekBtn").addEventListener("click", () => {
-        calendar.changeView("timeGridWeek");
-    });
+    // 月・週表示
+    document.getElementById("change-month-week").addEventListener("change", (e) => {
+        console.log(document.getElementById("change-month-week").value)
+        if (!document.getElementById("change-month-week").checked){
+            calendar.changeView("dayGridMonth");
+        }else{
+            calendar.changeView("timeGridWeek");
+        }
+    })
 
 
 
