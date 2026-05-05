@@ -1,5 +1,26 @@
 document.addEventListener('DOMContentLoaded', function() {
+    //時間帯で変化する背景
+    // static/js/bg_switch.js
+    const hour = new Date().getHours();
 
+    const backgrounds = {
+    dawn:   "../../static/img/dayline_bg_dawn.svg",
+    noon:   "../../static/img/dayline_bg_noon.svg",
+    sunset: "../../static/img/dayline_bg_sunset.svg",
+    night:  "../../static/img/dayline_bg_night.svg",
+    };
+
+    function getBg(h) {
+    if (h >= 5  && h < 10) return backgrounds.dawn;
+    if (h >= 10 && h < 17) return backgrounds.noon;
+    if (h >= 17 && h < 20) return backgrounds.sunset;
+    return backgrounds.night;
+    }
+
+    document.body.style.backgroundImage = `url("${getBg(hour)}")`;
+    document.body.style.backgroundSize       = "cover";
+    document.body.style.backgroundPosition   = "center";
+    document.body.style.backgroundAttachment = "fixed";
     
     const signup_iputs = document.querySelectorAll(".signup-form-input");
     const signup_btn = document.getElementById("signup-btn")
@@ -60,7 +81,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 j_safety = false;
             }
             // パスワードが一致してるか
-            if (password_1.value == password_2.value){
+            if (password_1.value == password_2.value && !password_1.value == ""){
                 document.querySelector("#password_matched img").src = CHECK_IMG;
                 document.querySelector("#password_matched span").style.color = "black";
                 password_matched = true;
@@ -75,7 +96,7 @@ document.addEventListener('DOMContentLoaded', function() {
         password_2.addEventListener("input", () => {
             // パスワードが一致してるか
             if (password_1.value == password_2.value){
-                document.querySelector("#password_matched img").src = "../img/チェックマーク_チェック.png";
+                document.querySelector("#password_matched img").src = CHECK_IMG;
                 document.querySelector("#password_matched span").style.color = "black";
                 password_matched = true;
             }else{
@@ -94,5 +115,6 @@ document.addEventListener('DOMContentLoaded', function() {
             }
             checkFrom();
         });
+
 
 });

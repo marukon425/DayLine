@@ -38,6 +38,7 @@ header{
     font-size: 20px;
     cursor: pointer;
     font-weight: 600;
+    user-select: none;
 }
 #date-jump-dropdown{
     display:none;
@@ -75,8 +76,13 @@ header{
     border: 1px solid rgba(128, 128, 128, 0.388);
     border-radius: 10px;
     margin-right: 20px;
+    transition: 0.2s;
+    font-weight: 600;
+    user-select: none;
 }
-
+#root-today:hover{
+    background-color: rgba(128, 128, 128, 0.123);
+}
 #prev, #next{
     display: flex;
     align-items: center;
@@ -91,7 +97,19 @@ header{
 #prev:hover, #next:hover{
     background-color: rgba(124, 124, 124, 0.1);
 }
-
+#prev::after, #next::after{
+    transition: 2s;
+}
+#prev:hover::after, #next:hover::after{
+    top: 45px;
+    color: white;
+    content: attr(data-text);
+    background-color: rgb(1, 29, 69);
+    position: absolute;
+    padding: 3px 7px;
+    border-radius: 3px;
+    z-index: 4000;
+}
 
 .header-tool-1{
     display: flex;
@@ -268,7 +286,7 @@ header{
 }
 
 @media (max-width: 700px) {
-    #main-logo, #root-today, #prev, #next, .caltool-daytime-grid{
+    #main-logo, #root-today, #prev, #next, .caltool-daytime-grid, #change-month-week label{
         display: none;
     }
 }
@@ -290,7 +308,6 @@ header{
     align-items: center;
     justify-content: center;
 }
-
 .change-month-week-label{
     height: calc(35px - 6px);
     border: 1px solid  rgb(199, 199, 199);
@@ -338,4 +355,9 @@ header{
 }
 #change-month-week:not(:checked) + .change-month-week-label .element-month{
     color: white;
+}
+@media (max-width: 750px) {
+  .change-month-week-label {
+    display: none !important;
+  }
 }

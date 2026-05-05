@@ -27,22 +27,22 @@
                 <div id="signup-form-inputs">
                     <div class="name-mail">
                         <!--<input type="text" placeholder="ユーザー名" class="signup-form-input">-->
+                        <p class="sginup-feeld-name">ユーザー名</p>
                         {{form.username}}
-                        {% for error in form.username.errors %}
-                            <p class="signup-error">{{ error }}</p>
-                        {% endfor %}  
                         
                         <!--<input type="email" id="" placeholder="メールアドレス" class="signup-form-input">-->
+                        <p class="sginup-feeld-name">メールアドレス</p>
                         {{ form.email }}
                         {% for error in form.email.errors %}
-                            <p class="signup-error">{{ error }}</p>
+                        <p class="signup-error">{{ error }}</p>
                         {% endfor %}
                     </div>
+                    <p class="sginup-feeld-name sginup-feeld-name-password">パスワード</p>
                     <div class="passwords">
                         {{  form.password1 }}
                         {{  form.password2 }}
                     </div>
-                    <div class="passwortd-condition">
+                    <div class="passwortd-condition ">
                         <ul>
                             <li id="specified_length" class="passwortd-condition-list"><img src="{% static 'img/チェックマーク_未チェック.png' %}" alt=""><span>8〜20文字</span></li>
                             <li id="specified_character" class="passwortd-condition-list"><img src="{% static 'img/チェックマーク_未チェック.png' %}" alt=""><span>半角英字、数字を使用</span></li>

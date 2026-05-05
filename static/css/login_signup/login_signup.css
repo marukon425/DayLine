@@ -1,3 +1,4 @@
+
 li{
     list-style: none; /* 点を消す */
     padding-left: 0;  /* 左側の余白を消す */
@@ -9,6 +10,9 @@ input:focus{
 
 body{
     overflow: hidden;
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
 }
 
 header{
@@ -17,6 +21,8 @@ header{
     display: flex;
     align-items: center;
     padding: 0 10px;
+    /* background-color: rgba(255, 255, 255, 0.301);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.733); */
 }
 .header-content{
     display: flex;
@@ -71,15 +77,15 @@ main{
 .login-signup{
     width: 300px;
     min-height: 100px;
-    background-color: white;
+    background-color: rgba(255, 255, 255, 0.521);
     border-radius: 30px;
     padding: 20px 40px;
     display: flex;
     flex-direction: column;
     align-items: center;
 box-shadow:
-  6px 6px 12px rgba(0, 0, 0, 0.15),
-  -6px -6px 12px rgba(0, 0, 0, 0.15);
+  6px 6px 12px rgba(116, 116, 116, 0.15),
+  -6px -6px 12px rgba(116, 116, 116, 0.15);
 
 }
 
@@ -107,9 +113,13 @@ box-shadow:
 .name-mail input, .passwords input{
     width: 300px;
     height: 40px;
+    background-color: rgba(255, 255, 255, 0.466);
 }
 
 .name-mail{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     gap: 10px;
 }
 .name-mail input{
@@ -122,6 +132,7 @@ box-shadow:
     border: 1px solid rgb(177, 177, 177);
     border-radius: 8px;
     padding: 0 10px;
+    background-color: rgba(255, 255, 255, 0.466);
 }
 .passwords input{
     border: none;
@@ -231,3 +242,23 @@ box-shadow:
     background-color: orange;
 }
 
+.signup-error{
+    font-size: 15px;
+    margin-top: 0;
+    color: rgb(209, 43, 43);
+    font-weight: 600;
+}
+.signup-login-form{
+    position: relative;
+}
+.sginup-feeld-name{
+    margin: 0;
+    width: 97%;
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: -5px;
+}
+.sginup-feeld-name-password{
+    width: 80%;
+    margin-bottom: -15px;
+}

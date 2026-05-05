@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="900" viewBox="0 0 1440 900">
+  <defs>
+    <linearGradient id="sA" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%"   stop-color="#1a2a5e"/>
+      <stop offset="40%"  stop-color="#c05020"/>
+      <stop offset="70%"  stop-color="#f5a623"/>
+      <stop offset="100%" stop-color="#ffe0a0"/>
+    </linearGradient>
+    <radialGradient id="sA_sun" cx="50%" cy="72%" r="30%" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="1440" y2="900">
+      <stop offset="0%"   stop-color="#ffe566" stop-opacity="0.9"/>
+      <stop offset="50%"  stop-color="#f5a623" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="#f5a623" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <rect width="1440" height="900" fill="url(#sA)"/>
+  <rect width="1440" height="900" fill="url(#sA_sun)"/>
+
+  <!-- 地平線 -->
+  <line x1="0" y1="648" x2="1440" y2="648" stroke="white" stroke-width="1" opacity="0.2"/>
+
+  <!-- 太陽 -->
+  <circle cx="720" cy="648" r="100" fill="#ffe566" opacity="0.6"/>
+  <circle cx="720" cy="648" r="58"  fill="#ffe566" opacity="0.85"/>
+  <circle cx="720" cy="648" r="27"  fill="white"   opacity="0.95"/>
+</svg>

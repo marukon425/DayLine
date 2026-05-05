@@ -9,8 +9,9 @@ class CustomUserCreationForm(UserCreationForm):
     class Meta:
         model = CustomUser
         fields = ("email", "username", "password1", "password2")
-
-
+    #ユーザー名のunipueをオフにする
+    def clean_username(self):
+        return self.cleaned_data.get('username')
     email = forms.EmailField(
         widget = forms.TextInput(
             attrs={

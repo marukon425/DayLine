@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="900" viewBox="0 0 1440 900">
+  <defs>
+    <radialGradient id="ra2" cx="0%" cy="0%" r="70%" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="1440" y2="900">
+      <stop offset="0%"   stop-color="rgb(1,29,69)" stop-opacity="0.07"/>
+      <stop offset="100%" stop-color="rgb(1,29,69)" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- ベース白 -->
+  <rect width="1440" height="900" fill="#ffffff"/>
+
+  <!-- 左上からのグラデーションぼかし面 -->
+  <rect width="1440" height="900" fill="url(#ra2)"/>
+
+  <!-- 同心円アーク -->
+  <circle cx="0" cy="0" r="810"  fill="none" stroke="rgb(1,29,69)" stroke-width="0.8" opacity="0.07"/>
+  <circle cx="0" cy="0" r="585"  fill="none" stroke="rgb(1,29,69)" stroke-width="0.8" opacity="0.06"/>
+  <circle cx="0" cy="0" r="383"  fill="none" stroke="rgb(1,29,69)" stroke-width="0.6" opacity="0.05"/>
+  <circle cx="0" cy="0" r="203"  fill="none" stroke="rgb(1,29,69)" stroke-width="0.6" opacity="0.05"/>
+  <circle cx="0" cy="0" r="90"   fill="none" stroke="rgb(1,29,69)" stroke-width="0.5" opacity="0.04"/>
+
+  <!-- 放射線 -->
+  <line x1="0" y1="0" x2="1440" y2="585"  stroke="rgb(1,29,69)" stroke-width="0.5" opacity="0.04"/>
+  <line x1="0" y1="0" x2="1170" y2="900"  stroke="rgb(1,29,69)" stroke-width="0.5" opacity="0.04"/>
+  <line x1="0" y1="0" x2="720"  y2="900"  stroke="rgb(1,29,69)" stroke-width="0.4" opacity="0.03"/>
+  <line x1="0" y1="0" x2="1440" y2="320"  stroke="rgb(1,29,69)" stroke-width="0.4" opacity="0.03"/>
+  <line x1="0" y1="0" x2="400"  y2="900"  stroke="rgb(1,29,69)" stroke-width="0.4" opacity="0.03"/>
+
+  <!-- オレンジの起点アクセント -->
+  <circle cx="0" cy="0" r="14" fill="rgb(1,29,69)" opacity="0.08"/>
+  <circle cx="0" cy="0" r="5"  fill="#f5a623" opacity="0.85"/>
+</svg>

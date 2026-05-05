@@ -1,4 +1,5 @@
 {% load static %}
+{% load socialaccount %}
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -9,37 +10,39 @@
     <link rel="stylesheet" href="{% static 'css/login_signup/login_signup.css' %}">
     <script src="{% static 'js/accounts/other.js' %}" defer></script>
 </head>
-<body>
-    <header>
-        <a href="{% url "DayLine_2_top:top" %}">
-            <div class="app-icon"><img src="{% static 'img/DayLine2.svg' %}" alt=""></div>
-        </a>
-        <div class="header-content">
-            <a href="{% url 'DayLine_2_top:contact' %}" id="contact">問い合わせ</a>
-            <a href="{% url 'DayLine_3_accounts:signup' %}" class="change-signup-login">サインアップ</a>
-        </div>
-    </header>
-    <main>
-        <div class="login-signup">
-            <div class="login-signup-header">ログイン</div>
-            <form method="POST" action="" id="signup-form" class="signup-login-form">
-                {% csrf_token %}
-                <div id="signup-form-inputs">
-                    <div class="name-mail">
-                        <input name="username" type="text" placeholder="メールアドレス">
-                        <input name="password" type="text" placeholder="パスワード">
+    <body>
+        <header>
+            <a href="{% url "DayLine_2_top:top" %}">
+                <div class="app-icon"><img src="{% static 'img/DayLine2.svg' %}" alt=""></div>
+            </a>
+            <div class="header-content">
+                <a href="{% url 'DayLine_2_top:contact' %}" id="contact">問い合わせ</a>
+                <a href="{% url 'DayLine_3_accounts:signup' %}" class="change-signup-login">サインアップ</a>
+            </div>
+        </header>
+        <main>
+            <div class="login-signup">
+                <div class="login-signup-header">ログイン</div>
+                <form method="POST" action="" id="signup-form" class="signup-login-form">
+                    {% csrf_token %}
+                    <div id="signup-form-inputs">
+                        <div class="name-mail">
+                            <p class="sginup-feeld-name">メールアドレス</p>
+                            <input name="username" type="text" placeholder="メールアドレス">
+                            <p class="sginup-feeld-name">パスワード</p>
+                            <input name="password" type="text" placeholder="パスワード">
+                        </div>
+                        {% if form.errors %}
+                            <p class="signup-error">ユーザー名かパスワードが間違っています。</p>
+                        {% endif %}
+                        <a href="{% url "DayLine_3_accounts:passfor" %}" id="password-forget">パスワードを忘れましたか？</a>
+                        <div>
+                            <button type="submit" class="login-submit" id="login-btn">ログイン</button>
+                        </div>
                     </div>
-                    {% if form.errors %}
-                        <p style="color: red;">ユーザー名かパスワードが間違っています。</p>
-                    {% endif %}
-                    <a href="{% url "DayLine_3_accounts:passfor" %}" id="password-forget">パスワードを忘れましたか？</a>
-                    <div>
-                        <button type="submit" class="login-submit" id="login-btn">ログイン</button>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </main>
-</body>
-
+                    <a href="{% provider_login_url 'google' %}">Googleでログイン</a>
+                </form>
+            </div>
+        </main>
+    </body>
 </html>

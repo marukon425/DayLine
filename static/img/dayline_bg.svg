@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="900" viewBox="0 0 1440 900">
+  <defs>
+    <filter id="blur" x="-10%" y="-10%" width="120%" height="120%">
+      <feGaussianBlur stdDeviation="40"/>
+    </filter>
+    <radialGradient id="g1" cx="30%" cy="100%" r="60%" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#f5c97a"/>
+      <stop offset="40%" stop-color="#f9a96e"/>
+      <stop offset="100%" stop-color="#f9a96e" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="g2" cx="80%" cy="90%" r="50%" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#f0b06a"/>
+      <stop offset="100%" stop-color="#f0b06a" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="g3" cx="50%" cy="70%" r="55%" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#f7c4a0"/>
+      <stop offset="100%" stop-color="#f7c4a0" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="g4" cx="20%" cy="60%" r="50%" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#e8b8c8"/>
+      <stop offset="100%" stop-color="#e8b8c8" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="g5" cx="70%" cy="30%" r="55%" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#c8b8e8"/>
+      <stop offset="100%" stop-color="#c8b8e8" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="g6" cx="50%" cy="0%" r="70%" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#b8c8f0"/>
+      <stop offset="40%" stop-color="#c8b8e0"/>
+      <stop offset="100%" stop-color="#c8b8e0" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="base" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%"   stop-color="#b0c0e8"/>
+      <stop offset="20%"  stop-color="#c8b4d8"/>
+      <stop offset="40%"  stop-color="#e8c0c8"/>
+      <stop offset="65%"  stop-color="#f5d0a0"/>
+      <stop offset="85%"  stop-color="#f8c878"/>
+      <stop offset="100%" stop-color="#f5b860"/>
+    </linearGradient>
+  </defs>
+
+  <g filter="url(#blur)">
+    <rect width="1440" height="900" fill="url(#base)"/>
+    <rect width="1440" height="900" fill="url(#g6)"/>
+    <rect width="1440" height="900" fill="url(#g5)"/>
+    <rect width="1440" height="900" fill="url(#g4)"/>
+    <rect width="1440" height="900" fill="url(#g3)"/>
+    <rect width="1440" height="900" fill="url(#g2)"/>
+    <rect width="1440" height="900" fill="url(#g1)"/>
+  </g>
+
+  <path d="M0 900 L0 640 L100 590 L220 650 L370 530 L500 610 L620 480 L740 570 L860 510 L990 640 L1120 560 L1250 610 L1370 570 L1440 590 L1440 900 Z" fill="rgba(180,160,200,0.28)"/>
+  <path d="M0 900 L0 700 L140 670 L280 700 L420 650 L560 690 L700 630 L840 680 L980 655 L1120 700 L1260 670 L1440 660 L1440 900 Z" fill="rgba(155,135,180,0.22)"/>
+</svg>

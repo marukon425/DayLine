@@ -472,7 +472,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // 月・週表示
     document.getElementById("change-month-week").addEventListener("change", (e) => {
-        console.log(document.getElementById("change-month-week").value)
         if (!document.getElementById("change-month-week").checked){
             calendar.changeView("dayGridMonth");
         }else{

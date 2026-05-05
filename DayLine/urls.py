@@ -26,7 +26,10 @@ urlpatterns = [
     path('accounts/', include('DayLine_3_accounts.urls')),
     # 自動リロード
     path("__reload__/", include("django_browser_reload.urls")),
+
+    path('allauth/', include('allauth.urls')),
     
 ]
+
 if settings.DEBUG:
     urlpatterns += static(settings.IMAGE_URL, document_root=settings.IMAGE_ROOT)
