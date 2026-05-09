@@ -223,3 +223,5 @@ LOGGING = {
 SOCIALACCOUNT_ADAPTER = 'allauth.socialaccount.adapter.DefaultSocialAccountAdapter'
 SESSION_ENGINE = 'django.contrib.sessions.backends.db'
 SESSION_SAVE_EVERY_REQUEST = True
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
