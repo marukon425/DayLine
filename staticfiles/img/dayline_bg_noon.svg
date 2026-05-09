@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="900" viewBox="0 0 1440 900">
+  <defs>
+    <linearGradient id="sC" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%"   stop-color="#1580c8"/>
+      <stop offset="50%"  stop-color="#48b8e8"/>
+      <stop offset="80%"  stop-color="#a0d8f5"/>
+      <stop offset="100%" stop-color="#e8f7ff"/>
+    </linearGradient>
+    <radialGradient id="sC_top" cx="70%" cy="10%" r="35%" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="1440" y2="900">
+      <stop offset="0%"   stop-color="white" stop-opacity="0.4"/>
+      <stop offset="100%" stop-color="white" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="sC_mid" cx="55%" cy="45%" r="50%" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="1440" y2="900">
+      <stop offset="0%"   stop-color="white" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="white" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- ベース青空グラデーション -->
+  <rect width="1440" height="900" fill="url(#sC)"/>
+
+  <!-- 上部の光の滲み -->
+  <rect width="1440" height="900" fill="url(#sC_top)"/>
+
+  <!-- 中央の光の滲み -->
+  <rect width="1440" height="900" fill="url(#sC_mid)"/>
+
+  <!-- オレンジアクセント（太陽） -->
+  <circle cx="1008" cy="90" r="6" fill="#f5a623" opacity="0.6"/>
+</svg>

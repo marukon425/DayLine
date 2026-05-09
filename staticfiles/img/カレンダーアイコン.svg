@@ -1,0 +1,22 @@
+<svg width="493" height="494" viewBox="0 0 493 494" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<path d="M474 320.161V119C474 86.4152 447.585 60 415 60H78C45.4152 60 19 86.4152 19 119V416C19 448.585 45.4152 475 78 475H415C447.585 475 474 448.585 474 416V409.763" stroke="#011D45" stroke-width="38" stroke-linecap="round"/>
+<rect x="12" y="158.086" width="468.762" height="38.6608" fill="#011D45"/>
+<line x1="121.5" y1="98.704" x2="121.5" y2="20.5" stroke="#011D45" stroke-width="41" stroke-linecap="round"/>
+<line x1="245.5" y1="98.704" x2="245.5" y2="20.5" stroke="#011D45" stroke-width="41" stroke-linecap="round"/>
+<line x1="370.5" y1="98.704" x2="370.5" y2="20.5" stroke="#011D45" stroke-width="41" stroke-linecap="round"/>
+<g id="Repeat group 1_inner" data-figma-trr="l4u1.45-0f">
+<line x1="93" y1="252" x2="119.435" y2="252" stroke="#011D45" stroke-width="38" stroke-linecap="round"/>
+</g>
+<use xlink:href="#Repeat%20group%201_inner" transform="translate(93.4302)"/>
+<use xlink:href="#Repeat%20group%201_inner" transform="translate(186.86)"/>
+<use xlink:href="#Repeat%20group%201_inner" transform="translate(280.29)"/>
+<g id="Repeat group 2_inner" data-figma-trr="l4u1.45-0f">
+<line x1="93" y1="324" x2="119.435" y2="324" stroke="#011D45" stroke-width="38" stroke-linecap="round"/>
+</g>
+<use xlink:href="#Repeat%20group%202_inner" transform="translate(93.4302)"/>
+<use xlink:href="#Repeat%20group%202_inner" transform="translate(186.86)"/>
+<use xlink:href="#Repeat%20group%202_inner" transform="translate(280.29)"/>
+<line x1="93" y1="396" x2="119.435" y2="396" stroke="#011D45" stroke-width="38" stroke-linecap="round"/>
+<line x1="186.43" y1="396" x2="212.865" y2="396" stroke="#011D45" stroke-width="38" stroke-linecap="round"/>
+<line x1="279.86" y1="396" x2="306.295" y2="396" stroke="#011D45" stroke-width="38" stroke-linecap="round"/>
+</svg>

@@ -1,0 +1,424 @@
+
+ul, li {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+input:focus, textarea:focus{
+    outline: none;
+}
+
+
+html, body{
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    color: rgb(1, 29, 69);
+}
+
+header{
+    display: flex;
+    padding: 0 10px;
+    height: 50px;
+    width: calc(100% - 20px);
+    gap: 20px;
+    align-items: center;
+    /* border-bottom: 1px solid rgba(122, 122, 122, 0.589); */
+}
+
+header img{
+    height: 35px;
+}
+
+main{
+    display: flex;
+    height: calc(100% - 35px);
+    position: relative;
+}
+
+.settings-sidebar{
+    width: 250px;
+    height: 100%;
+    display: block;
+    position: relative;
+    left: 0;
+    transition: 0.2s;
+}
+.settings-sidebar.active{
+    left: -250px;
+}
+@media (max-width: 780px) {
+    .settings-sidebar{
+        width: 100%;
+        background-color: white;
+        position: fixed;
+        z-index: 1000;
+    }
+    .settings-sidebar.active{
+        left: -100%;
+    }
+}
+
+.settings-sidebar ul li{
+    font-size: 15px;
+    padding: 15px 20px;
+    transition: 0.2s;
+    /* border-top-right-radius: 100px;
+    border-bottom-right-radius: 100px; */
+}
+.settings-sidebar ul li:hover{
+    background-color: aliceblue;
+}
+
+.now-category{
+    background-color: rgba(255, 166, 0, 0.155);
+    border-right: 5px solid orange;
+}
+
+.main-setting{
+    flex: 1;
+    height: 100%;
+}
+
+.room-main-setting{
+    height: calc(100%);
+    overflow: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.setting-space{
+    margin-top: 40px;
+}
+
+.setting-name{
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.setting-name{
+    margin-top: 0;
+}
+
+.setting-chunk{
+    border-radius: 20px;
+    width: 500px;
+    box-shadow: 4px 4px 10px 0 rgba(0, 0, 0, 0.094), -2px -2px 10px 0 rgba(0, 0, 0, 0.098);
+}
+
+.setting-area{
+    padding: 10px;
+}
+.area-bottom{
+    border: none;
+}
+
+.setting-area-name{
+    font-size: 15px;
+}
+
+.setting-area input{
+    width:calc(100% - 7.2px);
+    height: 50px;
+    border: none;
+    font-size: 16px;
+    border: 2px solid;
+    border-color: rgb(207, 207, 207);
+    border-radius: 10px;
+    margin-top: 10px;
+}
+.setting-area textarea{
+    resize: none;
+    width:calc(100% - 7.2px - 20px);
+    border: none;
+    font-size: 16px;
+    height: 70px;
+    margin-top: 10px;
+    padding: 10px;
+    border: 2px solid;
+    border-color: rgb(207, 207, 207);
+    border-radius: 10px;
+}
+
+.setting-input{
+    width:calc(100% - 7.2px);
+    height: 50px;
+    border: none;
+    font-size: 16px;
+    border: 2px solid;
+    border-color: rgb(207, 207, 207);
+    border-radius: 10px;
+    margin-top: 10px;
+}
+.description{
+    padding: 10px;
+    height: 70px;
+}
+
+.setting-area img{
+    position: relative;
+    left: 35%;
+    height:100px;
+    width: 130px;
+    object-fit:cover;
+    margin: 0 auto;
+    border: 2px solid rgb(207, 207, 207);
+    border-radius: 20px;
+}
+
+.bottom-space{
+    width: 100%;
+    margin-top: 100px;
+}
+
+.calendar-memmbers{
+    width: 50vw;
+    max-width: 600px;
+}
+
+.calendar-memmber-list{
+    display: flex;
+    align-items: center;
+    height: 50px;
+    border-radius: 10px;
+    transition: 0.2s;
+    position: relative;
+    border-bottom: 1px solid;
+    border-color: #e7e7e7;
+}
+.calendar-memmber-list:hover{
+    background-color: rgba(66, 87, 97, 0.089);
+}
+
+.memmber-icon{
+    margin-left: 10px;
+    display: flex;
+    align-items: center;
+}
+.memmber-icon img{
+    display: flex;
+    align-items: center;
+    position: static;
+    border: none;
+    height: 30px;
+    width: 30px;
+}
+
+.memmber-name{
+    margin-left: 10px;
+}
+
+.memmber-authority{
+    margin-right: auto;
+    margin-right: 10px;
+    position: relative;
+    text-align: center;
+    width: 90px;
+}
+
+.memmber-authority-tag{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px;
+    padding: 3px;
+    font-size: 13px;
+    flex-shrink: 0;
+    white-space: nowrap;
+    height: 25px;
+}
+
+.memmber-owner{
+    background-color: rgba(137, 43, 226, 0.150);
+}
+.memmber-owner:hover{
+    border: 1px solid;
+    border-color: rgb(137, 43, 226);
+}
+.memmber-admin{
+    background-color: rgba(0, 128, 0, 0.150);
+    color: green;
+}
+.memmber-admin:hover{
+    border: 1px solid;
+    border-color: green;
+}
+.memmber-memmber{
+    background-color: rgba(0, 183, 255, 0.150);
+    color: rgb(0, 183, 255);
+}
+.memmber-memmber:hover{
+    border: 1px solid;
+    border-color: rgb(0, 183, 255);
+}
+
+.memmber-guest{
+    background-color: rgb(234, 0, 255, 0.150);
+    color: rgb(234, 0, 255);
+}
+.memmber-guest:hover{
+    border: 1px solid;
+    border-color: rgb(234, 0, 255);
+}
+
+.setting-save-cancel{
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    height: 40px;
+    padding-bottom: 10px;
+}
+
+.cancel-btn{
+    font-size: 12px;
+    padding: 0 5px;
+    height: 100%;
+    border: 1px solid;
+    border-color: #0a1a3a4e;
+    border-radius: 100px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.2s;
+    white-space: nowrap;
+}
+.save-btn{
+    color: white !important;
+    background-color: #0A1A3A;
+    border: none;
+    border-radius: 100px !important;
+    width: 80px !important;
+    height: 100%;
+    transition: 0.2s;
+}
+
+.authority-select{
+    position: absolute;
+    z-index: 600;
+    border-radius: 10px;
+    background-color: white;
+    right: 0px;
+    bottom: 40px;
+    width: 100px;
+    display: flex;
+    justify-content: center;
+    padding: 5px;
+    box-shadow: 4px 4px 10px 0 rgba(0, 0, 0, 0.094), -2px -2px 10px 0 rgba(0, 0, 0, 0.098);
+    display: none;
+}
+.authority-select ul{
+    gap: 3px;
+}
+.authority-select ul li{
+    text-align: center;
+    margin: 10px 0;
+    border-radius: 5px;
+    padding: 3px;
+    font-size: 13px;
+    width: 70px;
+}
+.authority-select ul li span{
+}
+
+.delete-member{
+    height: 25px;
+    margin-right: 20px;
+}
+.delete-member img{
+    height: 25px;
+    width: auto;
+    border: none;
+    margin: auto;
+}
+
+
+.memmbers-table{
+    width: 60vw;
+    border-collapse: collapse;
+    
+}
+
+.memmbers-table tr th{
+    text-align: left;
+}
+
+.memmbers-table tr{
+    border-bottom: 1px solid;
+    border-color: #e0e0e0;
+    height: 60px;
+}
+
+.memmber-authority-area{
+    display: flex;
+}
+
+.delete-memmber{
+    border: 1px solid;
+    border-color: #5c0000;
+    padding: 5px;
+    border-radius: 5px;
+    background: none;
+    color: rgb(255, 117, 117);
+}
+
+.not-delete{
+    background-color: #c3c3c47a;
+    border-color: #5c000074;
+    color: rgba(255, 117, 117, 0.333);
+}
+
+#memmber-delete{
+    color: rgb(255, 207, 207);
+    border-color: #75757569;
+}
+.authority-btn{
+    display: flex;
+}
+.authority-btn img{
+    border: none;
+    height: 20px;
+    width: 20px;
+    padding: 5px;
+    transition: 0.2s;
+}
+
+.authority-btn img:hover{
+    background-color: #e0e0e02a;
+}
+
+.save-cancel-btn{
+    display: flex;
+    gap: 10px;
+}
+
+.save{
+    background-color: #0A1A3A;
+    color: white;
+    padding: 8px 15px;
+    border-radius: 10px;
+    transition: 0.2s;
+}
+.save:hover{
+    background-color: orange;
+    border-color: orange;
+}
+
+.camcel{
+    border: 1px solid rgb(199, 199, 199);
+    background-color: rgba(248, 248, 248, 0.719);
+    padding: 8px;
+    border-radius: 8px;
+}
+
+#authority-selecter{
+    height: 40px;
+    width: 100px;
+    border-radius: 8px;
+    border-color: #c3c3c4;
+    font-weight: 600;
+}

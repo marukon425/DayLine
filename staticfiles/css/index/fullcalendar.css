@@ -1,0 +1,141 @@
+/* フルカレンダーのcss */
+
+.fc-scroller{
+    overflow: visible !important;
+}
+.fc .fc-col-header-cell {
+  border-bottom: none;
+}
+/* === FullCalendar 外枠 完全消去セット === */
+
+.fc {
+  border: 2px solid #ff0000;   /* 色・太さ */
+  /* overflow: hidden;        角丸を効かせるため */
+  border: none;
+  box-shadow: 4px 4px 10px 0 rgba(0, 0, 0, 0.094), -2px -2px 10px 0 rgba(0, 0, 0, 0.098);
+}
+.fc-theme-standard .fc-scrollgrid{
+  border: none !important;
+}
+
+/* 下の線（最終行）を消す */
+.fc-theme-standard tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* 右の線（最終列）を消す */
+.fc-theme-standard tbody td:last-child {
+  border-right: none;
+}
+
+/* ============================================= */
+
+/* 日にちの数字の中央寄せ */
+.fc-daygrid-day-number{
+    margin: auto;
+}
+
+/* イベントの棒の高さ */
+.fc-event{
+    height: 15px;
+    z-index: 2;
+}
+.fc-event-title{
+    font-size: 13px;
+    height: 19px;
+    z-index: 1;
+}
+
+
+/* 日付セル */
+.fc-daygrid-day {
+  transition: background-color 0.1s ease;
+}
+/* 各日にちセルをホバーしたとき */
+/* .fc-daygrid-day:hover {
+    background-color: rgba(0, 0, 0, 0.078);
+} */
+/* 今日の日にちセルの設定 */
+.fc-day-today {
+    background-color: rgb(255, 255, 255) !important;
+    transition: background-color 0.1s ease;
+}
+/* イベントタイトルを縦中央に */
+.fc .fc-daygrid-event .fc-event-main {
+  display: flex;
+  align-items: center;      /* ← これで縦中央 */
+  /* 横も中央にしたければ次を有効化 */
+  /* justify-content: center; */
+  height: 100%;
+}
+
+/* タイトルの上下の余白が影響している場合は0にする */
+.fc .fc-daygrid-event .fc-event-title {
+  padding: 0;
+}
+
+
+/* 初期の日付の背景色を消す */
+.fc-bg-event {
+  background-color: transparent !important;
+}
+.fc .fc-non-business{
+  background-color: transparent !important;
+}
+
+.fc table{
+  font-size: 12px;
+}
+.fc-event-title{
+  font-size: 10px;
+}
+
+
+
+
+
+/* 日曜日 */
+.fc-day-sun .fc-daygrid-day-number {
+    color: red;
+}
+
+/* 土曜日 */
+.fc-day-sat .fc-daygrid-day-number {
+    color: rgb(0, 132, 255);
+}
+
+
+.fc-daygrid-event-harness a{
+  transition: 0.2s;
+}
+.fc-daygrid-event-harness a:hover{
+  transform:translateY(-1px);
+  box-shadow: 0px 10px 13px 1px rgba(0, 0, 0, 0.35);
+}
+
+
+
+/* デフォルトの背景ハイライトを消す */
+.fc-day-today {
+  background: none !important;
+}
+/* 今日の日付数字だけに丸をつける */
+.fc-day-today .fc-daygrid-day-number {
+  background-color: #ff9900;
+  color: white;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 500;
+  text-decoration: none; /* FullCalendarがaタグにするので */
+  white-space: nowrap;
+}
+
+.fc-col-header-cell{
+  border-left: none !important;
+  border-right: none !important;
+  border-bottom: 1px solid #e0e0e0 !important;
+}

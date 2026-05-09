@@ -1,0 +1,58 @@
+/* static/css/top/header.css */
+header {
+    display: flex;
+    align-items: center;
+    width: calc(100vw - 20px);
+    height: 50px;
+    padding: 10px;
+    overflow: hidden;
+    position: fixed;
+    z-index: 5000;
+    background-color: rgba(255, 255, 255, 0.452);
+    top: 0;
+}
+
+.app-title {
+    margin-right: auto;
+}
+
+.app-title img {
+    height: 25px;
+}
+
+.header-content {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+
+    display: flex;
+    align-items: center;
+    margin-left: auto;
+    font-size: 12px;
+    gap: 15px;
+}
+
+.header-content a {
+    font-weight: 600;
+    transition: 0.2s;
+}
+
+#app-login:hover{
+    /* ログインボタンのスタイル */
+    color: orange;
+}
+
+#app-start {
+    /* 始めてみるボタンのスタイル */
+    display: flex;
+    align-items: center;
+    color: white;
+    background-color: rgb(1, 29, 69);
+    padding: 14px;
+    border-radius: 8px;
+    transition: 0.2s;
+}
+
+#app-start:hover{
+    background-color: orange;
+}

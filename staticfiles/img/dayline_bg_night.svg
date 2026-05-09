@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="900" viewBox="0 0 1440 900">
+  <defs>
+    <linearGradient id="night" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%"   stop-color="#010d24"/>
+      <stop offset="60%"  stop-color="#01193a"/>
+      <stop offset="100%" stop-color="#011d45"/>
+    </linearGradient>
+    <radialGradient id="moon_glow" cx="75%" cy="18%" r="25%" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="1440" y2="900">
+      <stop offset="0%"   stop-color="#e8f0ff" stop-opacity="0.25"/>
+      <stop offset="100%" stop-color="#e8f0ff" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <rect width="1440" height="900" fill="url(#night)"/>
+  <rect width="1440" height="900" fill="url(#moon_glow)"/>
+
+  <!-- 星 -->
+  <g fill="white">
+    <circle cx="90"   cy="68"   r="1.5" opacity="0.7"/>
+    <circle cx="248"  cy="36"   r="1.8" opacity="0.8"/>
+    <circle cx="405"  cy="90"   r="1.3" opacity="0.6"/>
+    <circle cx="585"  cy="45"   r="1.6" opacity="0.75"/>
+    <circle cx="788"  cy="81"   r="1.3" opacity="0.65"/>
+    <circle cx="945"  cy="27"   r="1.8" opacity="0.8"/>
+    <circle cx="1125" cy="63"   r="1.5" opacity="0.7"/>
+    <circle cx="1283" cy="99"   r="1.3" opacity="0.6"/>
+    <circle cx="1373" cy="36"   r="1.6" opacity="0.75"/>
+    <circle cx="180"  cy="180"  r="1.3" opacity="0.55"/>
+    <circle cx="495"  cy="203"  r="1.5" opacity="0.6"/>
+    <circle cx="878"  cy="171"  r="1.3" opacity="0.55"/>
+    <circle cx="1215" cy="189"  r="1.5" opacity="0.6"/>
+    <circle cx="315"  cy="293"  r="1.1" opacity="0.45"/>
+    <circle cx="698"  cy="261"  r="1.3" opacity="0.5"/>
+    <circle cx="1035" cy="279"  r="1.1" opacity="0.45"/>
+    <circle cx="54"   cy="360"  r="1.1" opacity="0.4"/>
+    <circle cx="450"  cy="338"  r="1.3" opacity="0.45"/>
+    <circle cx="810"  cy="315"  r="1.1" opacity="0.4"/>
+    <circle cx="1170" cy="347"  r="1.3" opacity="0.45"/>
+    <circle cx="1395" cy="320"  r="1.1" opacity="0.4"/>
+  </g>
+
+  <!-- 月 -->
+  <circle cx="1080" cy="162" r="63" fill="#e8f0ff" opacity="0.18"/>
+  <circle cx="1080" cy="162" r="45" fill="#e8f0ff" opacity="0.22"/>
+  <circle cx="1098" cy="153" r="36" fill="#01193a" opacity="0.6"/>
+
+  <!-- オレンジアクセント（深夜の灯り） -->
+  <circle cx="135"  cy="878" r="18" fill="#f5a623" opacity="0.35"/>
+  <circle cx="135"  cy="878" r="9"  fill="#f5a623" opacity="0.7"/>
+  <circle cx="1305" cy="846" r="14" fill="#f5a623" opacity="0.3"/>
+  <circle cx="1305" cy="846" r="7"  fill="#f5a623" opacity="0.6"/>
+
+  <!-- 地平線 -->
+  <line x1="0" y1="833" x2="1440" y2="833" stroke="rgb(1,29,69)" stroke-width="1" opacity="0.5"/>
+
+  <!-- 時刻ライン -->
+  <line x1="0" y1="405" x2="1440" y2="405" stroke="white" stroke-width="0.5" opacity="0.05"/>
+  <line x1="0" y1="630" x2="1440" y2="630" stroke="white" stroke-width="0.4" opacity="0.04"/>
+</svg>

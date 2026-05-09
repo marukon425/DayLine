@@ -1,0 +1,250 @@
+.ai-chat-wrapper {
+    width: 0;
+    overflow: hidden;  /* 追加 */
+    transition: width 0.2s;
+}
+.ai-chat-wrapper.active {
+    width: 350px;
+}
+
+@media (max-width: 780px) {
+    .ai-chat-wrapper.active {
+        width: 100%;
+    }
+}
+
+.ai-chat{
+    height: 100%;
+    width: 350px;
+    position: relative;
+    z-index: 4000;
+    /* left: 500px; */
+    transition: 0.2s;
+}
+.ai-chat.active{
+    left: 0;
+}
+
+@media (max-width: 780px) {
+    .ai-chat {
+        width: 100%;
+    }
+}
+
+.ai-chat-chat{
+    display: block;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    height: 100%;
+}
+
+.chat-input{
+    left: 0;
+    position: absolute;
+    width: 100%;
+}
+
+@media (max-width: 780px) {
+    .chat-input {
+        width: 60%;
+        margin: auto 0;
+        left: 70px;
+    }
+}
+
+.chat-input-child{
+    position: absolute;
+    bottom: 30px;
+    width: 100%;
+}
+
+@media (max-width: 780px) {
+    .chat-input-child{
+        bottom: 50px;
+    }
+}
+
+.chat-input-textarea{
+    /* 
+    position: relative;
+    */
+    
+    margin-top: auto;
+    width: 100%;
+    border-radius: 30px; 
+    background-color: rgb(64, 64, 64);
+    position: relative;
+    font-size: 1rem;
+    line-height: 1.8;
+
+    max-height: 200px;   /* ← 上限 */
+}
+
+.chat-input-textarea-dummy{
+    /* overflow: hidden;
+    visibility: hidden;
+    box-sizing: border-box;
+    padding: 5px 15px;
+    min-height: 120px;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    border: 1px solid; */
+
+    overflow: hidden;
+    visibility: hidden;
+    box-sizing: border-box;
+    padding: 5px 15px;
+    min-height: 40px;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    border: 1px solid;
+
+    max-height: 200px;   /* ← 上限 */
+
+}
+
+.chat-input-textarea textarea{
+    /* position: absolute;
+    top: 0;
+    left: 0;
+    display: block;
+    overflow: hidden;
+    box-sizing: border-box;
+    height: 100%;
+    width: 80%;
+    resize: none;
+    background: none;
+    padding: 5px;
+    border: 1px solid;
+    margin-left: 10px; */
+
+    position: absolute;
+    top: 0;
+    left: 0;
+    box-sizing: border-box;
+    padding: 5px 15px;
+    width: 94%;
+    height: 100%;
+    background-color: transparent;
+    border-radius: 4px;
+    color: inherit;
+    font: inherit;
+    letter-spacing: inherit;
+    resize: none;
+    font-size: 15px;
+    color: aliceblue;
+    border: none;
+
+    max-height: 200px;   /* ← 上限 */
+    overflow-y: auto;    /* ← 超えたらスクロール */
+}
+
+.chat-input-textarea textarea::-webkit-scrollbar{
+    display: none;
+}
+
+.chat-input-textarea textarea::placeholder {
+    color: #ffffff;
+}
+.chat-input-textarea textarea:focus{
+    outline:none;
+}
+
+.chat-input-textarea button{
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    height: 30px;
+    width: 30px;
+    border: none;
+    padding: 0;
+    background: none;
+    margin-left: 90%;
+}
+
+@media (max-width: 780px) {
+    .chat-input-textarea button{
+        margin-left: 0;
+        right: 5px;
+    }
+}
+
+.chat-input-textarea button img{
+    height: 30px;
+    width: 30px;
+}
+.chat-input-textarea button:hover ~ .chat-input-textarea button img{
+    background-image: url(../../img/ai-chat-submit-2.svg);
+}
+
+.chat-for-ai{
+    margin-right: auto;
+    max-width: 95%;
+    overflow-wrap: normal;
+    margin-bottom: 10px;
+    overflow: hidden;
+    height: auto;
+}
+.chat-for-user{
+    text-align: left;
+    width: auto;
+    margin-left: 10px;
+    overflow-wrap: normal;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: flex-end;
+    overflow: hidden;
+    height: auto;
+}
+
+.chat-for-ai p{
+    max-width: 100%;
+    display:inline-block;
+    margin: 0;
+    padding: 5px;
+    background-color: rgb(139, 139, 139);
+    border-radius: 5px;
+    color: rgb(254, 254, 254);
+}
+.chat-for-user p{
+    text-align: right;
+    max-width: 100%;
+    display:inline-block;
+    margin-left: auto;
+    padding: 5px;
+    background-color: rgb(206, 206, 206);
+    border-radius: 5px;
+    color: rgb(255, 255, 255);
+}
+
+.ai-chat-header{
+    position: absolute;
+    z-index: 5001;
+    top: 0;
+    width: 100%;
+    background-color: #ffffff;
+    /* height: 30px; */
+    display: flex;
+    align-items: center;
+}
+
+.ai-chat-close-btn{
+    margin-left: auto;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-self: center;
+    transition: 0.2s;
+    border-radius: 100px;
+}
+.ai-chat-close-btn:hover{
+background-color: rgba(160, 160, 160, 0.337);
+}
+.ai-chat-close-btn img{
+    width: auto;
+    height: 15px;
+    margin: auto;
+}
