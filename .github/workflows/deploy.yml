@@ -3,7 +3,7 @@ name: Deploy to EC2
 on:
   push:
     branches:
-      - ローカル開発環境
+      - aws開発環境
 
 jobs:
   deploy:
