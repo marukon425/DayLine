@@ -1,0 +1,26 @@
+name: Deploy to EC2
+
+on:
+  push:
+    branches:
+      - ローカル開発環境
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Deploy to EC2
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ubuntu
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            cd /home/ubuntu/DayLine
+            source venv/bin/activate
+            git pull origin main
+            pip install -r requirements.txt
+            DJANGO_SETTINGS_MODULE=DayLine.settings.production python manage.py migrate
+            DJANGO_SETTINGS_MODULE=DayLine.settings.production python manage.py collectstatic --noinput
+            sudo systemctl restart gunicorn
