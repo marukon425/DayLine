@@ -53,8 +53,10 @@ class Repeat(models.Model):
     def __str__(self):
         return self.repeat_name
 # ルーム
+def user_icon_upload_path(instance, filename):
+    ext = filename.rsplit('.', 1)[-1]
+    return f'images/calendar_icons/{instance.id}/{uuid.uuid4()}.{ext}'
 class Room(models.Model):
-
     class Meta:
         verbose_name = "カレンダー"
         verbose_name_plural = "カレンダー"
@@ -78,7 +80,7 @@ class Room(models.Model):
 
     room_img = models.ImageField(
         verbose_name="ルームアイコン",
-        upload_to='images/calendar_icons',
+        upload_to=user_icon_upload_path,
         default="images/defaults/calendar/defalt_calendar_img.png",
         null=True,
         blank=True
