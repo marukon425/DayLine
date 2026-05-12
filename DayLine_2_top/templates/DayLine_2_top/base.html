@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{% block title %}DayLine{% endblock %}</title>
   <link rel="stylesheet" href="{% static 'css/DayLine_style.css' %}">
-  {% block extra_css %}{% endblock %}
+  { % block extra_css %}{% endblock %}
       {% if GA_MEASUREMENT_ID %}
     <script async src="https://www.googletagmanager.com/gtag/js?id={{ GA_MEASUREMENT_ID }}"></script>
     <script>
