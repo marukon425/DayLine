@@ -19,7 +19,7 @@ jobs:
           script: |
             cd /home/ubuntu/DayLine
             source venv/bin/activate
-            git pull origin main
+            git pull origin main --rebase
             pip install -r requirements.txt
             DJANGO_SETTINGS_MODULE=DayLine.settings.production python manage.py migrate
             DJANGO_SETTINGS_MODULE=DayLine.settings.production python manage.py collectstatic --noinput
