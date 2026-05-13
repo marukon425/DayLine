@@ -7,6 +7,12 @@ import random
 # Create your models here.
 
 # ユーザー情報
+def user_icon_upload_path(instance, filename):
+    ext = filename.rsplit('.', 1)[-1]
+    return f'images/user_icons/{instance.id}/{uuid.uuid4()}.{ext}'
+
+def get_default_icon():
+    return f'images/defaults/user_icon/defalt-icon-{random.randint(1, 10)}.svg'
 class CustomUser(AbstractUser):
     # Userモデルを継承したカスタムユーザーモデル
     id = models.UUIDField(
@@ -39,8 +45,9 @@ class CustomUser(AbstractUser):
     )
 
     icon = models.ImageField(
-        upload_to='images/user_icons',
-        default=f'images/defaults/user_icon/defalt-icon-{random.randint(1, 10)}.svg',
+        #アイコンのファイル名がほかのユーザーのファイル名と重複しないようにする
+        upload_to=user_icon_upload_path,
+        default=get_default_icon,
         blank=True, 
         null=True
     )

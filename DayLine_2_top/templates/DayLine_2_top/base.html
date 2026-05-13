@@ -6,7 +6,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{% block title %}DayLine{% endblock %}</title>
   <link rel="stylesheet" href="{% static 'css/DayLine_style.css' %}">
+  <link rel="icon" href="{% static "img/favicon.ico" %}" >
+
   {% block extra_css %}{% endblock %}
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-XCVLSJVZG2"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-XCVLSJVZG2');
+</script>
 </head>
 <body>
   <header>
