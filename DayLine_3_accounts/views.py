@@ -14,9 +14,19 @@ from django.contrib.auth.views import PasswordResetView, PasswordResetDoneView, 
 # ログイン
 from django.contrib.auth.views import LoginView
 from django.contrib.auth.forms import SetPasswordForm
+
+
 class LoginView(LoginView):
     template_name = 'login.html'
     next_page = reverse_lazy('DayLine_1_DayLine:index')
+    
+    def form_valid(self, form):
+        remember = self.request.POST.get('remember')
+        if remember:
+            self.request.session.set_expiry(60 * 60 * 24 * 30)  # 30日
+        else:
+            self.request.session.set_expiry(0)  # ブラウザ閉じたら終了
+        return super().form_valid(form)
 
 
 # サインアップ

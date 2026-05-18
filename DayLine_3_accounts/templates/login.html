@@ -36,6 +36,7 @@
                         {% if form.errors %}
                             <p class="signup-error">ユーザー名かパスワードが間違っています。</p>
                         {% endif %}
+                        <p><input type="checkbox" name="remember" id="remember"><label for="remember">ログインしたままにする</label></p>
                         <a href="{% url "DayLine_3_accounts:passfor" %}" id="password-forget">パスワードを忘れましたか？</a>
                         <div>
                             <button type="submit" class="login-submit" id="login-btn">ログイン</button>
