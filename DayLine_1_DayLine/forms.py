@@ -206,7 +206,8 @@ class EditRoomForm(forms.ModelForm):
                 "placeholder": "説明"
             }),
             'room_img': forms.FileInput(attrs={
-                'style': 'display: none;'  # 隠す
+                'style': 'display: none;',  # 隠す
+                'class': 'edit-room-icon'
             })
         }
 

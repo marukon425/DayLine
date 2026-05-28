@@ -6,6 +6,7 @@ import sys
 
 def main():
     """Run administrative tasks."""
+    # ここでローカルとawsの判別をしてる(ローカルとawsの.envファイルそれぞれに切り替えスイッチ的なキーがある)
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'DayLine.settings.local')
     try:
         from django.core.management import execute_from_command_line

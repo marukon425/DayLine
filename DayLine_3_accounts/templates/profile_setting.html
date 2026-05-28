@@ -73,31 +73,27 @@
     </aside>
 
     <!-- メインコンテンツ -->
+<!-- メインコンテンツ -->
     <main class="setting-main">
         <p class="setting-page-title">プロフィール設定</p>
         <p class="setting-page-sub">アカウント情報を管理します</p>
 
-        <!-- アバターカード -->
-        <div class="setting-card">
-            <div class="avatar-row">
-                <div class="avatar-wrap">
-                    <img class="profiele-icon-img" src="{{ object.icon.url }}" alt="">
-                    <input class="edit-icon" name="icon" accept="image/*" type="file" style="display:none;">
-                    <div class="avatar-cam">
-                        <svg viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
-                    </div>
-                </div>
-                <div class="avatar-info">
-                    <p class="avatar-name">{{ name }}</p>
-                    <p class="avatar-hint">クリックして画像を変更</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- フォームカード -->
         <div class="setting-card">
             <form class="profile-settings-form" action="" method="POST" enctype="multipart/form-data">
                 {% csrf_token %}
+                <div class="avatar-row">
+                    <div class="avatar-wrap">
+                        <img class="profiele-icon-img" src="{{ object.icon.url }}" alt="">
+                        <div class="avatar-cam">
+                            <svg viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+                        </div>
+                    </div>
+                    <div class="avatar-info">
+                        <p class="avatar-name">{{ name }}</p>
+                        <p class="avatar-hint">クリックして画像を変更</p>
+                    </div>
+                </div>
+                {{ form.icon }}
                 <div class="form-grid">
                     <div class="fg">
                         <label>名前</label>

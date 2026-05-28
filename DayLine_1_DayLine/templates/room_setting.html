@@ -57,32 +57,28 @@
         <p class="setting-page-sub">カレンダーの基本情報を管理します</p>
 
         {% if is_admin %}
-        <!-- アイコンカード -->
-        <div class="setting-card">
-            <div class="room-icon-row">
-                <img class="room-icon" src="{{ object.room_img.url }}" alt="">
-                <input class="edit-room-icon" type="file" name="room_img" accept="image/*" style="display:none;">
-                <div class="room-icon-info">
-                    <p class="room-icon-label">カレンダーアイコン</p>
-                    <span class="room-icon-hint">推奨サイズ: 512 × 512px</span>
-                    <button type="button" class="btn-icon-change" onclick="document.querySelector('.edit-room-icon').click()">
-                        <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-                        画像を変更
-                    </button>
-                </div>
-            </div>
-        </div>
-
         <!-- フォームカード -->
         <div class="setting-card">
             <form action="{% url 'DayLine_1_DayLine:settingroom' object.pk %}" method="POST" enctype="multipart/form-data">
                 {% csrf_token %}
+                <!-- アイコン変更ボタンをformの中に移動 -->
+                <div class="room-icon-row">
+                    <img class="room-icon" id="preview-img" src="{{ object.room_img.url }}" alt="">
+                    <div class="room-icon-info">
+                        <p class="room-icon-label">カレンダーアイコン</p>
+                        <span class="room-icon-hint">推奨サイズ: 512 × 512px</span>
+                        <button type="button" class="btn-icon-change" onclick="document.querySelector('[name=room_img]').click()">
+                            画像を変更
+                        </button>
+                    </div>
+                </div>
+                {{ form.room_img }}  <!-- これがform内のfile input -->
                 <div class="fg">
                     <label>ルーム名</label>
                     {{ form.room_name }}
                 </div>
                 <div class="fg">
-                    <label>説明 <span class="opt-badge">任意</span></label>
+                    <label>説明</label>
                     {{ form.room_description }}
                 </div>
                 <div class="form-actions">

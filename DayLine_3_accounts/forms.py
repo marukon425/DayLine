@@ -70,7 +70,8 @@ class AccountSettingForm(forms.ModelForm):
                 "rows": 3
             }),
             'icon': forms.FileInput(attrs={
-                'style': 'display: none;'  # 隠す
+                'style': 'display: none;',  # 隠す
+                'class': 'edit-icon'
             })
         }
     

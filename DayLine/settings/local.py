@@ -30,3 +30,6 @@ STORAGES = {
 }
 
 INSTALLED_APPS = [app for app in INSTALLED_APPS if app != 'storages']
+
+MEDIA_ROOT = BASE_DIR / 'media'
+MEDIA_URL = '/media/'

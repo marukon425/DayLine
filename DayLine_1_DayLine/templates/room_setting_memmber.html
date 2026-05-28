@@ -82,7 +82,7 @@
                                     <img class="member-avatar" src="{{ memmber.user.icon.url }}" alt="">
                                     <div>
                                         {% if memmber.user.username == request.user.username %}
-                                        <span class="member-you">あなた</span>
+                                        <span class="member-you" value="{{memmber.authority.authority_code}}">あなた</span>
                                         {% endif %}
                                         <div class="member-name">{{ memmber.user.username }}</div>
                                     </div>
@@ -104,7 +104,8 @@
                                 {% endif %}
                             </td>
                             <td>
-                                {% if memmber.authority.authority_code == "owner" %}
+                                <!-- 削除ボタン -->
+                                {% if memmber.authority.authority_code == "owner" or memmber.user.username == request.user.username%}
                                 <button class="btn-delete-member btn-delete-disabled" disabled>
                                     <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg>
                                 </button>
