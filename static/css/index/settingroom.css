@@ -1,424 +1,299 @@
+/* =============================================
+   settingroom.css  - ルーム設定画面（共通）
+   ============================================= */
 
-ul, li {
-    list-style: none;
-    padding: 0;
-    margin: 0;
+ul, li { list-style: none; padding: 0; margin: 0; }
+input:focus, textarea:focus, select:focus { outline: none; }
+
+/* ===== モバイルタブナビ（PC非表示） ===== */
+.tab-nav {
+    display: none;
+    background: #fff;
+    border-bottom: 1px solid #eee;
+    overflow-x: auto;
+    scrollbar-width: none;
+    position: sticky;
+    top: 0;
+    z-index: 100;
 }
-
-input:focus, textarea:focus{
-    outline: none;
-}
-
-
-html, body{
-    margin: 0;
-    padding: 0;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-    color: rgb(1, 29, 69);
-}
-
-header{
+.tab-nav::-webkit-scrollbar { display: none; }
+.tab-inner { display: flex; min-width: max-content; }
+.tab-back {
     display: flex;
-    padding: 0 10px;
-    height: 50px;
-    width: calc(100% - 20px);
-    gap: 20px;
     align-items: center;
-    /* border-bottom: 1px solid rgba(122, 122, 122, 0.589); */
+    gap: 6px;
+    padding: 13px 16px;
+    font-size: 13px;
+    font-weight: 600;
+    color: rgb(1,29,69);
+    text-decoration: none;
+    border-bottom: 2px solid transparent;
+    border-right: 1px solid #eee;
+    white-space: nowrap;
 }
-
-header img{
-    height: 35px;
-}
-
-main{
+.tab-back svg { width: 15px; height: 15px; stroke: currentColor; stroke-width: 2.5; fill: none; }
+.tab-item {
     display: flex;
-    height: calc(100% - 35px);
-    position: relative;
+    align-items: center;
+    gap: 6px;
+    padding: 13px 16px;
+    font-size: 13px;
+    color: #999;
+    text-decoration: none;
+    border-bottom: 2px solid transparent;
+    white-space: nowrap;
+    transition: .15s;
+}
+.tab-item svg { width: 15px; height: 15px; stroke: currentColor; stroke-width: 2; fill: none; opacity: .7; }
+.tab-active { color: rgb(1,29,69); border-bottom-color: #ffa500; font-weight: 600; }
+.tab-active svg { opacity: 1; }
+
+/* ===== レイアウト ===== */
+.setting-layout {
+    display: flex;
+    max-width: 960px;
+    margin: 0 auto;
+    min-height: 100vh;
 }
 
-.settings-sidebar{
-    width: 250px;
-    height: 100%;
-    display: block;
-    position: relative;
-    left: 0;
-    transition: 0.2s;
-}
-.settings-sidebar.active{
-    left: -250px;
-}
-@media (max-width: 780px) {
-    .settings-sidebar{
-        width: 100%;
-        background-color: white;
-        position: fixed;
-        z-index: 1000;
-    }
-    .settings-sidebar.active{
-        left: -100%;
-    }
-}
-
-.settings-sidebar ul li{
-    font-size: 15px;
-    padding: 15px 20px;
-    transition: 0.2s;
-    /* border-top-right-radius: 100px;
-    border-bottom-right-radius: 100px; */
-}
-.settings-sidebar ul li:hover{
-    background-color: aliceblue;
-}
-
-.now-category{
-    background-color: rgba(255, 166, 0, 0.155);
-    border-right: 5px solid orange;
-}
-
-.main-setting{
-    flex: 1;
-    height: 100%;
-}
-
-.room-main-setting{
-    height: calc(100%);
-    overflow: auto;
+/* ===== サイドバー ===== */
+.setting-sidebar {
+    width: 220px;
+    min-width: 220px;
+    background: #fff;
+    border-right: 1px solid #eee;
     display: flex;
     flex-direction: column;
-    align-items: center;
+    padding: 18px 0;
+    position: sticky;
+    top: 0;
+    height: 100vh;
 }
-
-.setting-space{
-    margin-top: 40px;
-}
-
-.setting-name{
-    font-size: 15px;
-    font-weight: 600;
-}
-
-.setting-name{
-    margin-top: 0;
-}
-
-.setting-chunk{
-    border-radius: 20px;
-    width: 500px;
-    box-shadow: 4px 4px 10px 0 rgba(0, 0, 0, 0.094), -2px -2px 10px 0 rgba(0, 0, 0, 0.098);
-}
-
-.setting-area{
-    padding: 10px;
-}
-.area-bottom{
-    border: none;
-}
-
-.setting-area-name{
-    font-size: 15px;
-}
-
-.setting-area input{
-    width:calc(100% - 7.2px);
-    height: 50px;
-    border: none;
-    font-size: 16px;
-    border: 2px solid;
-    border-color: rgb(207, 207, 207);
-    border-radius: 10px;
-    margin-top: 10px;
-}
-.setting-area textarea{
-    resize: none;
-    width:calc(100% - 7.2px - 20px);
-    border: none;
-    font-size: 16px;
-    height: 70px;
-    margin-top: 10px;
-    padding: 10px;
-    border: 2px solid;
-    border-color: rgb(207, 207, 207);
-    border-radius: 10px;
-}
-
-.setting-input{
-    width:calc(100% - 7.2px);
-    height: 50px;
-    border: none;
-    font-size: 16px;
-    border: 2px solid;
-    border-color: rgb(207, 207, 207);
-    border-radius: 10px;
-    margin-top: 10px;
-}
-.description{
-    padding: 10px;
-    height: 70px;
-}
-
-.setting-area img{
-    position: relative;
-    left: 35%;
-    height:100px;
-    width: 130px;
-    object-fit:cover;
-    margin: 0 auto;
-    border: 2px solid rgb(207, 207, 207);
-    border-radius: 20px;
-}
-
-.bottom-space{
-    width: 100%;
-    margin-top: 100px;
-}
-
-.calendar-memmbers{
-    width: 50vw;
-    max-width: 600px;
-}
-
-.calendar-memmber-list{
+.sidebar-logo { padding: 0 18px 16px; border-bottom: 1px solid #eee; margin-bottom: 10px; }
+.sidebar-logo img { height: 22px; }
+.sidebar-back {
     display: flex;
     align-items: center;
-    height: 50px;
+    gap: 8px;
+    padding: 9px 14px;
+    margin: 2px 8px;
     border-radius: 10px;
-    transition: 0.2s;
-    position: relative;
-    border-bottom: 1px solid;
-    border-color: #e7e7e7;
-}
-.calendar-memmber-list:hover{
-    background-color: rgba(66, 87, 97, 0.089);
-}
-
-.memmber-icon{
-    margin-left: 10px;
-    display: flex;
-    align-items: center;
-}
-.memmber-icon img{
-    display: flex;
-    align-items: center;
-    position: static;
-    border: none;
-    height: 30px;
-    width: 30px;
-}
-
-.memmber-name{
-    margin-left: 10px;
-}
-
-.memmber-authority{
-    margin-right: auto;
-    margin-right: 10px;
-    position: relative;
-    text-align: center;
-    width: 90px;
-}
-
-.memmber-authority-tag{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 5px;
-    padding: 3px;
     font-size: 13px;
+    font-weight: 600;
+    color: rgb(1,29,69);
+    text-decoration: none;
+    background: rgba(1,29,69,.05);
+    border-left: 3px solid #ffa500;
+    transition: .15s;
+}
+.sidebar-back:hover { background: rgba(1,29,69,.1); }
+.sidebar-back svg { width: 16px; height: 16px; stroke: currentColor; stroke-width: 2.5; fill: none; flex-shrink: 0; }
+.sidebar-divider { height: 1px; background: #eee; margin: 10px 18px; }
+.sidebar-section { padding: 6px 18px 4px; font-size: 11px; color: #aaa; font-weight: 500; letter-spacing: .6px; }
+.sidebar-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    margin: 2px 8px;
+    border-radius: 10px;
+    font-size: 13px;
+    color: rgb(1,29,69);
+    cursor: pointer;
+    border-left: 3px solid transparent;
+    transition: .15s;
+    text-decoration: none;
+}
+.sidebar-item:hover { background: rgba(1,29,69,.04); }
+.sidebar-item svg { width: 16px; height: 16px; opacity: .6; flex-shrink: 0; stroke: currentColor; stroke-width: 2; fill: none; }
+.sidebar-active { background: rgba(1,29,69,.07); border-left-color: #ffa500; font-weight: 600; }
+.sidebar-active svg { opacity: 1; }
+.sidebar-bottom { margin-top: auto; }
+
+/* ===== メイン ===== */
+.setting-main { flex: 1; background: #f7f8fa; padding: 28px; min-width: 0; overflow-y: auto; }
+.setting-page-title { font-size: 20px; font-weight: 700; color: rgb(1,29,69); margin-bottom: 3px; }
+.setting-page-sub { font-size: 12px; color: #999; margin-bottom: 20px; }
+
+/* ===== カード ===== */
+.setting-card {
+    background: #fff;
+    border-radius: 16px;
+    padding: 20px 22px;
+    margin-bottom: 14px;
+    box-shadow: 3px 3px 8px rgba(0,0,0,.06), -2px -2px 6px rgba(0,0,0,.04);
+}
+
+/* ===== ルームアイコン ===== */
+.room-icon-row { display: flex; align-items: center; gap: 18px; }
+.room-icon {
+    width: 72px; height: 72px;
+    border-radius: 14px;
+    object-fit: cover;
+    border: 2px solid #dde6f0;
+    cursor: pointer;
     flex-shrink: 0;
-    white-space: nowrap;
-    height: 25px;
+    display: block;
 }
-
-.memmber-owner{
-    background-color: rgba(137, 43, 226, 0.150);
-}
-.memmber-owner:hover{
-    border: 1px solid;
-    border-color: rgb(137, 43, 226);
-}
-.memmber-admin{
-    background-color: rgba(0, 128, 0, 0.150);
-    color: green;
-}
-.memmber-admin:hover{
-    border: 1px solid;
-    border-color: green;
-}
-.memmber-memmber{
-    background-color: rgba(0, 183, 255, 0.150);
-    color: rgb(0, 183, 255);
-}
-.memmber-memmber:hover{
-    border: 1px solid;
-    border-color: rgb(0, 183, 255);
-}
-
-.memmber-guest{
-    background-color: rgb(234, 0, 255, 0.150);
-    color: rgb(234, 0, 255);
-}
-.memmber-guest:hover{
-    border: 1px solid;
-    border-color: rgb(234, 0, 255);
-}
-
-.setting-save-cancel{
-    display: flex;
-    gap: 10px;
-    justify-content: center;
-    height: 40px;
-    padding-bottom: 10px;
-}
-
-.cancel-btn{
-    font-size: 12px;
-    padding: 0 5px;
-    height: 100%;
-    border: 1px solid;
-    border-color: #0a1a3a4e;
+.room-icon-info p { font-size: 14px; font-weight: 600; color: rgb(1,29,69); margin-bottom: 4px; }
+.room-icon-label { font-size: 14px; font-weight: 600; color: rgb(1,29,69); margin-bottom: 4px; }
+.room-icon-hint { font-size: 12px; color: #999; display: block; }
+.btn-icon-change {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 10px;
+    padding: 6px 16px;
+    border: 1px solid #ddd;
     border-radius: 100px;
-    text-align: center;
+    font-size: 12px;
+    background: #fff;
+    color: rgb(1,29,69);
+    cursor: pointer;
+    font-family: inherit;
+    transition: .2s;
+}
+.btn-icon-change:hover { background: #f5f5f5; }
+.btn-icon-change svg { width: 13px; height: 13px; stroke: currentColor; stroke-width: 2; fill: none; }
+
+/* ===== フォーム ===== */
+.fg { display: flex; flex-direction: column; gap: 5px; margin-bottom: 14px; }
+.fg:last-of-type { margin-bottom: 0; }
+.fg label { font-size: 12px; font-weight: 700; color: rgb(1,29,69); display: flex; align-items: center; gap: 6px; }
+.opt-badge { font-size: 10px; padding: 2px 7px; border-radius: 4px; background: #f0f0f0; color: #999; font-weight: 400; }
+.fg input, .fg textarea {
+    padding: 9px 12px;
+    border: none;
+    border-radius: 8px;
+    font-size: 13px;
+    color: rgb(1,29,69);
+    background: #f5f7fa;
+    box-shadow: 2px 2px 5px rgba(0,0,0,.07), -1px -1px 5px rgba(0,0,0,.05);
+    outline: none;
+    transition: .2s;
+    font-family: inherit;
+    width: 100%;
+    box-sizing: border-box;
+}
+.fg input:focus, .fg textarea:focus { box-shadow: 0 0 0 2px rgba(255,165,0,.35); }
+.fg textarea { height: 80px; resize: none; }
+.readonly-field {
+    padding: 9px 12px;
+    border-radius: 8px;
+    font-size: 13px;
+    color: rgb(1,29,69);
+    background: #f0f0f0;
+    min-height: 38px;
+}
+.readonly-textarea { min-height: 80px; }
+.readonly-note { font-size: 12px; color: #aaa; margin-top: 10px; }
+
+/* ===== ボタン ===== */
+.form-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 18px; }
+.btn-cancel {
+    padding: 8px 22px;
+    border: 1px solid #ddd;
+    border-radius: 100px;
+    font-size: 13px;
+    background: #fff;
+    color: rgb(1,29,69);
+    cursor: pointer;
+    transition: .2s;
+    white-space: nowrap;
+}
+.btn-cancel:hover { background: #f5f5f5; }
+.btn-save {
+    padding: 8px 22px;
+    border-radius: 100px;
+    font-size: 13px;
+    background: rgb(1,29,69);
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+    font-family: inherit;
+    transition: .2s;
+    white-space: nowrap;
+}
+.btn-save:hover { background: #ffa500; }
+
+/* ===== メンバーテーブル（PC） ===== */
+.members-header { display: flex; align-items: center; margin-bottom: 16px; }
+.members-label { font-size: 13px; font-weight: 600; color: rgb(1,29,69); }
+.members-count {
+    display: inline-block;
+    padding: 2px 10px;
+    background: rgba(1,29,69,.08);
+    border-radius: 100px;
+    font-size: 12px;
+    margin-left: 8px;
+    color: rgb(1,29,69);
+}
+.members-table { width: 100%; border-collapse: collapse; }
+.members-table thead th {
+    font-size: 11px;
+    font-weight: 600;
+    color: #aaa;
+    text-align: left;
+    padding: 0 12px 10px;
+    letter-spacing: .5px;
+    border-bottom: 1px solid #eee;
+}
+.members-table thead th:last-child { text-align: center; width: 60px; }
+.members-table tbody td { padding: 12px; border-bottom: 1px solid #f3f3f3; vertical-align: middle; }
+.members-table tbody tr:last-child td { border-bottom: none; }
+.member-user-cell { display: flex; align-items: center; gap: 12px; }
+.member-avatar { width: 34px; height: 34px; border-radius: 50%; object-fit: cover; flex-shrink: 0; }
+.member-name { font-size: 13px; font-weight: 600; color: rgb(1,29,69); }
+.member-you { font-size: 11px; color: #ffa500; font-weight: 600; display: block; }
+.authority-badge { display: inline-flex; align-items: center; padding: 4px 12px; border-radius: 100px; font-size: 12px; font-weight: 600; }
+.badge-owner { background: #fff3d6; color: #b37400; }
+.authority-select-input {
+    padding: 6px 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 12px;
+    color: rgb(1,29,69);
+    background: #f5f7fa;
+    font-family: inherit;
+    cursor: pointer;
+}
+.btn-delete-member {
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: 0.2s;
-    white-space: nowrap;
-}
-.save-btn{
-    color: white !important;
-    background-color: #0A1A3A;
-    border: none;
-    border-radius: 100px !important;
-    width: 80px !important;
-    height: 100%;
-    transition: 0.2s;
-}
-
-.authority-select{
-    position: absolute;
-    z-index: 600;
-    border-radius: 10px;
-    background-color: white;
-    right: 0px;
-    bottom: 40px;
-    width: 100px;
-    display: flex;
-    justify-content: center;
-    padding: 5px;
-    box-shadow: 4px 4px 10px 0 rgba(0, 0, 0, 0.094), -2px -2px 10px 0 rgba(0, 0, 0, 0.098);
-    display: none;
-}
-.authority-select ul{
-    gap: 3px;
-}
-.authority-select ul li{
-    text-align: center;
-    margin: 10px 0;
-    border-radius: 5px;
-    padding: 3px;
-    font-size: 13px;
-    width: 70px;
-}
-.authority-select ul li span{
-}
-
-.delete-member{
-    height: 25px;
-    margin-right: 20px;
-}
-.delete-member img{
-    height: 25px;
-    width: auto;
-    border: none;
-    margin: auto;
-}
-
-
-.memmbers-table{
-    width: 60vw;
-    border-collapse: collapse;
-    
-}
-
-.memmbers-table tr th{
-    text-align: left;
-}
-
-.memmbers-table tr{
-    border-bottom: 1px solid;
-    border-color: #e0e0e0;
-    height: 60px;
-}
-
-.memmber-authority-area{
-    display: flex;
-}
-
-.delete-memmber{
-    border: 1px solid;
-    border-color: #5c0000;
-    padding: 5px;
-    border-radius: 5px;
-    background: none;
-    color: rgb(255, 117, 117);
-}
-
-.not-delete{
-    background-color: #c3c3c47a;
-    border-color: #5c000074;
-    color: rgba(255, 117, 117, 0.333);
-}
-
-#memmber-delete{
-    color: rgb(255, 207, 207);
-    border-color: #75757569;
-}
-.authority-btn{
-    display: flex;
-}
-.authority-btn img{
-    border: none;
-    height: 20px;
-    width: 20px;
-    padding: 5px;
-    transition: 0.2s;
-}
-
-.authority-btn img:hover{
-    background-color: #e0e0e02a;
-}
-
-.save-cancel-btn{
-    display: flex;
-    gap: 10px;
-}
-
-.save{
-    background-color: #0A1A3A;
-    color: white;
-    padding: 8px 15px;
-    border-radius: 10px;
-    transition: 0.2s;
-}
-.save:hover{
-    background-color: orange;
-    border-color: orange;
-}
-
-.camcel{
-    border: 1px solid rgb(199, 199, 199);
-    background-color: rgba(248, 248, 248, 0.719);
-    padding: 8px;
+    width: 32px; height: 32px;
     border-radius: 8px;
+    border: 1px solid #fce4e4;
+    background: #fff5f5;
+    cursor: pointer;
+    transition: .15s;
+    margin: 0 auto;
 }
+.btn-delete-member:hover { background: #fce4e4; }
+.btn-delete-member svg { width: 14px; height: 14px; stroke: #c53030; stroke-width: 2; fill: none; }
+.btn-delete-disabled { opacity: .3; cursor: not-allowed; pointer-events: none; }
 
-#authority-selecter{
-    height: 40px;
-    width: 100px;
-    border-radius: 8px;
-    border-color: #c3c3c4;
-    font-weight: 600;
+/* ===== メンバーカード（モバイル） ===== */
+.member-cards { display: none; flex-direction: column; gap: 10px; }
+.member-card { display: flex; align-items: center; gap: 12px; padding: 14px; background: #f7f8fa; border-radius: 12px; }
+.member-card-avatar { width: 44px; height: 44px; border-radius: 50%; object-fit: cover; flex-shrink: 0; }
+.member-card-info { flex: 1; min-width: 0; }
+.member-card-name { font-size: 14px; font-weight: 600; color: rgb(1,29,69); }
+.member-card-row { display: flex; align-items: center; gap: 8px; margin-top: 8px; }
+.member-card-select { flex: 1; padding: 7px 10px; border: 1px solid #ddd; border-radius: 8px; font-size: 12px; color: rgb(1,29,69); background: #fff; font-family: inherit; }
+
+/* ===== モバイル対応 ===== */
+@media (max-width: 640px) {
+    .setting-sidebar { display: none; }
+    .tab-nav { display: block; }
+    .setting-layout { display: block; min-height: auto; }
+    .setting-main { padding: 16px; height: auto; overflow: visible; }
+    .setting-page-title { font-size: 17px; }
+    .setting-card { padding: 16px; }
+    .room-icon { width: 60px; height: 60px; border-radius: 12px; }
+    .members-table, .members-header { display: none; }
+    .member-cards { display: flex; }
+    .form-actions { gap: 8px; }
+    .btn-cancel, .btn-save { flex: 1; text-align: center; }
 }

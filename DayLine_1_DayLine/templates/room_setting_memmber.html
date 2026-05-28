@@ -1,94 +1,180 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ja">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="{% static "css/index/settingroom.css" %}">
-    <link rel="stylesheet" href="{% static "css/DayLine_style.css" %}">
-    <script src="{% static "js/room/room_setting.js" %}"></script>
+    <title>メンバー管理 | DayLine</title>
+    <link rel="stylesheet" href="{% static 'css/DayLine_style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/index/settingroom.css' %}">
+    <link rel="icon" href="{% static 'img/favicon.ico' %}">
+    <script src="{% static 'js/room/room_setting.js' %}"></script>
 </head>
 <body>
-    <header>
-        <img class="sidebar" src="{% static "img/ハンバーガー.svg" %}" alt="">
-        <a class="room-icon" href="{% url "DayLine_1_DayLine:index" %}"><img src="{% static "img/DayLine2.svg" %}" alt=""></a>
-    </header>
-    <main>
-        <div class="settings-sidebar">
-            <div class="setting-category">
-                <ul>
-                    <li><a href="{% url 'DayLine_1_DayLine:settingroom' pk=room.pk %}">基本情報</a></li>
-                    {% comment %} <li>表示設定</li> {% endcomment %}
-                    <li class="now-category"><a href="{% url "DayLine_1_DayLine:settingroom_memmber" pk=room.pk%}">メンバー管理</a></li>
-                </ul>
-            </div>
+
+<!-- モバイル: タブナビ -->
+<nav class="tab-nav">
+    <div class="tab-inner">
+        <a class="tab-back" href="{% url 'DayLine_1_DayLine:index' %}">
+            <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>カレンダー
+        </a>
+        <a class="tab-item" href="{% url 'DayLine_1_DayLine:settingroom' pk=room.pk %}">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>基本情報
+        </a>
+        <a class="tab-item tab-active" href="{% url 'DayLine_1_DayLine:settingroom_memmber' pk=room.pk %}">
+            <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>メンバー
+        </a>
+    </div>
+</nav>
+
+<div class="setting-layout">
+
+    <!-- PC: サイドバー -->
+    <aside class="setting-sidebar">
+        <div class="sidebar-logo">
+            <img src="{% static 'img/DayLine2.svg' %}" alt="DayLine">
         </div>
-        <div class="main-setting">
-            <div class="room-main-setting">
-                <h2>メンバー情報</h2>
-                <form method="POST">
-                    {% csrf_token %}
-                    <div class="setting-space members">
-                        <p class="setting-name">カレンダーメンバー （{{member_count}}人）</p>
-                        <div class="save-cancel-btn">
-                            <input class="save" type="submit" value="保存">
-                            <div class="camcel" onclick="location.reload()" >キャンセル</div>
-                        </div>
-                        <div class="setting-chunk-memmber">
-                        <table class="setting-area memmbers-table">
-                                <tr><th>ユーザー</th><th>権限</th><th>操作</th></tr>
-                                {% for memmber, form in member_forms %}
-                                <tr>
-                                    <td>
-                                        <div style="display:flex;">
-                                            <div class="memmber-icon"><img src="{{memmber.user.icon.url}}" alt=""></div>
-                                            <div class="memmber-name">
-                                                {% if memmber.user.username == request.user.username %}
-                                                <div style="font-size:13px;color:#ffae00">あなた</div>
-                                                {% endif %}
-                                                {{memmber.user.username}}
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <input type="hidden" name="member_id" value="{{ memmber.pk }}">
-                                        <select name="authority_{{ memmber.pk }}" class="authority-control" id="authority-selecter">
-                                            {% for choice in form.authority.field.choices %}
-                                            <option value="{{ choice.0 }}" 
-                                                {% if choice.0 == memmber.authority.pk %}selected{% endif %}>
-                                                {{ choice.1 }}
-                                            </option>
-                                            {% endfor %}
-                                        </select>
-                                    </td> 
-                                    {% if memmber.authority.authority_code == "owner" %}
-                                        <td><button class="delete-memmber not-delete" disabled>削除</button></td>
-                                    {% else %}
-                                        <td>
-                                            <button type="submit" form="delete-form-{{ memmber.id }}" class="delete-memmber">削除</button>
-                                        </td>
-                                    {% endif %}
-                                </tr>
-                                {% endfor %}
-                            </table>
+        <a class="sidebar-back" href="{% url 'DayLine_1_DayLine:index' %}">
+            <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+            カレンダーに戻る
+        </a>
+        <div class="sidebar-divider"></div>
+        <p class="sidebar-section">ルーム設定</p>
+        <a class="sidebar-item" href="{% url 'DayLine_1_DayLine:settingroom' pk=room.pk %}">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            基本情報
+        </a>
+        <a class="sidebar-item sidebar-active" href="{% url 'DayLine_1_DayLine:settingroom_memmber' pk=room.pk %}">
+            <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            メンバー管理
+        </a>
+        <div class="sidebar-bottom"></div>
+    </aside>
+
+    <!-- メインコンテンツ -->
+    <main class="setting-main">
+        <p class="setting-page-title">メンバー管理</p>
+        <p class="setting-page-sub">カレンダーのメンバーと権限を管理します</p>
+
+        <div class="setting-card">
+            <div class="members-header">
+                <span class="members-label">カレンダーメンバー</span>
+                <span class="members-count">{{ member_count }}人</span>
+            </div>
+
+            <form method="POST">
+                {% csrf_token %}
+
+                <!-- PC: テーブル -->
+                <table class="members-table">
+                    <thead>
+                        <tr>
+                            <th>ユーザー</th>
+                            <th>権限</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for memmber, form in member_forms %}
+                        <tr>
+                            <td>
+                                <div class="member-user-cell">
+                                    <img class="member-avatar" src="{{ memmber.user.icon.url }}" alt="">
+                                    <div>
+                                        {% if memmber.user.username == request.user.username %}
+                                        <span class="member-you">あなた</span>
+                                        {% endif %}
+                                        <div class="member-name">{{ memmber.user.username }}</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <input type="hidden" name="member_id" value="{{ memmber.pk }}">
+                                {% if memmber.authority.authority_code == "owner" %}
+                                <span class="authority-badge badge-owner">オーナー</span>
+                                {% else %}
+                                <select name="authority_{{ memmber.pk }}" class="authority-select-input">
+                                    {% for choice in form.authority.field.choices %}
+                                    <option value="{{ choice.0 }}"
+                                        {% if choice.0 == memmber.authority.pk %}selected{% endif %}>
+                                        {{ choice.1 }}
+                                    </option>
+                                    {% endfor %}
+                                </select>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if memmber.authority.authority_code == "owner" %}
+                                <button class="btn-delete-member btn-delete-disabled" disabled>
+                                    <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg>
+                                </button>
+                                {% else %}
+                                <button type="submit" form="delete-form-{{ memmber.id }}" class="btn-delete-member">
+                                    <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg>
+                                </button>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+
+                <!-- モバイル: カード -->
+                <div class="member-cards">
+                    {% for memmber, form in member_forms %}
+                    <div class="member-card">
+                        <img class="member-card-avatar" src="{{ memmber.user.icon.url }}" alt="">
+                        <div class="member-card-info">
+                            <div class="member-card-name">
+                                {{ memmber.user.username }}
+                                {% if memmber.user.username == request.user.username %}
+                                <span class="member-you">あなた</span>
+                                {% endif %}
+                            </div>
+                            <div class="member-card-row">
+                                <input type="hidden" name="member_id" value="{{ memmber.pk }}">
+                                {% if memmber.authority.authority_code == "owner" %}
+                                <span class="authority-badge badge-owner">オーナー</span>
+                                {% else %}
+                                <select name="authority_{{ memmber.pk }}" class="authority-select-input member-card-select">
+                                    {% for choice in form.authority.field.choices %}
+                                    <option value="{{ choice.0 }}"
+                                        {% if choice.0 == memmber.authority.pk %}selected{% endif %}>
+                                        {{ choice.1 }}
+                                    </option>
+                                    {% endfor %}
+                                </select>
+                                <button type="submit" form="delete-form-{{ memmber.id }}" class="btn-delete-member">
+                                    <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg>
+                                </button>
+                                {% endif %}
+                            </div>
                         </div>
                     </div>
-                </form>
-                <div class="bottom-space"></div>
-                <div class="delete-member-hide" style="display:none;">
-                    {% for memmber, form in member_forms %}
-                        {% if memmber.authority.authority_code != "owner" %}
-                        <form id="delete-form-{{ memmber.id }}"
-                            action="/index/settingroom/memmber/delete/{{ memmber.id }}/"
-                            method="POST">
-                            {% csrf_token %}
-                        </form>
-                        {% endif %}
                     {% endfor %}
                 </div>
-            </div>
+
+                <div class="form-actions">
+                    <div class="btn-cancel" onclick="location.reload()">キャンセル</div>
+                    <input type="submit" class="btn-save" value="保存する">
+                </div>
+            </form>
         </div>
     </main>
+</div>
+
+<!-- 削除フォーム（非表示） -->
+<div style="display:none;">
+    {% for memmber, form in member_forms %}
+        {% if memmber.authority.authority_code != "owner" %}
+        <form id="delete-form-{{ memmber.id }}"
+              action="/index/settingroom/memmber/delete/{{ memmber.id }}/"
+              method="POST">
+            {% csrf_token %}
+        </form>
+        {% endif %}
+    {% endfor %}
+</div>
+
 </body>
 </html>

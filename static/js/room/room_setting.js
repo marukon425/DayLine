@@ -1,36 +1,25 @@
-document.addEventListener("DOMContentLoaded", function(){
-        //アイコンをクリックしたら編集できるようにする 
-    document.querySelector(".room-icon").addEventListener("click", function () {
-        document.querySelector(".edit-room-icon").click();
-    });
+document.addEventListener("DOMContentLoaded", function() {
 
-    // 選択したアイコンをプレビューできるようにする
-    const input = document.querySelector(".edit-room-icon");
-    const preview = document.querySelector(".room-icon");
+    // ルームアイコンをクリックしたら画像選択を開く
+    const roomIcon = document.querySelector(".room-icon");
+    const editRoomIcon = document.querySelector(".edit-room-icon");
 
+    if (roomIcon && editRoomIcon) {
+        roomIcon.addEventListener("click", function() {
+            editRoomIcon.click();
+        });
 
-    try {
-        input.addEventListener("change", (e) => {
-        const file = e.target.files[0];
-
-        if (!file) return;
-
-        // MIMEタイプで判定
-        if (!file.type.startsWith("image/")) {
+        // 選択した画像をプレビュー
+        editRoomIcon.addEventListener("change", function(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            if (!file.type.startsWith("image/")) {
                 alert("画像ファイルを選択してください");
-                input.value = ""; // リセット
+                editRoomIcon.value = "";
                 return;
             }
-
-        // OKなら表示
-        preview.src = URL.createObjectURL(file);
+            roomIcon.src = URL.createObjectURL(file);
         });
-    } catch (e) {
-        // エラーを無視
     }
 
-    // ハンバーガーメニューの開閉
-    document.querySelector(".hamburger").addEventListener("click", () => {
-    document.querySelector(".settings-sidebar").classList.toggle("active");
-    });
-})
+});
