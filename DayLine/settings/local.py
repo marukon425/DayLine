@@ -18,3 +18,15 @@ ALLOWED_HOSTS = [
 CSRF_TRUSTED_ORIGINS = [
     'https://nongarrulous-antone-overrighteous.ngrok-free.dev',
 ]
+
+# ローカルではS3を使わない
+STORAGES = {
+    "default": {
+        "BACKEND": "django.core.files.storage.FileSystemStorage",
+    },
+    "staticfiles": {
+        "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
+    },
+}
+
+INSTALLED_APPS = [app for app in INSTALLED_APPS if app != 'storages']

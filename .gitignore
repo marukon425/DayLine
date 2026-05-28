@@ -5,3 +5,12 @@ __pycache__/
 staticfiles/
 images/user_icons/
 db.sqlite3
+
+Lib/
+Scripts/
+Include/
+pyvenv.cfg
+*.pyc
+__pycache__/
+db.sqlite3
+.env
