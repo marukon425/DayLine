@@ -40,3 +40,30 @@ def create_room_for_user(sender, instance, created, **kwargs):
             user=instance,
             authority=authority
         )
+
+
+
+from django.core.mail import send_mail
+from django.conf import settings
+
+@receiver(post_save, sender=Event)
+def notify_event_created(sender, instance, created, **kwargs):
+    if created:
+        # instanceはEventオブジェクト!!
+
+        recipient_list = []
+        #ここにfor文でルームに所属してるメンバーのメルアドをrecipient_listに入れていく※イベントを登録した本人のメルアドは除外する
+        members = instance.room.roommember_set.all()
+        for member in members:
+            recipient_list.append(member.user.email)
+            #試験的に機能はオフにする
+            # if not member == instance.created_by.username:
+            #     recipient_list.append(member.user.username)
+            # ただしイベント作成者は除外する
+        subject = "イベントが作成されました"
+        message = f"""
+        {instance.room.room_name}の{instance.created_by.username}が{instance.title}を追加しました。\n
+        開始日：{instance.start_date}
+        """
+        from_email = settings.EMAIL_HOST_USER
+        send_mail(subject, message, from_email, recipient_list)

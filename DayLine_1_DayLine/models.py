@@ -52,6 +52,7 @@ class Repeat(models.Model):
 
     def __str__(self):
         return self.repeat_name
+
 # ルーム
 def user_icon_upload_path(instance, filename):
     ext = filename.rsplit('.', 1)[-1]
@@ -343,3 +344,13 @@ class ToDoEvent(models.Model):
         verbose_name="チェック",
         default=False
     )
+
+# # 通知モデル
+# class Notification(models.Model):
+#     class Meta:
+#         verbose_name = "予定"
+#         verbose_name_plural = "予定"
+    
+#     id = models.UUIDField(
+        
+#     )

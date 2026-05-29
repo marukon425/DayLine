@@ -1,0 +1,3 @@
+{{room.room_name}}の{{roommember.user.username}}さんが{{ event.title }}を登録しました。
+
+開始日: {{ event.start_date }}
