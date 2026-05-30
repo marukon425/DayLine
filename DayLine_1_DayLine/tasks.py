@@ -2,9 +2,11 @@ from datetime import datetime, timedelta
 from .models import Event
 from django.conf import settings
 from django.core.mail import send_mail
+from django.utils import timezone
+
 
 def send_event_notifications():
-    now = datetime.now()
+    now = timezone.now()  # いつもだったらdatetimeを使うけど現地時刻が時限通知に影響が出るからtimezoneを使う
     target = now + timedelta(minutes=30)
 
     # 30分後に始まるイベントだけをを絞り込む
@@ -25,3 +27,4 @@ def send_event_notifications():
         """
         from_email = settings.DEFAULT_FROM_EMAIL
         send_mail(subject, message, from_email, recipient_list)
+
