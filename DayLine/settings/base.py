@@ -58,6 +58,9 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.google',
 
     'storages',
+
+    #通知系
+    'django_crontab'
 ]
 
 MIDDLEWARE = [
@@ -167,6 +170,7 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = "daylineofiice@gmail.com"
 EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+DEFAULT_FROM_EMAIL = 'DayLine <daylineofiice@gmail.com>'
 
 
 #生成ai用のapiキー
@@ -266,3 +270,9 @@ SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 SESSION_COOKIE_AGE = 60 * 60 * 24 * 30  # 30日間
 SESSION_EXPIRE_AT_BROWSER_CLOSE = False  # ブラウザ閉じてもセッション維持
 ACCOUNT_SESSION_REMEMBER = True  # 常にセッション維持
+
+# 時限通知
+CRONJOBS = [
+    # * * * * *は毎分実行という意味
+    ('* * * * *', 'DayLine_1_DayLine.tasks.send_event_notifications')
+]
