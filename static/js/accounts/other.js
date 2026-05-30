@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', function() {
     //時間帯で変化する背景
     // static/js/bg_switch.js
+    /*
     const hour = new Date().getHours();
 
     const backgrounds = {
@@ -48,7 +49,7 @@ document.addEventListener('DOMContentLoaded', function() {
             signup_btn.style.color = "rgba(255, 255, 255, 0.363)";
             signup_btn.disabled = true;
         }
-    }
+    }*/
         // パスワードの安全性の条件
         password_1.addEventListener("input", () => {
             // パスワードの長さ

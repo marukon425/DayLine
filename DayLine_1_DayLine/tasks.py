@@ -6,9 +6,11 @@ from django.utils import timezone
 import pytz
 
 
+#特定の時間になったら通知メールを送信する
 def send_event_notifications():
     jst = pytz.timezone('Asia/Tokyo')
     now = timezone.now().astimezone(jst)# いつもだったらdatetimeを使うけど現地時刻が時限通知に影響が出るからtimezoneを使う
+    # 送信時間をイベント開始30分前に設定する
     target = now + timedelta(minutes=30)
 
     # 30分後に始まるイベントだけをを絞り込む
