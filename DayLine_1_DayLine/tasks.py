@@ -15,7 +15,7 @@ def send_event_notifications():
     events = Event.objects.filter(
         start_date=target.date(),
         start_time__hour=target.hour,
-        start_time__minute=target.minute,
+        start_time__minute__range=(target.minute - 1, target.minute + 1),
     )
 
     for event in events:
