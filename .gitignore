@@ -16,3 +16,4 @@ db.sqlite3
 .env
 
 IAMユーザー情報
+iam_user_info.csv
