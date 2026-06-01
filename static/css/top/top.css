@@ -106,7 +106,7 @@ header.scrolled { box-shadow: 0 2px 20px rgba(1,29,69,.08); }
     transform: translateY(0);
 }
 .hero-text h1 {
-    font-family: 'Nunito', 'Noto Sans JP', sans-serif;
+    font-family: "Arial Black";
     font-size: clamp(30px, 4.2vw, 58px);
     font-weight: 900;
     line-height: 1.08; letter-spacing: -1.5px;
