@@ -103,7 +103,7 @@ class PasswordResetDone(PasswordResetDoneView):
     """パスワード変更用URLを送りましたページ"""
     template_name = 'password_reset_done.html'
 
-class PassReset(CustomSetPasswordForm):
+class PassReset(PasswordResetConfirmView):
     """新パスワード入力ページ"""
     success_url = reverse_lazy('DayLine_3_accounts:success')
     template_name = 'password_reset.html'
