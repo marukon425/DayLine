@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.generic import CreateView, TemplateView, View
 from django.contrib.auth.views import LoginView
 from .forms import CustomUserCreationForm
@@ -8,6 +8,7 @@ from .models import *
 from django.http import JsonResponse
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .forms import *
+from datetime import timedelta
 from django.contrib.auth.views import PasswordResetView, PasswordResetDoneView, PasswordResetConfirmView, PasswordResetCompleteView
 # Create your views here.
 
@@ -22,11 +23,12 @@ class LoginView(LoginView):
     
     def form_valid(self, form):
         remember = self.request.POST.get('remember')
+        response = super().form_valid(form)
         if remember:
-            self.request.session.set_expiry(60 * 60 * 24 * 30)  # 30日
+            self.request.session.set_expiry(timedelta(days=30))
         else:
-            self.request.session.set_expiry(0)  # ブラウザ閉じたら終了
-        return super().form_valid(form)
+            self.request.session.set_expiry(0)
+        return response
 
 
 # サインアップ
@@ -37,7 +39,11 @@ class SignupView(CreateView):
     form_class = CustomUserCreationForm
     # サインアップ(新規登録)が成功した場合に移動するページ
     success_url = reverse_lazy('DayLine_1_DayLine:index')
-    
+
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            return redirect(reverse_lazy('DayLine_1_DayLine:index'))
+        return super().dispatch(request, *args, **kwargs)
 
     # モデル(データベース)に保存する処理など
     def form_valid(self, form):
