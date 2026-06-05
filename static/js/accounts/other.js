@@ -90,14 +90,12 @@ document.addEventListener('DOMContentLoaded', function() {
             checkFrom();
         });
         // 同意ボタン
-        terms_of_use.addEventListener("click", () => {
-            if(terms_of_use.checked){
-                terms_of_use_btn = true;
-            }else{
-                terms_of_use_btn = false;
-            }
-            checkFrom();
-        });
+        if (terms_of_use) {
+            terms_of_use.addEventListener("click", () => {
+                terms_of_use_btn = terms_of_use.checked;
+                checkFrom();
+            });
+        }
 
 
 });
