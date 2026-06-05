@@ -23,12 +23,12 @@ class ContactView(FormView):
     def form_valid(self, form):
         name = form.cleaned_data['name']
         email = form.cleaned_data['email']
-        title = form.cleaned_data['title']
-        user_message = form.cleaned_data['message']
+        subject_text = form.cleaned_data['subject']
+        body_text = form.cleaned_data['body']
 
-        subject = 'お問い合わせ: {}'.format(title)
-        body = '送信者名:{0}\n メールアドレス: {1}\n タイトル:{2}\n メッセージ:\n{3}'.format(
-            name, email, title, user_message
+        subject = 'お問い合わせ: {}'.format(subject_text)
+        body = '送信者名:{0}\n メールアドレス: {1}\n 件名:{2}\n メッセージ:\n{3}'.format(
+            name, email, subject_text, body_text
         )
 
         mail = EmailMessage(
