@@ -20,7 +20,8 @@ from django.contrib.auth.forms import SetPasswordForm
 class LoginView(LoginView):
     template_name = 'login.html'
     next_page = reverse_lazy('DayLine_1_DayLine:index')
-    
+    redirect_authenticated_user = True
+
     def form_valid(self, form):
         remember = self.request.POST.get('remember')
         response = super().form_valid(form)
