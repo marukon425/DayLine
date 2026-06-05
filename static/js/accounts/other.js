@@ -1,55 +1,37 @@
 document.addEventListener('DOMContentLoaded', function() {
-    //時間帯で変化する背景
-    // static/js/bg_switch.js
-    /*
-    const hour = new Date().getHours();
-
-    const backgrounds = {
-    dawn:   "../../static/img/dayline_bg_dawn.svg",
-    noon:   "../../static/img/dayline_bg_noon.svg",
-    sunset: "../../static/img/dayline_bg_sunset.svg",
-    night:  "../../static/img/dayline_bg_night.svg",
-    };
-
-    function getBg(h) {
-    if (h >= 5  && h < 10) return backgrounds.dawn;
-    if (h >= 10 && h < 17) return backgrounds.noon;
-    if (h >= 17 && h < 20) return backgrounds.sunset;
-    return backgrounds.night;
-    }
-
-    document.body.style.backgroundImage = `url("${getBg(hour)}")`;
-    document.body.style.backgroundSize       = "cover";
-    document.body.style.backgroundPosition   = "center";
-    document.body.style.backgroundAttachment = "fixed";
-    
-    const signup_iputs = document.querySelectorAll(".signup-form-input");
-    const signup_btn = document.getElementById("signup-btn")
-    const password_1 = document.getElementById("password-1")
-    const password_2 = document.getElementById("password-2")
-    const regex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]+$/;
+    const password_1 = document.getElementById("password-1") || document.getElementById("id_new_password1");
+    const password_2 = document.getElementById("password-2") || document.getElementById("id_new_password2");
+    const signup_btn = document.getElementById("signup-btn") || document.getElementById("login-btn");
     const terms_of_use = document.getElementById("terms_of_use-check");
+    const regex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]+$/;
 
     let j_specified_length = false;
     let j_specified_character = false;
     let j_safety = false;
     let password_matched = false;
-    let terms_of_use_btn = false; 
+    let terms_of_use_btn = !terms_of_use;
 
     function checkFrom(){
-        if (j_specified_length && 
+        if (j_specified_length &&
             j_specified_character &&
             j_safety &&
             password_matched &&
             terms_of_use_btn
         ){
-            signup_btn.style.color = "white";
-            signup_btn.disabled = false;
+            if (signup_btn) {
+                signup_btn.style.color = "white";
+                signup_btn.disabled = false;
+            }
         }else{
-            signup_btn.style.color = "rgba(255, 255, 255, 0.363)";
-            signup_btn.disabled = true;
+            if (signup_btn) {
+                signup_btn.style.color = "rgba(255, 255, 255, 0.363)";
+                signup_btn.disabled = true;
+            }
         }
-    }*/
+    }
+
+    if (!password_1 || !password_2) return;
+
         // パスワードの安全性の条件
         password_1.addEventListener("input", () => {
             // パスワードの長さ
