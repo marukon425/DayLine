@@ -22,4 +22,36 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 
+    // 招待URLコピー
+    const btnCopy = document.getElementById("btn-copy");
+    if (btnCopy) {
+        btnCopy.addEventListener("click", function() {
+            const input = document.getElementById("invite-url-input");
+            const btnText = document.getElementById("btn-copy-text");
+            const url = input.value;
+
+            function showCopied() {
+                btnCopy.classList.add("copied");
+                btnText.textContent = "コピーしました！";
+                setTimeout(function() {
+                    btnCopy.classList.remove("copied");
+                    btnText.textContent = "コピー";
+                }, 2000);
+            }
+
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(url).then(showCopied).catch(function() {
+                    input.select();
+                    document.execCommand("copy");
+                    showCopied();
+                });
+            } else {
+                input.select();
+                input.setSelectionRange(0, 99999);
+                document.execCommand("copy");
+                showCopied();
+            }
+        });
+    }
+
 });

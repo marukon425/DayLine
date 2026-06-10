@@ -56,6 +56,32 @@
         <p class="setting-page-title">ルーム設定</p>
         <p class="setting-page-sub">カレンダーの基本情報を管理します</p>
 
+        <!-- 招待リンクカード -->
+        <div class="setting-card invite-card">
+            <div class="invite-header">
+                <div class="invite-icon">
+                    <svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+                </div>
+                <div>
+                    <p class="invite-label">招待リンク</p>
+                    <span class="invite-hint">このリンクを共有してメンバーを招待できます</span>
+                </div>
+            </div>
+            <div class="invite-url-row">
+                <input
+                    type="text"
+                    class="invite-url-input"
+                    id="invite-url-input"
+                    value="{{ request.scheme }}://{{ request.get_host }}{% url 'DayLine_1_DayLine:join_room_by_code' join_url=room.join_url %}"
+                    readonly
+                >
+                <button type="button" class="btn-copy" id="btn-copy">
+                    <svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                    <span id="btn-copy-text">コピー</span>
+                </button>
+            </div>
+        </div>
+
         {% if is_admin %}
         <!-- フォームカード -->
         <div class="setting-card">

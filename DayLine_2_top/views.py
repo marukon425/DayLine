@@ -34,7 +34,7 @@ class ContactView(FormView):
         mail = EmailMessage(
             subject=subject,
             body=body,
-            from_email=settings.DEFAULT_FROM_EMAIL,
+            from_email=settings.CONTACT_FROM_EMAIL,
             to=['daylineofiice@gmail.com'],
             reply_to=[email],
         )

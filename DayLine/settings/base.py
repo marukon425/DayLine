@@ -171,6 +171,7 @@ EMAIL_HOST_USER = "daylineofiice@gmail.com"
 EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 DEFAULT_FROM_EMAIL = 'DayLine <daylineofiice@gmail.com>'
+CONTACT_FROM_EMAIL = '問い合わせ <daylineofiice@gmail.com>'
 
 
 #生成ai用のapiキー
