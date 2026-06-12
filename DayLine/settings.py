@@ -47,7 +47,17 @@ CLOUDINARY_STORAGE = {
 if DEBUG:
     INSTALLED_APPS += ['django_browser_reload']
 
+class RedirectToDayline:
+    def __init__(self, get_response):
+        self.get_response = get_response
+
+    def __call__(self, request):
+        from django.http import HttpResponsePermanentRedirect
+        return HttpResponsePermanentRedirect('https://dayline.xyz' + request.get_full_path())
+
+
 MIDDLEWARE = [
+    'DayLine.settings.RedirectToDayline',
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
