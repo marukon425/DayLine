@@ -124,6 +124,50 @@ input:focus, textarea:focus, select:focus { outline: none; }
     box-shadow: 3px 3px 8px rgba(0,0,0,.06), -2px -2px 6px rgba(0,0,0,.04);
 }
 
+.deleteroom-leaving {
+    display: flex;
+    gap: 20px;
+}
+
+.deleteroom-leaving input{
+    height: 35px;
+    width: 80px;
+    margin: 0 auto;
+}
+
+.leaving, .deleteroom{
+    background-color: #fff;
+    border-radius: 16px;
+    width: 100%;
+    box-shadow: 3px 3px 8px rgba(0,0,0,.06), -2px -2px 6px rgba(0,0,0,.04);
+}
+
+.leaving{
+    border: 2px solid #ffc300;
+    background-color: #ffc4000f;
+}
+
+.deleteroom{
+    border: 2px solid #ff2900;
+    background-color: #ff000015;
+}
+
+.deleteroom-leaving-h{
+    display: flex;
+    align-items: center;
+    font-size: 15px;
+}
+.deleteroom-leaving-h img{
+    height: 25px;
+}
+
+.leaving .deleteroom-leaving-h{
+    color: #ffc300;
+}
+
+.deleteroom .deleteroom-leaving-h{
+    color: #ff2900;
+}
 /* ===== ルームアイコン ===== */
 .room-icon-row { display: flex; align-items: center; gap: 18px; }
 .room-icon {

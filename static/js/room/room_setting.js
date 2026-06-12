@@ -22,6 +22,27 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 
+    // メンバー権限フォーム: 非表示セクションの入力を無効化してからサブミット
+    // PCテーブルとモバイルカードに同名selectが重複するため、
+    // 非表示側をdisabledにして送信値の重複を防ぐ
+    const memberCards = document.querySelector('.member-cards');
+    const membersTable = document.querySelector('.members-table');
+    if (memberCards && membersTable) {
+        const memberForm = membersTable.closest('form');
+        if (memberForm) {
+            memberForm.addEventListener('submit', function() {
+                const isMobile = window.innerWidth <= 640;
+                if (isMobile) {
+                    membersTable.querySelectorAll('select, input[name="member_id"]')
+                        .forEach(function(el) { el.disabled = true; });
+                } else {
+                    memberCards.querySelectorAll('select, input[name="member_id"]')
+                        .forEach(function(el) { el.disabled = true; });
+                }
+            });
+        }
+    }
+
     // 招待URLコピー
     const btnCopy = document.getElementById("btn-copy");
     if (btnCopy) {

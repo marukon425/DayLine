@@ -113,7 +113,16 @@
                 </div>
             </form>
         </div>
-
+        <div class="deleteroom-leaving">
+            <div class="leaving">
+                <p class="deleteroom-leaving-h"><img src="{% static "img/leave-icon.svg" %}" alt="">カレンダーから退出</p>
+                <input type="submit" value="退会する">
+            </div>
+            <div class="deleteroom">
+                <p class="deleteroom-leaving-h"><img src="{% static "img/delete-icon.svg" %}" alt="">カレンダーを削除</p>
+                <input type="submit" value="削除する">
+            </div>
+        </div>
         {% else %}
         <!-- 閲覧のみ -->
         <div class="setting-card">
