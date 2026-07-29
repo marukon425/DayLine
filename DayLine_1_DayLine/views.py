@@ -55,7 +55,8 @@ class IndexView(IndexContext,TemplateView):
     template_name = 'index.html'
 
 # イベント作成
-class CreateEvent(IndexContext, CreateView):
+# LoginRequiredMixin: 未ログインユーザーをログイン画面にリダイレクト
+class CreateEvent(LoginRequiredMixin, IndexContext, CreateView):
     template_name = 'index.html'
     model = Event
     form_class = CreateEventForm
@@ -72,11 +73,19 @@ class CreateEvent(IndexContext, CreateView):
         return kwargs
 
 # イベント編集
-class EditEvent(IndexContext, UpdateView):
+# LoginRequiredMixin: 未ログインユーザーをログイン画面にリダイレクト
+class EditEvent(LoginRequiredMixin, IndexContext, UpdateView):
     model = Event
     form_class = EditEventForm
     template_name = 'index.html'
     success_url = reverse_lazy('DayLine_1_DayLine:index')
+
+    def get_object(self, queryset=None):
+        obj = super().get_object(queryset)
+        # URLのUUIDを書き換えても、自分が所属していないルームのイベントは編集できないようにする（IDOR対策）
+        if not RoomMember.objects.filter(room=obj.room, user=self.request.user).exists():
+            raise PermissionDenied
+        return obj
 
     def form_valid(self, form):
         form.instance.created_by = self.request.user
@@ -89,11 +98,20 @@ class EditEvent(IndexContext, UpdateView):
         return kwargs
 
 # 削除ビュー
-class PostDeletView(DeleteView):
+# LoginRequiredMixin: 未ログインユーザーをログイン画面にリダイレクト
+class PostDeletView(LoginRequiredMixin, DeleteView):
     template_name = 'index.html'
     model = Event
     # 削除が完了したらマイページに戻るように設定する
     success_url = reverse_lazy('DayLine_1_DayLine:index')
+
+    def get_object(self, queryset=None):
+        obj = super().get_object(queryset)
+        # URLのUUIDを書き換えても、自分が所属していないルームのイベントは削除できないようにする（IDOR対策）
+        if not RoomMember.objects.filter(room=obj.room, user=self.request.user).exists():
+            raise PermissionDenied
+        return obj
+
     def delete(self, reqest, *args, **kwargs):
         return super().delete(reqest, *args, **kwargs)
 
@@ -251,7 +269,8 @@ class HolidayApi(View):
 
 
 # ルーム
-class CreateRoom(CreateView):
+# LoginRequiredMixin: 未ログインユーザーをログイン画面にリダイレクト
+class CreateRoom(LoginRequiredMixin, CreateView):
     template_name = 'create_room.html'
     model = Room
     form_class = CreateRoomForm
@@ -289,7 +308,8 @@ class CreateRoom(CreateView):
     
 
 # ルーム設定(基本情報)
-class SettingRoom(UpdateView):
+# LoginRequiredMixin: 未ログインユーザーをログイン画面にリダイレクト
+class SettingRoom(LoginRequiredMixin, UpdateView):
     template_name = "room_setting.html"
     model = Room
     form_class = EditRoomForm
@@ -310,11 +330,15 @@ class SettingRoom(UpdateView):
         return context
 
     def form_valid(self, form):
+        # admin/owner以外がフォームを直接POSTしてもルーム情報を変更できないようにする（IDOR対策）
+        member = RoomMember.objects.get(room=self.object, user=self.request.user)
+        if member.authority.authority_code not in ['admin', 'owner']:
+            raise PermissionDenied
         # ここで保存される
         response = super().form_valid(form)
         # この時点で self.object.pk は新しい pk になってる
         return response
-    
+
     def get_success_url(self):
         # self.object.pk は form_valid() 後に保存されてるから使える
         return reverse_lazy(
@@ -323,7 +347,8 @@ class SettingRoom(UpdateView):
         )
 
 # ルーム設定(メンバー設定)
-class SettingRoomMember(UpdateView):
+# LoginRequiredMixin: 未ログインユーザーをログイン画面にリダイレクト
+class SettingRoomMember(LoginRequiredMixin, UpdateView):
     template_name = "room_setting_memmber.html"
     model = Room
     form_class = EditRoomMemberForm
@@ -683,8 +708,8 @@ def todo_create(request):
     if not title or not event_id:
         return JsonResponse({'error': 'invalid data'}, status=400)
 
-    # イベントを取得
-    event = get_object_or_404(Event, pk=event_id)
+    # イベントを取得（自分が所属するルームのイベントのみ許可。他人のイベントにToDoを追加できないようにするIDOR対策）
+    event = get_object_or_404(Event, pk=event_id, room__roommember__user=request.user)
 
     # DBに保存
     todo = ToDoEvent.objects.create(
@@ -696,8 +721,8 @@ def todo_create(request):
 # tod削除
 @login_required
 def todo_delete(request, pk):
-    # ToDoを取得
-    question = get_object_or_404(ToDoEvent, pk=pk)
+    # ToDoを取得（自分が所属するルームのイベントに紐づくToDoのみ許可。他人のToDoを削除できないようにするIDOR対策）
+    question = get_object_or_404(ToDoEvent, pk=pk, event__room__roommember__user=request.user)
     if request.method != 'POST':
         return JsonResponse({'error': 'POST only'}, status=405)
     else:
@@ -710,8 +735,8 @@ def todo_delete(request, pk):
 #todoのオンオフを処理する
 @login_required
 def todo_check(request, pk):
-    # ToDoを取得
-    question = get_object_or_404(ToDoEvent, pk=pk)
+    # ToDoを取得（自分が所属するルームのイベントに紐づくToDoのみ許可。他人のToDoのチェック状態を変更できないようにするIDOR対策）
+    question = get_object_or_404(ToDoEvent, pk=pk, event__room__roommember__user=request.user)
     if request.method != 'POST':
         return JsonResponse({'error': 'POST only'}, status=405)
     else:
@@ -739,7 +764,9 @@ def todo_list(request, event_id):
     if request.method != 'GET':
         return JsonResponse({'error': 'GET only'}, status=405)
     else:
-        # event_idに紐づくToDoを全部取得
+        # event_idに紐づくToDoを取得（自分が所属するルームのイベントのみ許可。他人のToDo一覧を取得できないようにするIDOR対策）
+        if not Event.objects.filter(pk=event_id, room__roommember__user=request.user).exists():
+            return JsonResponse({'error': 'forbidden'}, status=403)
         todos = ToDoEvent.objects.filter(event_id=event_id)
         data = []
         for i in todos:
@@ -754,8 +781,8 @@ def todo_list(request, event_id):
 #todoのタイトルを変更するメソッド
 @login_required
 def todo_edit_title(request, pk):
-    # ToDoを取得
-    question = get_object_or_404(ToDoEvent, pk=pk)
+    # ToDoを取得（自分が所属するルームのイベントに紐づくToDoのみ許可。他人のToDoタイトルを変更できないようにするIDOR対策）
+    question = get_object_or_404(ToDoEvent, pk=pk, event__room__roommember__user=request.user)
     if request.method != 'POST':
         return JsonResponse({'error': 'POST only'}, status=405)
     else:
