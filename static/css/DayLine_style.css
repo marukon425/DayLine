@@ -1,5 +1,40 @@
 /* 全体のcss */
 
+/* =============================================================
+   デザイントークン
+   top.css で使っていた変数をここに引き上げて全ページで共有する。
+   影・角丸・操作要素の高さをここ1か所で決めることで、
+   ページごとに数値がバラつくのを防ぐ。
+   ============================================================= */
+:root{
+    /* --- 色 --- */
+    --navy: rgb(1, 29, 69);       /* 文字・主ボタン */
+    --orange: #ffa500;            /* 強調。「今日」「主ボタン」「選択中」だけに使う */
+    --orange-deep: #b37400;       /* オレンジ地の上に載せる文字 */
+    --orange-wash: #fff4e2;       /* オレンジの薄い地 */
+    --app-bg: #f7f9fc;            /* アプリ全体の下地。白いカードを浮かせるため */
+    --line: #e8edf4;              /* 罫線（面の境目） */
+    --line-soft: #f0f4f9;         /* 罫線（面の内側の区切り） */
+    --muted: #8b98ab;             /* 補助テキスト */
+
+    /* --- 影 ---
+       以前は 4px 4px と -2px -2px を重ねていて光源が2つある状態だった。
+       影は必ず下方向ひとつだけにする。 */
+    --shadow-card: 0 1px 2px rgba(1, 29, 69, .04), 0 8px 24px rgba(1, 29, 69, .06);
+    --shadow-pop: 0 2px 6px rgba(1, 29, 69, .06), 0 16px 40px rgba(1, 29, 69, .12);
+    --shadow-modal: 0 4px 10px rgba(1, 29, 69, .06), 0 24px 60px rgba(1, 29, 69, .16);
+
+    /* --- 角丸（3段階＋pill）--- */
+    --r-surface: 18px;   /* カレンダー・サイドバーなど大きな面 */
+    --r-card: 14px;      /* カード・モーダル */
+    --r-control: 8px;    /* ボタン・入力・チップ */
+    --r-pill: 100px;     /* 主ボタン・アバター */
+
+    /* --- 操作要素の共通サイズ --- */
+    --control-h: 34px;   /* ボタン・トグルの高さ */
+    --header-h: 58px;    /* ヘッダーの高さ。main.css の height 計算と連動している */
+}
+
 html, body{
     margin: 0;
     color: rgb(1, 29, 69);
@@ -131,8 +166,8 @@ input * :focus{
   overflow-x: visible;
   overflow-y: auto;
   background-color: #fff;
-  border-radius: 6px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: var(--r-control);
+  box-shadow: var(--shadow-pop);
 
   /* フェードイン */
   opacity: 0;
@@ -210,8 +245,8 @@ input * :focus{
   width: 300px;
   margin: 10vh auto;
   padding: 20px;
-  border-radius: 8px;
-
+  border-radius: var(--r-card);
+  box-shadow: var(--shadow-modal);
 }
 
 .close {

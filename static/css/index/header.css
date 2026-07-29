@@ -2,9 +2,16 @@
 
 header{
     display: flex;
-    height: 50px;
+    /* 50px だと35pxのボタンと40pxのアバターに対して上下の余白が数pxしかなく詰まって見えた。
+       高さは main.css の height 計算と連動しているので、変えるときは両方直すこと */
+    height: var(--header-h);
     align-items: center;
     padding-left:10px;
+    padding-right:10px;
+    background-color: #fff;
+    /* 下地(--app-bg)との境目をはっきりさせる */
+    border-bottom: 1px solid var(--line);
+    box-sizing: border-box;
 }
 .header-1{
     width: 100%;
@@ -46,8 +53,9 @@ header{
     z-index:1000;
     right: -30px;
     background:#fff;
-    border:1px solid #ccc;
-    border-radius:8px;
+    border:1px solid var(--line);
+    border-radius: var(--r-control);
+    box-shadow: var(--shadow-pop);
     padding:8px;
     height: 30px;
     width: 150px;
@@ -68,20 +76,23 @@ header{
     border-radius: 5px;
 }
 #root-today{
-    height: 35px;
-    width: 55px;
+    height: var(--control-h);
+    padding: 0 15px;
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 1px solid rgba(128, 128, 128, 0.388);
-    border-radius: 10px;
-    margin-right: 20px;
+    border: 1px solid var(--line);
+    border-radius: var(--r-control);
+    margin-right: 14px;
     transition: 0.2s;
     font-weight: 600;
+    font-size: 13px;
     user-select: none;
+    box-sizing: border-box;
+    cursor: pointer;
 }
 #root-today:hover{
-    background-color: rgba(128, 128, 128, 0.123);
+    background-color: var(--line-soft);
 }
 #prev, #next{
     display: flex;
@@ -89,25 +100,33 @@ header{
     justify-content: center;
     border: none;
     background: none;
-    width: 35px;
-    height: 35px;
+    width: var(--control-h);
+    height: var(--control-h);
     transition: 0.2s;
-    border-radius: 1000px;
+    border-radius: var(--r-pill);
+    cursor: pointer;
+}
+/* imgに padding:13px がインラインで付いていて、20pxの画像が46pxに膨らんで
+   35pxのボタンからはみ出していた。インラインstyleを打ち消すため !important を使う */
+#prev img, #next img{
+    padding: 0 !important;
 }
 #prev:hover, #next:hover{
-    background-color: rgba(124, 124, 124, 0.1);
+    background-color: var(--line-soft);
 }
 #prev::after, #next::after{
     transition: 2s;
 }
 #prev:hover::after, #next:hover::after{
-    top: 45px;
+    /* ヘッダーが58pxになったので、ツールチップがヘッダーに重ならない位置まで下げる */
+    top: 64px;
     color: white;
     content: attr(data-text);
-    background-color: rgb(1, 29, 69);
+    background-color: var(--navy);
     position: absolute;
-    padding: 3px 7px;
-    border-radius: 3px;
+    padding: 4px 9px;
+    border-radius: var(--r-control);
+    font-size: 11px;
     z-index: 4000;
 }
 
@@ -117,48 +136,51 @@ header{
     margin-left: auto;
     gap: 10px;
 }
+/* 予定作成は画面の主アクションなので、他のボタンと差をつけてネイビーで塗る。
+   オレンジは「今日」の日付とホバーだけに残す */
 #create-sidebar-open{
     display: flex;
     align-items: center;
     justify-content: center;
-    background: none;
-    height: 35px;
-    width: 35px;
-    border-radius: 10px;
-    /* border-color: #969A9C; */
-    border: 1px solid rgba(128, 128, 128, 0.388);
+    height: var(--control-h);
+    width: var(--control-h);
+    border-radius: var(--r-control);
+    border: none;
+    background-color: var(--navy);
+    transition: 0.2s;
+    cursor: pointer;
+    box-sizing: border-box;
 }
 #create-sidebar-open:hover{
-    background-color: rgba(255, 166, 0, 0.1);
+    background-color: var(--orange);
 }
 #create-sidebar-open img{
     transition: 0.2s;
-    padding: 7px;
-    height: 20px;
+    padding: 0;
+    height: 18px;
     width: auto;
-}
-#create-sidebar-open img:hover{
-    content: url(../../img/＋_orange.svg);
+    /* 元の＋アイコンは濃い色なので、ネイビー地の上で見えるように白へ反転させる */
+    filter: brightness(0) invert(1);
 }
 
 #serch-event{
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 35px;
-    width: 35px;
-    border: 1px solid;
-    border-radius: 10px;
-    border-color: rgba(128, 128, 128, 0.388);
+    height: var(--control-h);
+    width: var(--control-h);
+    border: 1px solid var(--line);
+    border-radius: var(--r-control);
     transition: 0.2s;
+    box-sizing: border-box;
 }
 #serch-event:hover{
-    background-color: rgba(255, 166, 0, 0.1);
+    background-color: var(--line-soft);
 }
 #serch-event-img{
-    height: 20px;
+    height: 18px;
     transition: 0.2s;
-    padding: 7px;
+    padding: 0;
 }
 #serch-event-img:hover{
     content: url("../../img/検索_orange.svg");
@@ -174,10 +196,14 @@ header{
     position: relative;
 }
 .header-icon-space img{
-    height: 40px;
-    width: 40px;
+    /* 他の操作要素(34px)と高さを揃える */
+    height: var(--control-h);
+    width: var(--control-h);
     object-fit: cover;
-    border-radius: 100px;
+    border-radius: var(--r-pill);
+    border: 1px solid var(--line);
+    box-sizing: border-box;
+    cursor: pointer;
     transform: scale(1);
     will-change: transform;
 }
@@ -189,16 +215,20 @@ header{
     min-height: 200px;
     /* left: 1700px; */
     z-index: 9000;
-    border-radius: 20px;
-    box-shadow:4px 4px 10px 0 rgba(0, 0, 0, 0.249), -2px -2px 10px 0 rgba(0, 0, 0, 0.249);
+    border-radius: var(--r-card);
+    /* 両側からの影をやめて下方向ひとつに */
+    box-shadow: var(--shadow-modal);
+    border: 1px solid var(--line);
     /* display: none; */
     flex-direction: column;
     align-items: center;
     transition: 0.2s;
     position: absolute;
-    top: 60px;
+    /* ヘッダーの高さ + 少しの余白 */
+    top: calc(var(--header-h) + 6px);
     right: 10px;
     padding: 10px;
+    box-sizing: border-box;
 }
 .user-setting{
     width: 100%;
@@ -308,30 +338,36 @@ header{
     align-items: center;
     justify-content: center;
 }
+/* 月/週の切り替え。
+   以前は選択中を原色オレンジでベタ塗りしていて画面で一番強い要素になっていたため、
+   グレーのトラックに白いつまみが乗る一般的なセグメントコントロールに変更した。
+   ※ つまみの移動距離(translateX)は「要素の幅 + gap」と一致していないとズレる。
+     幅70px + gap3px = 73px なので translateX も 73px にしている。変えるときは必ずセットで。 */
 .change-month-week-label{
-    height: calc(35px - 6px);
-    border: 1px solid  rgb(199, 199, 199);
-    border-width: 0.7px;
+    height: var(--control-h);
+    box-sizing: border-box;
+    border: none;
+    background-color: var(--line-soft);
     display: flex;
     align-items: center;
-    display: flex;
     gap: 3px;
     padding: 3px;
-    border-radius: 7px;
+    border-radius: var(--r-control);
     position: relative;
+    cursor: pointer;
 }
 .change-element{
-    border-width: 0.7px;
     width: 70px;
     height: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 100%;
-    border-radius: 6px;
+    font-size: 13px;
+    border-radius: calc(var(--r-control) - 2px);
     position: relative;
     z-index: 20;
     font-weight: 600;
+    color: var(--muted);
     user-select: none;
     transition: 0.2s;
 }
@@ -339,22 +375,24 @@ header{
     position: absolute;
     top: 3px;
     left: 3px;
-    width: 72px;
-    height: 30px;
-    background: orange;
-    border-radius: 6px;
+    width: 70px;
+    height: calc(var(--control-h) - 6px);
+    background: #fff;
+    border-radius: calc(var(--r-control) - 2px);
+    box-shadow: 0 1px 3px rgba(1, 29, 69, .13);
     transition: 0.3s;
     z-index: 10;
 }
 
 #change-month-week:checked + .change-month-week-label .change-back {
-    transform: translateX(72px);
+    transform: translateX(73px);
 }
+/* 選択中だけ濃いネイビー、非選択はグレー */
 #change-month-week:checked + .change-month-week-label .element-week{
-    color: white;
+    color: var(--navy);
 }
 #change-month-week:not(:checked) + .change-month-week-label .element-month{
-    color: white;
+    color: var(--navy);
 }
 @media (max-width: 750px) {
   .change-month-week-label {

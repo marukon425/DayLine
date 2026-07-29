@@ -1,10 +1,51 @@
+/* 画面端のアイコン列（カレンダー / AI / ユーザー）
+   ※ クラス名は left-main だが、main が display:flex でこの要素がDOM上いちばん最後の
+     在フロー要素のため、PCでは画面の「右側」に出る。
+     位置は変えず、カレンダーと同じ「面」として扱えるようカード化した。 */
 .left-main{
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding-top: 30px;
-    gap: 20px;
+    gap: 8px;
+    /* .calendar-container の padding:10px と揃えて、カレンダーとの間に均等な溝を作る */
+    margin: 10px 10px 10px 0;
+    padding: 11px 0;
+    border: 1px solid var(--line);
+    border-radius: var(--r-surface);
+    box-shadow: var(--shadow-card);
+    box-sizing: border-box;
 }
+
+/* アイコンの当たり判定を揃えて、ホバーが分かるようにする */
+.left-main > a,
+.left-main .ai-function{
+    width: 38px;
+    height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--r-control);
+    transition: background-color 0.2s;
+    cursor: pointer;
+}
+.left-main > a:hover,
+.left-main .ai-function:hover{
+    background-color: var(--line-soft);
+}
+
 .left-main img{
     width: 30px;
+}
+
+/* スマホでは下部の固定タブバーになるので、カードの装飾は全部外す。
+   main.css の @media 側でも指定しているが、このファイルが後に読まれるため
+   ここで打ち消さないと角丸や影が残ってしまう */
+@media (max-width: 580px) {
+    .left-main{
+        margin: 0;
+        padding: 0;
+        border: none;
+        border-radius: 0;
+        box-shadow: 0px -10px 6px 0px rgba(148, 148, 148, 0.19);
+    }
 }

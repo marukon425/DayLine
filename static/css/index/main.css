@@ -1,9 +1,20 @@
 /* メインのcss */
 
+/* main は「ヘッダー + 10px」を引いた高さなので、ページ下端に10pxだけ body が見える。
+   body は白のままだとそこが白い帯として残って継ぎ目に見えるため、下地を揃えておく。
+   ※ このファイルは index.html でしか読み込んでいないので、他ページには影響しない */
+body{
+    background-color: var(--app-bg);
+}
+
 main{
-    height: calc(100vh - 60px);
+    /* ヘッダー(--header-h) + 元々あった10pxの余裕 を引いた高さ。
+       ヘッダーの高さを変えるときは必ずここも一緒に直すこと */
+    height: calc(100vh - var(--header-h) - 10px);
     width: 100%;
     display: flex;
+    /* 白いカレンダーカードを浮かせるための下地 */
+    background-color: var(--app-bg);
 }
 
 
@@ -29,7 +40,11 @@ main{
     width: 100%;
     overflow: hidden;
     background-color: rgb(255, 255, 255);
-    border-radius: 30px;
+    /* 30px → 他の面と揃えて18pxに。角丸はトークンの3段階に統一している */
+    border-radius: var(--r-surface);
+    border: 1px solid var(--line);
+    /* 影は下方向ひとつだけ。以前は .fc 側で両側から出していた */
+    box-shadow: var(--shadow-card);
 }
 
 

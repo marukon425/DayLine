@@ -1,5 +1,13 @@
 /* フルカレンダーのcss */
 
+/* FullCalendar6 が用意している変数を使って罫線の色をまとめて差し替える。
+   個別のborder指定を上書きしていくより崩れにくい */
+.fc{
+    --fc-border-color: var(--line-soft);
+    --fc-today-bg-color: transparent;
+    --fc-page-bg-color: #fff;
+}
+
 .fc-scroller{
     overflow: visible !important;
 }
@@ -9,10 +17,10 @@
 /* === FullCalendar 外枠 完全消去セット === */
 
 .fc {
-  border: 2px solid #ff0000;   /* 色・太さ */
-  /* overflow: hidden;        角丸を効かせるため */
   border: none;
-  box-shadow: 4px 4px 10px 0 rgba(0, 0, 0, 0.094), -2px -2px 10px 0 rgba(0, 0, 0, 0.098);
+  /* 影は #calendar 側の border と下地(--app-bg)で段差を作るので、ここでは付けない。
+     以前は両側から影を出していて（4px 4px と -2px -2px）光源が2つある状態だった */
+  box-shadow: none;
 }
 .fc-theme-standard .fc-scrollgrid{
   border: none !important;
@@ -35,14 +43,24 @@
     margin: auto;
 }
 
-/* イベントの棒の高さ */
+/* イベント。
+   以前は height:15px / font-size:10px の固定でタイトルが読めず詰まって見えたので、
+   余白のあるチップに変更した */
 .fc-event{
-    height: 15px;
+    height: auto;
+    border: none;
     z-index: 2;
 }
+.fc-daygrid-event{
+    padding: 2px 7px;
+    border-radius: 5px;
+    margin-top: 2px;
+}
 .fc-event-title{
-    font-size: 13px;
-    height: 19px;
+    font-size: 11px;
+    height: auto;
+    line-height: 1.5;
+    font-weight: 600;
     z-index: 1;
 }
 
@@ -86,8 +104,19 @@
 .fc table{
   font-size: 12px;
 }
-.fc-event-title{
-  font-size: 10px;
+
+/* 日付セルに余白を持たせる。以前はほぼゼロで中身が壁に貼り付いていた */
+.fc-daygrid-day-frame{
+  padding: 4px 5px 6px;
+}
+.fc-daygrid-day-number{
+  font-size: 12px;
+  font-weight: 600;
+  padding: 2px 0;
+}
+/* 前月・翌月の日付を薄くして、今月の範囲が一目で分かるようにする */
+.fc-day-other .fc-daygrid-day-number{
+  opacity: .45;
 }
 
 
@@ -110,7 +139,8 @@
 }
 .fc-daygrid-event-harness a:hover{
   transform:translateY(-1px);
-  box-shadow: 0px 10px 13px 1px rgba(0, 0, 0, 0.35);
+  /* 0.35の濃い影だと浮きすぎてチップが汚れて見えるので落とす */
+  box-shadow: 0 4px 10px rgba(1, 29, 69, .18);
 }
 
 
@@ -119,23 +149,44 @@
 .fc-day-today {
   background: none !important;
 }
-/* 今日の日付数字だけに丸をつける */
+/* 今日の日付にマーカーを付ける。オレンジを使うのはここと主ボタンだけに絞っている。
+   日本語ロケールだと数字が「30日」のように2〜3文字になるため、
+   固定サイズの丸だと文字がはみ出す（変更前からの不具合）。
+   文字数に合わせて伸びるピル型にして、1桁の日でも丸に見えるよう min-width を持たせる */
 .fc-day-today .fc-daygrid-day-number {
-  background-color: #ff9900;
+  background-color: var(--orange);
   color: white;
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
+  width: auto;
+  height: auto;
+  min-width: 24px;
+  padding: 3px 8px;
+  border-radius: var(--r-pill);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-weight: 500;
+  font-weight: 700;
   text-decoration: none; /* FullCalendarがaタグにするので */
   white-space: nowrap;
+  box-sizing: border-box;
 }
 
+/* 曜日の見出し */
 .fc-col-header-cell{
   border-left: none !important;
   border-right: none !important;
-  border-bottom: 1px solid #e0e0e0 !important;
+  border-bottom: 1px solid var(--line) !important;
+}
+.fc-col-header-cell-cushion{
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .06em;
+  color: var(--muted);
+  padding: 9px 0 !important;
+}
+/* 曜日見出しの土日にも色を付ける（日付の数字だけ色が付いていて不揃いだった） */
+.fc-day-sun .fc-col-header-cell-cushion{
+  color: #e05b5b;
+}
+.fc-day-sat .fc-col-header-cell-cushion{
+  color: #3f86e0;
 }

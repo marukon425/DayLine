@@ -31,6 +31,11 @@
     width: 400px;
     height: 100%;
     transition: 0.3s;
+    /* 下地(--app-bg)の上に乗るパネルとして扱う。
+       ※ width と left はハンバーガーの開閉アニメーションの計算に直結しているので変えないこと */
+    background-color: #fff;
+    border-right: 1px solid var(--line);
+    box-sizing: border-box;
 }
 #right-sidebar.active{
     left: 0px;
@@ -41,11 +46,14 @@
 }
 
 .calendar-list-hader{
-    height: 50px;
+    height: var(--header-h);
     display: flex;
     align-items: center;
-    justify-content: center;
-    font-weight: 600;
+    /* ヘッダーと同じ高さ・同じ区切り線にして、カレンダー本体と行を揃える */
+    padding: 0 20px;
+    font-weight: 700;
+    border-bottom: 1px solid var(--line);
+    box-sizing: border-box;
 }
 
 #calendar-lists{
@@ -61,9 +69,11 @@
     height: 100px;
     gap: 20px;
     transition: 0.2s;
+    /* 行そのものを角丸にして、ホバーが四角い帯にならないようにする */
+    border-radius: var(--r-card);
 }
 .calendar-list:hover, #add-calendar:hover{
-    background-color: rgba(75, 75, 75, 0.082);
+    background-color: var(--line-soft);
 }
 .calendar-list-img{
     position: relative;
@@ -74,14 +84,14 @@
     width: 130px;
     height: 100px;
     background: none;
-    border-radius: 20px;
+    border-radius: var(--r-card);
 }
 .clendar-out-check input{
     height: 100%;
     width: 100%;
     margin: 0;
     display: none;
-    border-radius: 20px;
+    border-radius: var(--r-card);
 }
 .clendar-out-checked{
     position: absolute;
@@ -90,7 +100,7 @@
     background-color: rgba(114, 114, 114, 0.438);
     bottom: 0px;
     display: none;
-    border-radius: 20px;
+    border-radius: var(--r-card);
     transition: 0.2s;
 }
 .clendar-out-check img{
@@ -112,7 +122,7 @@
     height: 100px;
     width: 130px;
     object-fit: cover;
-    border-radius: 20px;
+    border-radius: var(--r-card);
 }
 
 #ass-calendar-img img{
@@ -131,20 +141,22 @@
 .calendar-settings a img{
     height: 25px;
 }
+/* ヘッダーの前月/次月ツールチップと見た目を揃える */
 .calendar-settings-balloon{
     align-items: center;
     justify-content: center;
     position: absolute;
-    background-color: rgb(6, 6, 36);
+    background-color: var(--navy);
     color: white;
-    font-size: 10px;
+    font-size: 11px;
     width: 200%;
-    height: 20px;
-    border-radius: 5px;
+    height: 22px;
+    border-radius: var(--r-control);
     bottom: 35px;
     left: -10px;
     display: none;
     transition: 0.2s;
+    white-space: nowrap;
 }
 
 .calendar-settings:hover .calendar-settings-balloon{

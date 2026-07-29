@@ -1,0 +1,1105 @@
+<title>DayLine カレンダー画面 リデザイン提案</title>
+
+<style>
+/* ============================================================
+   Tokens
+   ============================================================ */
+:root{
+  --paper:#FBFCFE;
+  --surface:#FFFFFF;
+  --surface-2:#F3F6FB;
+  --ink:#011D45;
+  --ink-2:#3E4E67;
+  --ink-3:#6E7C92;
+  --line:#E2E8F1;
+  --line-soft:#EDF1F7;
+  --amber:#FFA500;
+  --amber-deep:#B37400;
+  --amber-wash:#FFF4E2;
+  --good:#1C7A3E;
+  --bad:#C0392B;
+  --shadow:0 1px 2px rgba(1,29,69,.04), 0 8px 24px rgba(1,29,69,.06);
+  --shadow-lg:0 2px 4px rgba(1,29,69,.05), 0 20px 56px rgba(1,29,69,.10);
+  --r-s:8px; --r-m:14px; --r-l:22px;
+  --sans:'Hiragino Sans','Hiragino Kaku Gothic ProN','Noto Sans JP','BIZ UDPGothic',Meiryo,system-ui,sans-serif;
+  --mono:ui-monospace,SFMono-Regular,'SF Mono',Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){
+  :root{
+    --paper:#0A1120;
+    --surface:#121B2C;
+    --surface-2:#182437;
+    --ink:#E9EFF8;
+    --ink-2:#AEBBCD;
+    --ink-3:#7A89A2;
+    --line:#243350;
+    --line-soft:#1C2941;
+    --amber:#FFB733;
+    --amber-deep:#FFCF7A;
+    --amber-wash:#2A2113;
+    --good:#5FD48A;
+    --bad:#F08A7E;
+    --shadow:0 1px 2px rgba(0,0,0,.3), 0 8px 24px rgba(0,0,0,.35);
+    --shadow-lg:0 2px 4px rgba(0,0,0,.35), 0 24px 60px rgba(0,0,0,.5);
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#0A1120; --surface:#121B2C; --surface-2:#182437;
+  --ink:#E9EFF8; --ink-2:#AEBBCD; --ink-3:#7A89A2;
+  --line:#243350; --line-soft:#1C2941;
+  --amber:#FFB733; --amber-deep:#FFCF7A; --amber-wash:#2A2113;
+  --good:#5FD48A; --bad:#F08A7E;
+  --shadow:0 1px 2px rgba(0,0,0,.3), 0 8px 24px rgba(0,0,0,.35);
+  --shadow-lg:0 2px 4px rgba(0,0,0,.35), 0 24px 60px rgba(0,0,0,.5);
+}
+:root[data-theme="light"]{
+  --paper:#FBFCFE; --surface:#FFFFFF; --surface-2:#F3F6FB;
+  --ink:#011D45; --ink-2:#3E4E67; --ink-3:#6E7C92;
+  --line:#E2E8F1; --line-soft:#EDF1F7;
+  --amber:#FFA500; --amber-deep:#B37400; --amber-wash:#FFF4E2;
+  --good:#1C7A3E; --bad:#C0392B;
+  --shadow:0 1px 2px rgba(1,29,69,.04), 0 8px 24px rgba(1,29,69,.06);
+  --shadow-lg:0 2px 4px rgba(1,29,69,.05), 0 20px 56px rgba(1,29,69,.10);
+}
+
+*{box-sizing:border-box}
+body{
+  margin:0; background:var(--paper); color:var(--ink);
+  font-family:var(--sans); font-size:15px; line-height:1.8;
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3,h4{text-wrap:balance; margin:0; line-height:1.3; letter-spacing:-.02em}
+p{margin:0}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--amber); outline-offset:3px; border-radius:4px}
+@media (prefers-reduced-motion:reduce){*{animation:none !important; transition:none !important}}
+
+.wrap{max-width:1180px; margin:0 auto; padding:0 28px}
+.stack{display:flex; flex-direction:column}
+
+/* ---------- eyebrow / labels ---------- */
+.eyebrow{
+  font-size:11px; font-weight:800; letter-spacing:.16em;
+  text-transform:uppercase; color:var(--ink-3);
+  font-family:var(--mono);
+}
+
+/* ============================================================
+   Masthead
+   ============================================================ */
+.masthead{
+  border-bottom:1px solid var(--line);
+  background:linear-gradient(180deg, var(--surface-2), var(--paper));
+}
+.masthead .wrap{padding-top:64px; padding-bottom:52px; gap:22px; display:flex; flex-direction:column}
+.masthead h1{
+  font-size:clamp(30px,4.6vw,50px); font-weight:800; letter-spacing:-.035em; line-height:1.08;
+}
+.masthead h1 em{font-style:normal; color:var(--amber-deep)}
+.lede{font-size:16px; color:var(--ink-2); max-width:60ch; line-height:1.9}
+.meta-row{
+  display:flex; flex-wrap:wrap; gap:10px; align-items:center;
+  padding-top:8px; border-top:1px solid var(--line); margin-top:6px;
+}
+.chip{
+  font-size:12px; font-weight:700; padding:5px 13px; border-radius:100px;
+  background:var(--surface); border:1px solid var(--line); color:var(--ink-2);
+}
+.chip-amber{background:var(--amber-wash); border-color:transparent; color:var(--amber-deep)}
+
+/* ============================================================
+   Section shell
+   ============================================================ */
+.section{padding:72px 0; border-bottom:1px solid var(--line-soft)}
+.sec-head{display:flex; flex-direction:column; gap:12px; margin-bottom:36px; max-width:70ch}
+.sec-head h2{font-size:clamp(21px,2.6vw,29px); font-weight:800}
+.sec-head p{color:var(--ink-2); font-size:15px}
+
+/* ============================================================
+   Diagnosis
+   ============================================================ */
+.diag{display:grid; grid-template-columns:repeat(auto-fit,minmax(310px,1fr)); gap:14px}
+.diag-item{
+  background:var(--surface); border:1px solid var(--line);
+  border-radius:var(--r-m); padding:18px 20px;
+  display:flex; flex-direction:column; gap:9px;
+}
+.diag-item h3{font-size:14.5px; font-weight:800; display:flex; align-items:baseline; gap:9px}
+.diag-item h3 span{
+  font-family:var(--mono); font-size:11px; color:var(--amber-deep);
+  font-weight:700; flex-shrink:0;
+}
+.diag-item p{font-size:13px; color:var(--ink-2); line-height:1.85}
+.diag-item code{
+  font-family:var(--mono); font-size:11.5px;
+  background:var(--surface-2); padding:1px 6px; border-radius:5px; color:var(--ink);
+}
+
+/* before / after demo strip */
+.ba{display:flex; gap:10px; align-items:stretch; margin-top:4px}
+.ba-cell{
+  flex:1; border-radius:var(--r-s); padding:11px 12px 12px;
+  background:var(--surface-2); display:flex; flex-direction:column; gap:8px; min-width:0;
+}
+.ba-tag{font-family:var(--mono); font-size:9.5px; font-weight:700; letter-spacing:.1em; color:var(--ink-3)}
+.ba-tag.is-after{color:var(--good)}
+
+/* the little sample objects */
+.s-box{height:30px; border-radius:8px; background:#fff; border:1px solid #E8EDF4}
+.s-box.old{box-shadow:4px 4px 10px rgba(0,0,0,.094), -2px -2px 10px rgba(0,0,0,.098); border:none}
+.s-box.new{box-shadow:0 1px 2px rgba(1,29,69,.05), 0 6px 16px rgba(1,29,69,.07); border:none}
+.s-radii{display:flex; gap:5px; align-items:flex-end; height:30px}
+.s-radii i{flex:1; height:26px; background:#DCE4EF; display:block}
+.s-toggle{display:flex; height:28px; border-radius:7px; overflow:hidden; font-size:10px; font-weight:700}
+.s-toggle b{flex:1; display:grid; place-items:center; font-weight:700}
+.s-toggle.old b:first-child{background:orange; color:#fff}
+.s-toggle.old b:last-child{background:#fff; color:#011D45; border:1px solid #C7C7C7}
+.s-toggle.new{background:#EDF1F7; padding:3px; gap:3px; border-radius:9px}
+.s-toggle.new b{border-radius:6px}
+.s-toggle.new b:first-child{background:#fff; color:#011D45; box-shadow:0 1px 2px rgba(1,29,69,.12)}
+.s-toggle.new b:last-child{color:#6E7C92}
+
+/* ============================================================
+   Token board
+   ============================================================ */
+.tok{display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:14px}
+.tok-card{
+  background:var(--surface); border:1px solid var(--line);
+  border-radius:var(--r-m); padding:18px 20px; display:flex; flex-direction:column; gap:13px;
+}
+.tok-card h3{font-size:12px; font-weight:800; letter-spacing:.09em; text-transform:uppercase; color:var(--ink-3); font-family:var(--mono)}
+.sw-row{display:flex; align-items:center; gap:11px}
+.sw{width:30px; height:30px; border-radius:8px; flex-shrink:0; border:1px solid rgba(1,29,69,.10)}
+.sw-txt{display:flex; flex-direction:column; line-height:1.45; min-width:0}
+.sw-txt b{font-size:12.5px; font-weight:700}
+.sw-txt span{font-family:var(--mono); font-size:10.5px; color:var(--ink-3)}
+.tok-list{display:flex; flex-direction:column; gap:7px; font-size:12.5px; color:var(--ink-2)}
+.tok-list div{display:flex; justify-content:space-between; gap:12px; align-items:baseline}
+.tok-list code{font-family:var(--mono); font-size:11px; color:var(--ink)}
+
+/* ============================================================
+   Proposal
+   ============================================================ */
+.prop-head{
+  display:flex; flex-wrap:wrap; align-items:flex-end; gap:16px 22px; margin-bottom:26px;
+}
+.prop-mark{
+  width:58px; height:58px; border-radius:16px; flex-shrink:0;
+  display:grid; place-items:center;
+  font-size:26px; font-weight:800; letter-spacing:0;
+  background:var(--ink); color:var(--paper);
+}
+.prop-titles{display:flex; flex-direction:column; gap:3px; min-width:0}
+.prop-titles .eyebrow{margin-bottom:2px}
+.prop-titles h2{font-size:clamp(20px,2.5vw,27px); font-weight:800}
+.prop-titles p{color:var(--ink-2); font-size:14px}
+.prop-facts{display:flex; gap:8px; margin-left:auto; flex-wrap:wrap}
+
+/* artboard = a picture of the app; keeps its own committed light palette */
+.board-scroll{overflow-x:auto; padding:4px; margin:0 -4px; border-radius:calc(var(--r-l) + 4px)}
+.board{
+  --a-ink:#011D45; --a-amber:#FFA500; --a-bg:#F7F9FC; --a-card:#FFFFFF;
+  --a-line:#E8EDF4; --a-line2:#F0F4F9; --a-mut:#8B98AB;
+  min-width:940px; border-radius:var(--r-l); overflow:hidden;
+  background:var(--a-card); color:var(--a-ink);
+  box-shadow:var(--shadow-lg); border:1px solid var(--line);
+  font-size:13px; line-height:1.5;
+}
+.board *{box-sizing:border-box}
+
+/* --- generic app bits shared by boards --- */
+.ic{width:17px; height:17px; stroke:currentColor; fill:none; stroke-width:1.75; stroke-linecap:round; stroke-linejoin:round; flex-shrink:0}
+.ic-s{width:14px; height:14px}
+.btn-i{
+  width:34px; height:34px; border-radius:10px; display:grid; place-items:center;
+  border:1px solid var(--a-line); background:var(--a-card); color:var(--a-ink);
+}
+.btn-pill{
+  height:34px; padding:0 16px; border-radius:100px; display:inline-flex; align-items:center; gap:7px;
+  background:var(--a-ink); color:#fff; font-weight:700; font-size:12.5px; border:none;
+}
+.seg{display:flex; background:#EDF1F7; padding:3px; border-radius:10px; gap:3px}
+.seg b{
+  padding:0 15px; height:28px; display:grid; place-items:center; border-radius:7px;
+  font-size:12px; font-weight:700; color:var(--a-mut);
+}
+.seg b.on{background:#fff; color:var(--a-ink); box-shadow:0 1px 3px rgba(1,29,69,.13)}
+
+/* --- calendar grid (shared skeleton) --- */
+.cal{display:flex; flex-direction:column; height:100%}
+.cal-dow{display:grid; grid-template-columns:repeat(7,1fr)}
+.cal-dow span{
+  text-align:center; font-size:11px; font-weight:700; letter-spacing:.06em;
+  color:var(--a-mut); padding:9px 0;
+}
+.cal-dow span.sun{color:#E05B5B}
+.cal-dow span.sat{color:#3F86E0}
+.cal-grid{display:grid; grid-template-columns:repeat(7,1fr); grid-auto-rows:1fr; flex:1}
+.cell{padding:5px 6px 6px; display:flex; flex-direction:column; gap:3px; min-width:0; min-height:88px}
+.dnum{
+  font-size:12px; font-weight:600; font-variant-numeric:tabular-nums;
+  align-self:center; width:23px; height:23px; display:grid; place-items:center; border-radius:50%;
+}
+.cell.out .dnum{color:#C3CBD8}
+.cell.sun .dnum{color:#E05B5B}
+.cell.sat .dnum{color:#3F86E0}
+.cell.today .dnum{background:var(--a-amber); color:#fff; font-weight:700}
+.ev{
+  font-size:10.5px; line-height:1.5; padding:2px 7px; border-radius:5px;
+  white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-weight:600;
+}
+.ev-navy{background:#E4EAF4; color:#123163}
+.ev-amber{background:#FFEFD4; color:#8A5A00}
+.ev-teal{background:#DCF0EC; color:#14675A}
+.ev-rose{background:#FCE3E3; color:#9B2F2F}
+.ev-violet{background:#E9E5F7; color:#4A3A8C}
+.ev-more{font-size:10px; color:var(--a-mut); padding-left:7px; font-weight:600}
+/* multi-day bar */
+.ev-span{background:#DCEFE0; color:#1C6B33}
+.ev-span.l{border-radius:5px 0 0 5px; margin-right:-7px}
+.ev-span.m{border-radius:0; margin:0 -7px; text-indent:-999px}
+.ev-span.r{border-radius:0 5px 5px 0; margin-left:-7px; text-indent:-999px}
+
+/* ============================================================
+   BOARD A — 静 : same layout, raised quality
+   ============================================================ */
+.mk-a .a-shell{display:flex; flex-direction:column; height:620px; background:var(--a-bg)}
+.mk-a .a-top{
+  height:58px; flex-shrink:0; display:flex; align-items:center; gap:11px;
+  padding:0 16px; background:var(--a-card); border-bottom:1px solid var(--a-line);
+}
+.mk-a .a-logo{font-weight:800; font-size:16px; letter-spacing:-.02em; margin-right:4px}
+.mk-a .a-logo i{color:var(--a-amber); font-style:normal}
+.mk-a .a-today{
+  height:34px; padding:0 15px; border-radius:10px; border:1px solid var(--a-line);
+  display:grid; place-items:center; font-size:12.5px; font-weight:700;
+}
+.mk-a .a-nav{display:flex; gap:2px}
+.mk-a .a-nav div{width:30px; height:30px; border-radius:8px; display:grid; place-items:center; color:var(--a-mut)}
+.mk-a .a-month{font-size:19px; font-weight:800; letter-spacing:-.02em; margin-left:6px; font-variant-numeric:tabular-nums}
+.mk-a .a-month small{font-size:12px; color:var(--a-mut); font-weight:600; margin-left:5px}
+.mk-a .a-right{margin-left:auto; display:flex; align-items:center; gap:9px}
+.mk-a .a-av{width:34px; height:34px; border-radius:50%; background:linear-gradient(135deg,#7FA5D8,#3C5F94); flex-shrink:0}
+.mk-a .a-body{flex:1; display:flex; min-height:0; padding:14px; gap:14px}
+.mk-a .a-rail{
+  width:52px; flex-shrink:0; background:var(--a-card); border:1px solid var(--a-line);
+  border-radius:16px; display:flex; flex-direction:column; align-items:center; gap:8px; padding:11px 0;
+}
+.mk-a .a-rail div{width:34px; height:34px; border-radius:10px; display:grid; place-items:center; color:var(--a-mut)}
+.mk-a .a-rail div.on{background:var(--a-ink); color:#fff}
+.mk-a .a-cal{
+  flex:1; min-width:0; background:var(--a-card); border:1px solid var(--a-line);
+  border-radius:18px; overflow:hidden; box-shadow:0 1px 2px rgba(1,29,69,.04), 0 10px 28px rgba(1,29,69,.05);
+}
+.mk-a .cal-dow{border-bottom:1px solid var(--a-line)}
+.mk-a .cell{border-right:1px solid var(--a-line2); border-bottom:1px solid var(--a-line2)}
+.mk-a .cell:nth-child(7n){border-right:none}
+
+/* ============================================================
+   BOARD B — 面 : permanent workspace sidebar
+   ============================================================ */
+.mk-b .b-shell{display:flex; height:620px; background:var(--a-bg)}
+.mk-b .b-side{
+  width:246px; flex-shrink:0; background:var(--a-card); border-right:1px solid var(--a-line);
+  display:flex; flex-direction:column; padding:16px 13px; gap:15px;
+}
+.mk-b .b-brand{display:flex; align-items:center; gap:9px; padding:0 5px 2px}
+.mk-b .b-brand b{font-size:16px; font-weight:800; letter-spacing:-.02em}
+.mk-b .b-brand i{color:var(--a-amber); font-style:normal}
+.mk-b .b-new{
+  height:38px; border-radius:100px; background:var(--a-ink); color:#fff;
+  display:flex; align-items:center; justify-content:center; gap:7px; font-weight:700; font-size:13px;
+}
+/* mini month */
+.mk-b .b-mini{padding:0 3px}
+.mk-b .b-mini-h{display:flex; align-items:center; justify-content:space-between; padding:0 4px 7px}
+.mk-b .b-mini-h b{font-size:12.5px; font-weight:800; font-variant-numeric:tabular-nums}
+.mk-b .b-mini-h span{display:flex; gap:9px; color:var(--a-mut)}
+.mk-b .b-mini-g{display:grid; grid-template-columns:repeat(7,1fr); gap:1px; text-align:center}
+.mk-b .b-mini-g i{
+  font-style:normal; font-size:9.5px; color:var(--a-mut); font-weight:700; padding-bottom:3px;
+}
+.mk-b .b-mini-g u{
+  text-decoration:none; font-size:10.5px; height:21px; display:grid; place-items:center;
+  border-radius:50%; font-variant-numeric:tabular-nums; color:var(--a-ink);
+}
+.mk-b .b-mini-g u.out{color:#CBD3DE}
+.mk-b .b-mini-g u.on{background:var(--a-amber); color:#fff; font-weight:700}
+.mk-b .b-mini-g u.dot{position:relative}
+.mk-b .b-mini-g u.dot::after{
+  content:''; position:absolute; bottom:1px; left:50%; transform:translateX(-50%);
+  width:3px; height:3px; border-radius:50%; background:var(--a-mut);
+}
+.mk-b .b-sec{font-size:10.5px; font-weight:800; letter-spacing:.1em; color:var(--a-mut); padding:0 6px}
+.mk-b .b-list{display:flex; flex-direction:column; gap:1px}
+.mk-b .b-row{display:flex; align-items:center; gap:9px; padding:7px 8px; border-radius:9px; font-size:12.5px}
+.mk-b .b-row.on{background:#F2F5FA}
+.mk-b .b-row b{font-weight:600; overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+.mk-b .b-tick{
+  width:15px; height:15px; border-radius:5px; flex-shrink:0; display:grid; place-items:center;
+}
+.mk-b .b-tick svg{width:10px; height:10px; stroke:#fff; stroke-width:3; fill:none; stroke-linecap:round; stroke-linejoin:round}
+.mk-b .b-row .b-gear{margin-left:auto; color:#C3CBD8}
+.mk-b .b-add{display:flex; align-items:center; gap:9px; padding:7px 8px; font-size:12.5px; color:var(--a-mut); font-weight:600}
+.mk-b .b-foot{margin-top:auto; display:flex; align-items:center; gap:9px; padding:9px 6px 0; border-top:1px solid var(--a-line)}
+.mk-b .b-foot .a-av{width:30px; height:30px; border-radius:50%; background:linear-gradient(135deg,#7FA5D8,#3C5F94); flex-shrink:0}
+.mk-b .b-foot span{font-size:12px; font-weight:600; overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+.mk-b .b-foot em{font-style:normal; font-size:10px; color:var(--a-mut); display:block; font-weight:400}
+.mk-b .b-main{flex:1; min-width:0; display:flex; flex-direction:column}
+.mk-b .b-top{
+  height:60px; flex-shrink:0; display:flex; align-items:center; gap:12px;
+  padding:0 20px; background:var(--a-card); border-bottom:1px solid var(--a-line);
+}
+.mk-b .b-month{font-size:21px; font-weight:800; letter-spacing:-.025em; font-variant-numeric:tabular-nums}
+.mk-b .b-arrows{display:flex; gap:2px; color:var(--a-mut)}
+.mk-b .b-arrows div{width:29px; height:29px; border-radius:8px; display:grid; place-items:center}
+.mk-b .b-td{height:32px; padding:0 14px; border-radius:9px; border:1px solid var(--a-line); display:grid; place-items:center; font-size:12px; font-weight:700}
+.mk-b .b-r{margin-left:auto; display:flex; align-items:center; gap:9px}
+.mk-b .b-calwrap{flex:1; min-height:0; background:var(--a-card)}
+.mk-b .cal-dow{border-bottom:1px solid var(--a-line)}
+.mk-b .cell{border-right:1px solid var(--a-line2); border-bottom:1px solid var(--a-line2)}
+.mk-b .cell:nth-child(7n){border-right:none}
+
+/* ============================================================
+   BOARD C — 間 : full-bleed, airy, floating chrome
+   ============================================================ */
+.mk-c .c-shell{position:relative; height:620px; background:var(--a-card); display:flex; flex-direction:column}
+.mk-c .c-top{
+  height:66px; flex-shrink:0; display:flex; align-items:center; gap:14px; padding:0 26px;
+  background:rgba(255,255,255,.82); backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--a-line2); position:relative; z-index:3;
+}
+.mk-c .c-month{
+  font-size:26px; font-weight:300; letter-spacing:-.035em; font-variant-numeric:tabular-nums;
+}
+.mk-c .c-month b{font-weight:800}
+.mk-c .c-arrows{display:flex; gap:4px; color:var(--a-mut); margin-left:4px}
+.mk-c .c-arrows div{width:28px; height:28px; border-radius:50%; display:grid; place-items:center}
+.mk-c .c-r{margin-left:auto; display:flex; align-items:center; gap:10px}
+.mk-c .c-ghost{
+  height:32px; padding:0 14px; border-radius:100px; display:grid; place-items:center;
+  font-size:12px; font-weight:700; color:var(--a-mut);
+}
+.mk-c .c-fab{
+  height:36px; padding:0 18px; border-radius:100px; background:var(--a-ink); color:#fff;
+  display:inline-flex; align-items:center; gap:7px; font-weight:700; font-size:12.5px;
+}
+.mk-c .c-body{flex:1; min-height:0; display:flex}
+.mk-c .c-rail{
+  width:60px; flex-shrink:0; display:flex; flex-direction:column; align-items:center;
+  gap:6px; padding:18px 0; border-right:1px solid var(--a-line2);
+}
+.mk-c .c-rail div{width:36px; height:36px; border-radius:12px; display:grid; place-items:center; color:#B4BECD}
+.mk-c .c-rail div.on{background:var(--a-ink); color:#fff}
+.mk-c .c-rail .c-sp{flex:1; height:auto; background:none}
+.mk-c .c-cal{flex:1; min-width:0; display:flex; flex-direction:column}
+.mk-c .cal-dow span{
+  font-size:10px; letter-spacing:.18em; font-weight:700; padding:13px 0 11px; text-transform:uppercase;
+}
+.mk-c .cal-grid{border-top:1px solid var(--a-line2)}
+.mk-c .cell{padding:9px 11px 10px; gap:5px; border-right:1px solid var(--a-line2); border-bottom:1px solid var(--a-line2)}
+.mk-c .cell:nth-child(7n){border-right:none}
+.mk-c .dnum{
+  align-self:flex-start; width:auto; height:auto; border-radius:0;
+  font-size:17px; font-weight:300; letter-spacing:-.02em; padding:0 1px; margin-bottom:1px;
+}
+.mk-c .cell.today .dnum{
+  background:none; color:var(--a-amber); font-weight:800;
+}
+.mk-c .cell.today{background:linear-gradient(180deg,#FFFBF3,transparent 65%)}
+.mk-c .ev{font-size:11px; padding:3px 9px; border-radius:100px}
+.mk-c .ev-span.l{border-radius:100px 0 0 100px}
+.mk-c .ev-span.r{border-radius:0 100px 100px 0}
+
+/* ============================================================
+   change list under each board
+   ============================================================ */
+.notes{display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:13px; margin-top:26px}
+.note{
+  background:var(--surface); border:1px solid var(--line); border-radius:var(--r-m);
+  padding:15px 17px; display:flex; flex-direction:column; gap:6px;
+}
+.note h4{font-size:13px; font-weight:800; display:flex; align-items:center; gap:8px}
+.note h4 svg{width:15px; height:15px; stroke:var(--amber-deep); fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round}
+.note p{font-size:12.5px; color:var(--ink-2); line-height:1.8}
+
+/* ============================================================
+   comparison
+   ============================================================ */
+.tbl-scroll{overflow-x:auto; border:1px solid var(--line); border-radius:var(--r-m); background:var(--surface)}
+table{border-collapse:collapse; width:100%; min-width:660px; font-size:13.5px}
+th,td{text-align:left; padding:13px 16px; border-bottom:1px solid var(--line-soft); vertical-align:top}
+thead th{
+  font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-3);
+  font-family:var(--mono); font-weight:700; background:var(--surface-2);
+}
+tbody tr:last-child td{border-bottom:none}
+td strong{font-weight:800}
+.dot{display:inline-flex; align-items:center; gap:7px; font-weight:700; font-size:12.5px}
+.dot::before{content:''; width:8px; height:8px; border-radius:50%; flex-shrink:0}
+.dot.lo::before{background:var(--good)}
+.dot.md::before{background:var(--amber)}
+.dot.hi::before{background:var(--bad)}
+
+.rec{
+  margin-top:26px; background:var(--surface); border:1px solid var(--line);
+  border-left:3px solid var(--amber); border-radius:var(--r-m);
+  padding:22px 24px; display:flex; flex-direction:column; gap:11px;
+}
+.rec h3{font-size:16px; font-weight:800}
+.rec p{font-size:14px; color:var(--ink-2); line-height:1.9}
+.rec ol{margin:2px 0 0; padding-left:20px; display:flex; flex-direction:column; gap:7px; font-size:13.5px; color:var(--ink-2)}
+.rec li strong{color:var(--ink)}
+
+footer{padding:44px 0 64px; color:var(--ink-3); font-size:12.5px; display:flex; flex-direction:column; gap:5px}
+footer code{font-family:var(--mono); font-size:11.5px}
+
+@media (max-width:720px){
+  .wrap{padding:0 18px}
+  .section{padding:52px 0}
+  .masthead .wrap{padding-top:46px; padding-bottom:38px}
+  .prop-facts{margin-left:0}
+}
+</style>
+
+<header class="masthead">
+  <div class="wrap">
+    <p class="eyebrow">DayLine / Redesign Proposal</p>
+    <h1>カレンダー画面を、<br><em>もう一段モダンに</em>する3案</h1>
+    <p class="lede">
+      いまの画面は情報の並びは正しい。素人っぽく見えているのは構成ではなく、
+      影・角丸・余白・色の「使い方が揃っていない」ことが原因です。
+      3案とも既存のレイアウトを土台にし、トップページと設定ページで既に使っている
+      ネイビー／オレンジのトークンをカレンダーにも通します。
+    </p>
+    <div class="meta-row">
+      <span class="chip chip-amber">まだ実装していません</span>
+      <span class="chip">対象 /index/</span>
+      <span class="chip">参照 top.css・account_setting.css</span>
+      <span class="chip">2026-07-29</span>
+    </div>
+  </div>
+</header>
+
+<!-- ============================ 診断 ============================ -->
+<section class="section">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">01 — Diagnosis</p>
+      <h2>いま「手造り感」が出ている7つの理由</h2>
+      <p>直すべき対象を先に特定します。ここが揃うだけで、レイアウトを変えなくても印象はかなり変わります。</p>
+    </div>
+
+    <div class="diag">
+
+      <div class="diag-item">
+        <h3><span>01</span>影が両側から出ている</h3>
+        <p><code>4px 4px 10px</code> と <code>-2px -2px 10px</code> を重ねているので光源が2つあり、立体感ではなく「ぼやけた縁取り」に見えます。影は必ず下方向ひとつに。</p>
+        <div class="ba">
+          <div class="ba-cell"><span class="ba-tag">BEFORE</span><div class="s-box old"></div></div>
+          <div class="ba-cell"><span class="ba-tag is-after">AFTER</span><div class="s-box new"></div></div>
+        </div>
+      </div>
+
+      <div class="diag-item">
+        <h3><span>02</span>角丸がバラバラ</h3>
+        <p>カレンダー <code>30px</code>／モーダル <code>30px</code>／ルーム画像 <code>20px</code>／ボタン <code>10px</code>／セレクト <code>4px</code>。基準がないので寄せ集めに見えます。3段階に固定します。</p>
+        <div class="ba">
+          <div class="ba-cell"><span class="ba-tag">BEFORE</span>
+            <div class="s-radii"><i style="border-radius:30px"></i><i style="border-radius:4px"></i><i style="border-radius:20px"></i><i style="border-radius:10px"></i></div>
+          </div>
+          <div class="ba-cell"><span class="ba-tag is-after">AFTER</span>
+            <div class="s-radii"><i style="border-radius:18px"></i><i style="border-radius:14px"></i><i style="border-radius:8px"></i><i style="border-radius:8px"></i></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="diag-item">
+        <h3><span>03</span>背景が真っ白で階層がない</h3>
+        <p>body もカレンダーも <code>#fff</code>。だからカードが浮かず、影だけで無理に段差を作っています。トップページで使っている <code>#f7f9fc</code> を土台に敷けば、白いカードが自然に浮きます。</p>
+      </div>
+
+      <div class="diag-item">
+        <h3><span>04</span>オレンジをベタ塗りで使っている</h3>
+        <p>Month/Week トグルが原色オレンジで塗られていて、画面で一番強い要素になっています。オレンジは「今日」「主ボタン」「選択中」だけに絞り、トグルは無彩色のセグメントに。</p>
+        <div class="ba">
+          <div class="ba-cell"><span class="ba-tag">BEFORE</span>
+            <div class="s-toggle old"><b>Month</b><b>week</b></div>
+          </div>
+          <div class="ba-cell"><span class="ba-tag is-after">AFTER</span>
+            <div class="s-toggle new"><b>月</b><b>週</b></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="diag-item">
+        <h3><span>05</span>ヘッダーが 50px に詰まっている</h3>
+        <p>高さ50pxの中に35pxのボタンと40pxのアバターが混在し、上下の余白が2〜3pxしかありません。高さを58〜60pxにして、操作要素の高さを34pxに統一します。</p>
+      </div>
+
+      <div class="diag-item">
+        <h3><span>06</span>日付セルが窮屈</h3>
+        <p>イベントバーが <code>height:15px</code> 固定・フォント <code>10px</code>、セル内の余白もほぼゼロ。タイトルが読めず「詰まっている」印象の主因です。チップ化して行間を確保します。</p>
+      </div>
+
+      <div class="diag-item">
+        <h3><span>07</span>アイコンの線幅が揃っていない</h3>
+        <p>個別に描いた日本語ファイル名のSVGが並んでいるため、太さ・サイズ・余白がバラバラです。線幅1.75・24pxグリッドのセットに統一するだけで一気に締まります。</p>
+      </div>
+
+      <div class="diag-item">
+        <h3><span>08</span>デバッグの残骸</h3>
+        <p><code>fullcalendar.css</code> の先頭に <code>border: 2px solid #ff0000;</code> が残っています（直後に <code>border:none</code> で打ち消し）。動作に影響はないですが、コードを見られる前提なら消しておきたいところです。</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================ トークン ============================ -->
+<section class="section">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">02 — Foundation</p>
+      <h2>3案に共通する土台</h2>
+      <p>色とフォントは今のまま。<code>top.css</code> の <code>:root</code> 変数をそのまま <code>DayLine_style.css</code> に引き上げて、全ページで共有します。</p>
+    </div>
+
+    <div class="tok">
+      <div class="tok-card">
+        <h3>Color</h3>
+        <div class="sw-row"><div class="sw" style="background:#011D45"></div><div class="sw-txt"><b>ネイビー</b><span>--navy #011D45</span></div></div>
+        <div class="sw-row"><div class="sw" style="background:#FFA500"></div><div class="sw-txt"><b>オレンジ（強調のみ）</b><span>--orange #FFA500</span></div></div>
+        <div class="sw-row"><div class="sw" style="background:#F7F9FC"></div><div class="sw-txt"><b>アプリ背景</b><span>--bg-light #F7F9FC</span></div></div>
+        <div class="sw-row"><div class="sw" style="background:#E8EDF4"></div><div class="sw-txt"><b>罫線</b><span>--line #E8EDF4</span></div></div>
+      </div>
+
+      <div class="tok-card">
+        <h3>Elevation</h3>
+        <div class="tok-list">
+          <div><span>カード</span><code>0 1px 2px / 0 8px 24px</code></div>
+          <div><span>モーダル</span><code>0 2px 4px / 0 20px 56px</code></div>
+          <div><span>方向</span><code>下方向のみ</code></div>
+          <div><span>不透明度</span><code>.04 – .10</code></div>
+        </div>
+        <p style="font-size:12px;color:var(--ink-3);line-height:1.75">現行の <code style="font-family:var(--mono);font-size:11px">-2px -2px</code> の逆側の影は全廃します。</p>
+      </div>
+
+      <div class="tok-card">
+        <h3>Radius</h3>
+        <div class="tok-list">
+          <div><span>面（カレンダー・サイドバー）</span><code>18px</code></div>
+          <div><span>カード・モーダル</span><code>14px</code></div>
+          <div><span>ボタン・入力・チップ</span><code>8px</code></div>
+          <div><span>主ボタン・アバター</span><code>100px</code></div>
+        </div>
+      </div>
+
+      <div class="tok-card">
+        <h3>Type &amp; Rhythm</h3>
+        <div class="tok-list">
+          <div><span>見出し・数字</span><code>Nunito 800</code></div>
+          <div><span>本文</span><code>Noto Sans JP 400/600</code></div>
+          <div><span>操作要素の高さ</span><code>34px</code></div>
+          <div><span>ヘッダー高さ</span><code>58px</code></div>
+          <div><span>余白の刻み</span><code>4 / 8 / 14 / 22</code></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ A案 ============================ -->
+<section class="section">
+  <div class="wrap">
+    <div class="prop-head">
+      <div class="prop-mark">静</div>
+      <div class="prop-titles">
+        <p class="eyebrow">Plan A</p>
+        <h2>今の構成のまま、質だけ上げる</h2>
+        <p>要素の位置は1つも動かしません。影・角丸・余白・色の使い方だけを揃えます。</p>
+      </div>
+      <div class="prop-facts">
+        <span class="chip">CSSのみ</span>
+        <span class="chip">HTML変更なし</span>
+        <span class="chip chip-amber">最小リスク</span>
+      </div>
+    </div>
+
+    <div class="board-scroll">
+      <div class="board mk-a">
+        <div class="a-shell">
+
+          <div class="a-top">
+            <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+            <span class="a-logo">Day<i>Line</i></span>
+            <div class="a-today">今日</div>
+            <div class="a-nav">
+              <div><svg class="ic ic-s" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg></div>
+              <div><svg class="ic ic-s" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></div>
+            </div>
+            <div class="a-month">2026年7月<small>▾</small></div>
+            <div class="a-right">
+              <div class="seg"><b class="on">月</b><b>週</b></div>
+              <div class="btn-i"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg></div>
+              <button class="btn-pill" type="button"><svg class="ic ic-s" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>予定を作成</button>
+              <div class="a-av"></div>
+            </div>
+          </div>
+
+          <div class="a-body">
+            <div class="a-rail">
+              <div class="on"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/></svg></div>
+              <div><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z"/></svg></div>
+              <div><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg></div>
+            </div>
+
+            <div class="a-cal">
+              <div class="cal">
+                <div class="cal-dow">
+                  <span class="sun">日</span><span>月</span><span>火</span><span>水</span><span>木</span><span>金</span><span class="sat">土</span>
+                </div>
+                <div class="cal-grid">
+                  <div class="cell out sun"><span class="dnum">28</span></div>
+                  <div class="cell out"><span class="dnum">29</span></div>
+                  <div class="cell out"><span class="dnum">30</span></div>
+                  <div class="cell"><span class="dnum">1</span></div>
+                  <div class="cell"><span class="dnum">2</span><div class="ev ev-rose">ES締切 23:59</div></div>
+                  <div class="cell"><span class="dnum">3</span></div>
+                  <div class="cell sat"><span class="dnum">4</span></div>
+
+                  <div class="cell sun"><span class="dnum">5</span></div>
+                  <div class="cell"><span class="dnum">6</span><div class="ev ev-navy">合同説明会</div></div>
+                  <div class="cell"><span class="dnum">7</span></div>
+                  <div class="cell"><span class="dnum">8</span><div class="ev ev-amber">面接 14:00</div></div>
+                  <div class="cell"><span class="dnum">9</span></div>
+                  <div class="cell"><span class="dnum">10</span><div class="ev ev-violet">ゼミ発表</div></div>
+                  <div class="cell sat"><span class="dnum">11</span></div>
+
+                  <div class="cell sun"><span class="dnum">12</span></div>
+                  <div class="cell"><span class="dnum">13</span><div class="ev ev-teal">歯医者 16:30</div></div>
+                  <div class="cell"><span class="dnum">14</span></div>
+                  <div class="cell"><span class="dnum">15</span><div class="ev ev-span l">帰省</div></div>
+                  <div class="cell"><span class="dnum">16</span><div class="ev ev-span m">帰省</div></div>
+                  <div class="cell"><span class="dnum">17</span><div class="ev ev-span r">帰省</div></div>
+                  <div class="cell sat"><span class="dnum">18</span></div>
+
+                  <div class="cell sun"><span class="dnum">19</span></div>
+                  <div class="cell"><span class="dnum">20</span></div>
+                  <div class="cell"><span class="dnum">21</span><div class="ev ev-navy">面談 10:00</div><div class="ev ev-teal">バイト 18:00</div></div>
+                  <div class="cell"><span class="dnum">22</span></div>
+                  <div class="cell"><span class="dnum">23</span><div class="ev ev-amber">1次結果</div></div>
+                  <div class="cell"><span class="dnum">24</span></div>
+                  <div class="cell sat"><span class="dnum">25</span></div>
+
+                  <div class="cell sun"><span class="dnum">26</span></div>
+                  <div class="cell"><span class="dnum">27</span></div>
+                  <div class="cell"><span class="dnum">28</span></div>
+                  <div class="cell today"><span class="dnum">29</span><div class="ev ev-amber">インターン面接 13:00</div><div class="ev ev-navy">OB訪問 16:00</div><div class="ev-more">他1件</div></div>
+                  <div class="cell"><span class="dnum">30</span></div>
+                  <div class="cell"><span class="dnum">31</span><div class="ev ev-violet">誕生日</div></div>
+                  <div class="cell out sat"><span class="dnum">1</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="notes">
+      <div class="note">
+        <h4><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>背景に土台を敷いた</h4>
+        <p>アプリ背景を <code>#F7F9FC</code> に。白いカレンダーカードが影に頼らず浮きます。</p>
+      </div>
+      <div class="note">
+        <h4><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>左アイコン列をカード化</h4>
+        <p>今は白背景に浮いているだけの縦列を、カレンダーと同じ面として扱いました。</p>
+      </div>
+      <div class="note">
+        <h4><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>＋ボタンを主ボタンに</h4>
+        <p>アイコンだけの35px四角から、ネイビーのpillに。何をするボタンか一目で分かります。</p>
+      </div>
+      <div class="note">
+        <h4><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>イベントをチップに</h4>
+        <p>15px固定の棒をやめ、余白のあるチップへ。色は薄い地＋濃い文字で可読性を確保。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ B案 ============================ -->
+<section class="section">
+  <div class="wrap">
+    <div class="prop-head">
+      <div class="prop-mark">面</div>
+      <div class="prop-titles">
+        <p class="eyebrow">Plan B</p>
+        <h2>サイドバーを常設にする</h2>
+        <p>ハンバーガーで開く400pxのオーバーレイをやめ、246pxの常設サイドバーへ。左の細いアイコン列も統合します。</p>
+      </div>
+      <div class="prop-facts">
+        <span class="chip">HTML構造の変更あり</span>
+        <span class="chip">JS少し</span>
+        <span class="chip chip-amber">いちばん「アプリらしい」</span>
+      </div>
+    </div>
+
+    <div class="board-scroll">
+      <div class="board mk-b">
+        <div class="b-shell">
+
+          <aside class="b-side">
+            <div class="b-brand">
+              <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>
+              <b>Day<i>Line</i></b>
+            </div>
+            <div class="b-new"><svg class="ic ic-s" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>予定を作成</div>
+
+            <div class="b-mini">
+              <div class="b-mini-h">
+                <b>2026年7月</b>
+                <span>
+                  <svg class="ic ic-s" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>
+                  <svg class="ic ic-s" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
+                </span>
+              </div>
+              <div class="b-mini-g">
+                <i>日</i><i>月</i><i>火</i><i>水</i><i>木</i><i>金</i><i>土</i>
+                <u class="out">28</u><u class="out">29</u><u class="out">30</u><u>1</u><u class="dot">2</u><u>3</u><u>4</u>
+                <u>5</u><u class="dot">6</u><u>7</u><u class="dot">8</u><u>9</u><u class="dot">10</u><u>11</u>
+                <u>12</u><u class="dot">13</u><u>14</u><u class="dot">15</u><u class="dot">16</u><u class="dot">17</u><u>18</u>
+                <u>19</u><u>20</u><u class="dot">21</u><u>22</u><u class="dot">23</u><u>24</u><u>25</u>
+                <u>26</u><u>27</u><u>28</u><u class="on">29</u><u>30</u><u class="dot">31</u><u class="out">1</u>
+              </div>
+            </div>
+
+            <div class="b-sec">カレンダー</div>
+            <div class="b-list">
+              <div class="b-row on">
+                <span class="b-tick" style="background:#011D45"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg></span>
+                <b>マイカレンダー</b>
+                <svg class="ic ic-s b-gear" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19 12a7 7 0 00-.1-1l2-1.5-2-3.4-2.3 1a7 7 0 00-1.7-1L14.5 3h-4l-.4 2.6a7 7 0 00-1.7 1l-2.3-1-2 3.4 2 1.5a7 7 0 000 2l-2 1.5 2 3.4 2.3-1a7 7 0 001.7 1l.4 2.6h4l.4-2.6a7 7 0 001.7-1l2.3 1 2-3.4-2-1.5a7 7 0 00.1-1z"/></svg>
+              </div>
+              <div class="b-row">
+                <span class="b-tick" style="background:#FFA500"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg></span>
+                <b>就活2027</b>
+                <svg class="ic ic-s b-gear" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19 12a7 7 0 00-.1-1l2-1.5-2-3.4-2.3 1a7 7 0 00-1.7-1L14.5 3h-4l-.4 2.6a7 7 0 00-1.7 1l-2.3-1-2 3.4 2 1.5a7 7 0 000 2l-2 1.5 2 3.4 2.3-1a7 7 0 001.7 1l.4 2.6h4l.4-2.6a7 7 0 001.7-1l2.3 1 2-3.4-2-1.5a7 7 0 00.1-1z"/></svg>
+              </div>
+              <div class="b-row">
+                <span class="b-tick" style="background:#2E9E88"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg></span>
+                <b>サークル</b>
+                <svg class="ic ic-s b-gear" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19 12a7 7 0 00-.1-1l2-1.5-2-3.4-2.3 1a7 7 0 00-1.7-1L14.5 3h-4l-.4 2.6a7 7 0 00-1.7 1l-2.3-1-2 3.4 2 1.5a7 7 0 000 2l-2 1.5 2 3.4 2.3-1a7 7 0 001.7 1l.4 2.6h4l.4-2.6a7 7 0 001.7-1l2.3 1 2-3.4-2-1.5a7 7 0 00.1-1z"/></svg>
+              </div>
+              <div class="b-row">
+                <span class="b-tick" style="background:#DCE2EB"></span>
+                <b style="color:#8B98AB">家族</b>
+              </div>
+              <div class="b-add"><svg class="ic ic-s" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>カレンダーを追加</div>
+            </div>
+
+            <div class="b-foot">
+              <div class="a-av"></div>
+              <span>まるこん<em>maru@example.com</em></span>
+            </div>
+          </aside>
+
+          <div class="b-main">
+            <div class="b-top">
+              <div class="b-month">2026年7月</div>
+              <div class="b-arrows">
+                <div><svg class="ic ic-s" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg></div>
+                <div><svg class="ic ic-s" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></div>
+              </div>
+              <div class="b-td">今日</div>
+              <div class="b-r">
+                <div class="seg"><b class="on">月</b><b>週</b></div>
+                <div class="btn-i"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg></div>
+                <div class="btn-i"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z"/></svg></div>
+              </div>
+            </div>
+
+            <div class="b-calwrap">
+              <div class="cal">
+                <div class="cal-dow">
+                  <span class="sun">日</span><span>月</span><span>火</span><span>水</span><span>木</span><span>金</span><span class="sat">土</span>
+                </div>
+                <div class="cal-grid">
+                  <div class="cell out sun"><span class="dnum">28</span></div>
+                  <div class="cell out"><span class="dnum">29</span></div>
+                  <div class="cell out"><span class="dnum">30</span></div>
+                  <div class="cell"><span class="dnum">1</span></div>
+                  <div class="cell"><span class="dnum">2</span><div class="ev ev-rose">ES締切 23:59</div></div>
+                  <div class="cell"><span class="dnum">3</span></div>
+                  <div class="cell sat"><span class="dnum">4</span></div>
+
+                  <div class="cell sun"><span class="dnum">5</span></div>
+                  <div class="cell"><span class="dnum">6</span><div class="ev ev-navy">合同説明会</div></div>
+                  <div class="cell"><span class="dnum">7</span></div>
+                  <div class="cell"><span class="dnum">8</span><div class="ev ev-amber">面接 14:00</div></div>
+                  <div class="cell"><span class="dnum">9</span></div>
+                  <div class="cell"><span class="dnum">10</span><div class="ev ev-violet">ゼミ発表</div></div>
+                  <div class="cell sat"><span class="dnum">11</span></div>
+
+                  <div class="cell sun"><span class="dnum">12</span></div>
+                  <div class="cell"><span class="dnum">13</span><div class="ev ev-teal">歯医者 16:30</div></div>
+                  <div class="cell"><span class="dnum">14</span></div>
+                  <div class="cell"><span class="dnum">15</span><div class="ev ev-span l">帰省</div></div>
+                  <div class="cell"><span class="dnum">16</span><div class="ev ev-span m">帰省</div></div>
+                  <div class="cell"><span class="dnum">17</span><div class="ev ev-span r">帰省</div></div>
+                  <div class="cell sat"><span class="dnum">18</span></div>
+
+                  <div class="cell sun"><span class="dnum">19</span></div>
+                  <div class="cell"><span class="dnum">20</span></div>
+                  <div class="cell"><span class="dnum">21</span><div class="ev ev-navy">面談 10:00</div><div class="ev ev-teal">バイト 18:00</div></div>
+                  <div class="cell"><span class="dnum">22</span></div>
+                  <div class="cell"><span class="dnum">23</span><div class="ev ev-amber">1次結果</div></div>
+                  <div class="cell"><span class="dnum">24</span></div>
+                  <div class="cell sat"><span class="dnum">25</span></div>
+
+                  <div class="cell sun"><span class="dnum">26</span></div>
+                  <div class="cell"><span class="dnum">27</span></div>
+                  <div class="cell"><span class="dnum">28</span></div>
+                  <div class="cell today"><span class="dnum">29</span><div class="ev ev-amber">インターン面接 13:00</div><div class="ev ev-navy">OB訪問 16:00</div><div class="ev-more">他1件</div></div>
+                  <div class="cell"><span class="dnum">30</span></div>
+                  <div class="cell"><span class="dnum">31</span><div class="ev ev-violet">誕生日</div></div>
+                  <div class="cell out sat"><span class="dnum">1</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="notes">
+      <div class="note">
+        <h4><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>ミニ月カレンダーを追加</h4>
+        <p>今は年月ドロップダウンでしか移動できません。ミニ月なら前後の月に一発で飛べます。</p>
+      </div>
+      <div class="note">
+        <h4><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>ルーム画像を色ドットに</h4>
+        <p>130×100pxの画像＋高さ100pxの行はスペースを食いすぎ。色チェックなら1行32pxで一覧できます。</p>
+      </div>
+      <div class="note">
+        <h4><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>ハンバーガーが不要に</h4>
+        <p>常設にすることで「開く→選ぶ→閉じる」の3手が0手に。表示切替が主要操作なので効果が大きいです。</p>
+      </div>
+      <div class="note">
+        <h4><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>スマホは今のまま</h4>
+        <p>580px以下ではサイドバーを隠して、既存のオーバーレイ挙動に戻します。下部タブバーも維持。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ C案 ============================ -->
+<section class="section">
+  <div class="wrap">
+    <div class="prop-head">
+      <div class="prop-mark">間</div>
+      <div class="prop-titles">
+        <p class="eyebrow">Plan C</p>
+        <h2>カードをやめて、余白で見せる</h2>
+        <p>カレンダーを画面いっぱいに広げ、影もカードも外します。構造は1本の細い罫線と余白だけで作ります。</p>
+      </div>
+      <div class="prop-facts">
+        <span class="chip">見た目の変化は最大</span>
+        <span class="chip chip-amber">好みが分かれる</span>
+      </div>
+    </div>
+
+    <div class="board-scroll">
+      <div class="board mk-c">
+        <div class="c-shell">
+
+          <div class="c-top">
+            <div class="c-month">2026<b>年7月</b></div>
+            <div class="c-arrows">
+              <div><svg class="ic ic-s" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg></div>
+              <div><svg class="ic ic-s" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></div>
+            </div>
+            <div class="c-ghost">今日</div>
+            <div class="c-r">
+              <div class="seg"><b class="on">月</b><b>週</b></div>
+              <div class="c-ghost"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg></div>
+              <div class="c-fab"><svg class="ic ic-s" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>作成</div>
+              <div class="a-av" style="width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#7FA5D8,#3C5F94)"></div>
+            </div>
+          </div>
+
+          <div class="c-body">
+            <div class="c-rail">
+              <div class="on"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/></svg></div>
+              <div><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg></div>
+              <div><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z"/></svg></div>
+              <div class="c-sp"></div>
+              <div><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg></div>
+            </div>
+
+            <div class="c-cal">
+              <div class="cal">
+                <div class="cal-dow">
+                  <span class="sun">Sun</span><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span class="sat">Sat</span>
+                </div>
+                <div class="cal-grid">
+                  <div class="cell out sun"><span class="dnum">28</span></div>
+                  <div class="cell out"><span class="dnum">29</span></div>
+                  <div class="cell out"><span class="dnum">30</span></div>
+                  <div class="cell"><span class="dnum">1</span></div>
+                  <div class="cell"><span class="dnum">2</span><div class="ev ev-rose">ES締切 23:59</div></div>
+                  <div class="cell"><span class="dnum">3</span></div>
+                  <div class="cell sat"><span class="dnum">4</span></div>
+
+                  <div class="cell sun"><span class="dnum">5</span></div>
+                  <div class="cell"><span class="dnum">6</span><div class="ev ev-navy">合同説明会</div></div>
+                  <div class="cell"><span class="dnum">7</span></div>
+                  <div class="cell"><span class="dnum">8</span><div class="ev ev-amber">面接 14:00</div></div>
+                  <div class="cell"><span class="dnum">9</span></div>
+                  <div class="cell"><span class="dnum">10</span><div class="ev ev-violet">ゼミ発表</div></div>
+                  <div class="cell sat"><span class="dnum">11</span></div>
+
+                  <div class="cell sun"><span class="dnum">12</span></div>
+                  <div class="cell"><span class="dnum">13</span><div class="ev ev-teal">歯医者 16:30</div></div>
+                  <div class="cell"><span class="dnum">14</span></div>
+                  <div class="cell"><span class="dnum">15</span><div class="ev ev-span l">帰省</div></div>
+                  <div class="cell"><span class="dnum">16</span><div class="ev ev-span m">帰省</div></div>
+                  <div class="cell"><span class="dnum">17</span><div class="ev ev-span r">帰省</div></div>
+                  <div class="cell sat"><span class="dnum">18</span></div>
+
+                  <div class="cell sun"><span class="dnum">19</span></div>
+                  <div class="cell"><span class="dnum">20</span></div>
+                  <div class="cell"><span class="dnum">21</span><div class="ev ev-navy">面談 10:00</div><div class="ev ev-teal">バイト 18:00</div></div>
+                  <div class="cell"><span class="dnum">22</span></div>
+                  <div class="cell"><span class="dnum">23</span><div class="ev ev-amber">1次結果</div></div>
+                  <div class="cell"><span class="dnum">24</span></div>
+                  <div class="cell sat"><span class="dnum">25</span></div>
+
+                  <div class="cell sun"><span class="dnum">26</span></div>
+                  <div class="cell"><span class="dnum">27</span></div>
+                  <div class="cell"><span class="dnum">28</span></div>
+                  <div class="cell today"><span class="dnum">29</span><div class="ev ev-amber">インターン面接 13:00</div><div class="ev ev-navy">OB訪問 16:00</div></div>
+                  <div class="cell"><span class="dnum">30</span></div>
+                  <div class="cell"><span class="dnum">31</span><div class="ev ev-violet">誕生日</div></div>
+                  <div class="cell out sat"><span class="dnum">1</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="notes">
+      <div class="note">
+        <h4><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>日付を大きく、細く</h4>
+        <p>17px / weight 300。数字が主役になり、月全体のリズムが読み取りやすくなります。</p>
+      </div>
+      <div class="note">
+        <h4><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>今日は丸ではなく面で示す</h4>
+        <p>オレンジの丸を外し、数字の色＋セル上部のごく薄いグラデーションで示します。</p>
+      </div>
+      <div class="note">
+        <h4><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>ヘッダーは半透明で浮かせる</h4>
+        <p><code>backdrop-filter: blur(14px)</code>。スクロールする週表示のときに効いてきます。</p>
+      </div>
+      <div class="note">
+        <h4><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>曜日を英字に</h4>
+        <p>Nunitoのトラッキングを効かせた小さな英字ラベル。日本語の日付と対比が付きます。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ 比較 ============================ -->
+<section class="section" style="border-bottom:none">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">03 — Comparison</p>
+      <h2>どれを選ぶか</h2>
+    </div>
+
+    <div class="tbl-scroll">
+      <table>
+        <thead>
+          <tr><th>　</th><th>A 静</th><th>B 面</th><th>C 間</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>触る範囲</strong></td>
+            <td>CSSのみ</td>
+            <td>CSS＋index.html＋JS</td>
+            <td>CSS＋index.html</td>
+          </tr>
+          <tr>
+            <td><strong>実装リスク</strong></td>
+            <td><span class="dot lo">低</span></td>
+            <td><span class="dot md">中</span></td>
+            <td><span class="dot md">中</span></td>
+          </tr>
+          <tr>
+            <td><strong>見た目の変化</strong></td>
+            <td>小さい（でも効く）</td>
+            <td>大きい</td>
+            <td>いちばん大きい</td>
+          </tr>
+          <tr>
+            <td><strong>操作の改善</strong></td>
+            <td>ほぼなし</td>
+            <td><strong>大きい</strong>（月移動・表示切替が速い）</td>
+            <td>小さい</td>
+          </tr>
+          <tr>
+            <td><strong>面接で説明しやすいか</strong></td>
+            <td>「デザイン負債を整理した」</td>
+            <td><strong>「導線を計測して減らした」</strong></td>
+            <td>「世界観を作った」</td>
+          </tr>
+          <tr>
+            <td><strong>スマホ対応の追加作業</strong></td>
+            <td>ほぼなし</td>
+            <td>あり（サイドバーの出し分け）</td>
+            <td>中（セル余白の再調整）</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="rec">
+      <h3>おすすめは A → B の順で段階的に</h3>
+      <p>
+        Aは既存HTMLに一切触らないので、失敗してもCSSを戻すだけで済みます。
+        そして今回の「素人っぽさ」の原因はほぼ全部Aの範囲で消えます。まずここで土台を作り、
+        そのうえでBのサイドバー常設に進むと、作業が壊れにくく、就活で話すときも
+        「まず見た目の一貫性を直し、次に導線を直した」という順序で説明できます。
+      </p>
+      <ol>
+        <li><strong>ステップ1</strong>　<code>top.css</code> の <code>:root</code> 変数を <code>DayLine_style.css</code> に移して全ページ共通化する</li>
+        <li><strong>ステップ2</strong>　両側の影を全部 <code>--shadow</code> に置換、角丸を3段階に統一（A案の大半がここで完了）</li>
+        <li><strong>ステップ3</strong>　ヘッダーを58pxにして操作要素を34pxに揃える／Month-Weekトグルを無彩色セグメントに</li>
+        <li><strong>ステップ4</strong>　FullCalendarのイベントをチップ化、セル余白を確保</li>
+        <li><strong>ステップ5</strong>　ここまでで一度見て、良ければB案のサイドバー常設に着手</li>
+      </ol>
+    </div>
+
+    <div class="rec" style="border-left-color:var(--ink-3)">
+      <h3>この提案で決めきれていないこと</h3>
+      <p>
+        C案の「今日を丸で示さない」は、視認性を落とす可能性があります。
+        Cを選ぶ場合は、丸を残すかどうかだけ別途決めてください。
+        あとダークモードは3案とも未検討です（今のアプリは <code>#fff</code> 固定）。
+        必要なら、色を変数化するステップ1の時点で一緒に入れておくと後が楽になります。
+      </p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap stack">
+    <span>DayLine カレンダー画面リデザイン提案 — 実装はまだ行っていません</span>
+    <span><code>design_proposals/calendar_redesign.html</code></span>
+  </div>
+</footer>
