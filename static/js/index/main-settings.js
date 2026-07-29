@@ -59,9 +59,14 @@ document.addEventListener('DOMContentLoaded', function() {
                 textColor: "#ffffff",
             }
         ],
-        contentHeight: 600,
+        // contentHeight:600 の固定だと、画面が高いときにカレンダー下部が空白になっていた。
+        // '100%' にして親要素(#calendar)の高さいっぱいに広げる。
+        // サイドバー開閉時に呼んでいる calendar.updateSize() がこの値を基準に再計算する
+        height: '100%',
+        // height だけだと外枠が広がるだけで行の高さは中身なりになる（既定は false）。
+        // これを true にして各週の行を高さいっぱいに引き伸ばす
+        expandRows: true,
         dayMaxEvents: true,
-        handleWindowResize: true,
         longPressDelay: 100, // スマホ用
         // navLinksを無効にする（デフォルトの日クリック遷移を防ぐ）
         navLinks: false,

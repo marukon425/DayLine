@@ -8,9 +8,10 @@
     --fc-page-bg-color: #fff;
 }
 
-.fc-scroller{
-    overflow: visible !important;
-}
+/* 以前は .fc-scroller に overflow:visible !important を当てて
+   FullCalendar のスクロール制御を無効化していた。
+   そのため週表示が縦にスクロールできず、狭い画面では横にはみ出して
+   土日の列が画面外に切れていた。FullCalendar 側の制御に戻す。 */
 .fc .fc-col-header-cell {
   border-bottom: none;
 }
