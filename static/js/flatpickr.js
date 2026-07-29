@@ -8,6 +8,8 @@ document.addEventListener("DOMContentLoaded", function(){
         enableTime: true,        // 時間選択を有効化
         noCalendar: true,       // カレンダーを非表示
         dateFormat: "H:i",      // 24時間表示 (例: 13:45)
-        time_24hr: false,        // 24時間表示にする
+        // dateFormatが"H:i"（24時間形式）なのにfalseだと、
+        // 入力欄は24時間表示のままAM/PMセレクターが出て時刻がずれるのでtrueに合わせる
+        time_24hr: true,
     });
 });

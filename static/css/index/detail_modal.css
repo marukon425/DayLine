@@ -18,9 +18,11 @@ input[type="text"]:focus, textarea {
     opacity: 0;
     
     transition: all 0.3s ease;
-    box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.15), -6px -6px 12px rgba(0, 0, 0, 0.15);
-    border-radius: 30px;
-    padding: 15px;
+    /* 両側からの影をやめて下方向ひとつに */
+    box-shadow: var(--shadow-modal);
+    border: 1px solid var(--line);
+    border-radius: var(--r-card);
+    padding: 18px;
     display: none;
     transform: translate(-50%, -50%);
     opacity: 1;
@@ -164,14 +166,14 @@ input[type="text"]:focus, textarea {
 
 .memo-detail-modal {
     background: #fff;
-    border-radius: 20px;
+    border-radius: var(--r-card);
     padding: 24px;
     width: 340px;
     max-height: 70vh;
     display: flex;
     flex-direction: column;
     gap: 16px;
-    box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+    box-shadow: var(--shadow-modal);
     animation: memoFadeIn 0.2s ease;
 }
 @keyframes memoFadeIn {
@@ -216,14 +218,14 @@ input[type="text"]:focus, textarea {
 }
 .todo-detail-modal{
     background: #fff;
-    border-radius: 20px;
+    border-radius: var(--r-card);
     padding: 24px;
     width: 340px;
     max-height: 90vh;
     display: flex;
     flex-direction: column;
     gap: 16px;
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+    box-shadow: var(--shadow-modal);
 }
 .todo-detail-header{
     display: flex;

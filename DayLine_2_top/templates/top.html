@@ -1,93 +1,191 @@
 {% extends 'DayLine_2_top/base.html' %}
 {% load static %}
 
-{% block title %}DayLine{% endblock %}
+{% block title %}DayLine - あなたの毎日に、ちょうどいいカレンダー{% endblock %}
 
 {% block extra_css %}
-    <link rel="stylesheet" href= "{% static 'css/top/top.css' %}">{% endblock %}
+    <link rel="stylesheet" href="{% static 'css/top/top.css' %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;800;900&display=swap" rel="stylesheet">
+{% endblock %}
 
 {% block content %}
-    <main>
-        <div class="top-words">
-            <div class="top-words-wrap">
-                <div class="top-words-back-img"><img src="{% static 'img/top_カレンダー.jpg' %}" alt=""></div>
-                <div class="top-words-hidden">
-                    <h1 class="road-output">Plan on DayLine</h1>
-                    <h3 class="road-output">あなたの毎日に、ちょうどいいカレンダー</h3>
-                </div>
+
+<section class="hero">
+    <div class="hero-text">
+        <div class="hero-badge"><div class="hero-badge-dot"></div>カレンダーアプリ・無料</div>
+        <h1 class="road-output">Plan on DayLine</h1>
+        <p class="hero-tagline road-output">あなたの毎日に、ちょうどいいカレンダー</p>
+        <p class="hero-desc road-output">DayLineは、大切な人と予定を共有できるカレンダーアプリ。家族・恋人・友人の予定をシンプルに、スマートに管理できます。</p>
+        <div class="hero-cta road-output">
+            <a href="{% url 'DayLine_3_accounts:signup' %}" class="btn-primary">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                無料で始める
+            </a>
+            <a href="#features" class="btn-secondary">機能を見る</a>
+        </div>
+    </div>
+    <div class="hero-img-col">
+        <img src="{% static 'img/top_images/A_clean,_minimal_flat-lay_photo_202605301903.jpeg' %}" alt="DayLine アプリイメージ">
+        <div class="float-card bottom-left">
+            <div class="float-card-icon">📅</div>
+            <div>
+                <div class="float-card-sub">本日の予定</div>
+                <div>3件の予定があります</div>
             </div>
         </div>
-        <div class="sub-words">
-            <h1>シンプルでパワフル</h1>
-            <h4>DayLineは、あなたの生活をより豊かにする機能が満載</h4>
-        </div>
-        <div class="top-descriptions-wrap">
-            <div class="top-descriptions">
-                <div class="description">
-                    <div class="description-img"><img src="{% static "img/top_images/トップイメージ2.jpg" %}" alt=""></div>
-                    <div class="description-words">
-                        <h1>シンプルな予定管理</h1>
-                        <p>直感的なUI操作で、予定の追加や編集が簡単</p>
-                    </div>
-                </div>
-                <div class="description">
-                    <div class="description-img"><img src="{% static "img/top_images/トップイメージ.jpg" %}" alt=""></div>
-                    <div class="description-words">
-                        <h1>思い出を一緒に</h1>
-                        <p>予定に写真を追加して、大切な瞬間を記録。カレンダーがあなたの思い出アルバムに。</p>
-                    </div>
-                </div>
-                <div class="description">
-                    <div class="description-img"><img src="{% static "img/top_images/トップイメージ3.jpg" %}" alt=""></div>
-                    <div class="description-words">
-                        <h1>恋人や友人と共有</h1>
-                        <p>大切な人と予定を共有。家族の予定も、友人とのイベントも、みんなで管理できます。</p>
-                    </div>
-                </div>
-                <div class="description">
-                    <div class="description-img"><img src="{% static "img/top_images/ミニマルなスマホ画面のカレンダー.png" %}" alt=""></div>
-                    <div class="description-words">
-                        <h1>リマインダー通知</h1>
-                        <p>大切な予定を忘れない。カスタマイズ可能な通知で、いつでも予定を把握できます。</p>
-                    </div>
-                </div>
+        <div class="float-card top-right">
+            <div class="float-card-icon">🔔</div>
+            <div>
+                <div class="float-card-sub">30分前通知</div>
+                <div>ランチの予定があります</div>
             </div>
         </div>
-        {% comment %} <div class="sub-words">
-            <h1>様々なシーンで活躍</h1>
-            <h4>DayLineはあなたのライフスタイルに合わせて使えます</h4>
-        </div> {% endcomment %}
-    </main>
-    <footer>
-        <div class="footer-contents">
-            <div class="footer-sns">
-                <img src="{% static "img/DayLine3.svg" %}" alt="">
-                <p>あなたの毎日に、ちょうどいいカレンダー</p>
+    </div>
+</section>
+
+<section class="alt-section" id="features">
+    <div class="alt-inner fade-up">
+        <div class="alt-text">
+            <div class="alt-label">Feature 01</div>
+            <h2>直感的な<br>予定管理</h2>
+            <p>タップひとつで予定を追加。月表示・週表示を切り替えながら、自分のスタイルに合ったカレンダーを使えます。忙しい毎日でも、予定の管理がぐっとラクになります。</p>
+        </div>
+        <div class="alt-img">
+            <img src="{% static 'img/top_images/Two_smartphones_side_by_side_202605301908.jpeg' %}" alt="シンプルな予定管理">
+        </div>
+    </div>
+</section>
+
+<section class="alt-section alt-section-bg">
+    <div class="alt-inner alt-inner-reverse fade-up">
+        <div class="alt-text">
+            <div class="alt-label">Feature 02</div>
+            <h2>思い出を<br>一緒に残す</h2>
+            <p>予定に写真を添付して、大切な瞬間を記録。カレンダーがそのままあなたの思い出アルバムになります。旅行・記念日・イベントの思い出をカレンダーで振り返れます。</p>
+        </div>
+        <div class="alt-img">
+            <img src="{% static 'img/top_images/A_flat-lay_photo_of_a_202605301907.jpeg' %}" alt="思い出を一緒に">
+        </div>
+    </div>
+</section>
+
+<section class="alt-section">
+    <div class="alt-inner fade-up">
+        <div class="alt-text">
+            <div class="alt-label">Feature 03</div>
+            <h2>大切な人と<br>予定を共有</h2>
+            <p>招待URLを送るだけでカレンダーを共有。家族・恋人・友達の予定をリアルタイムで確認できます。「いつ会える？」のすれ違いをなくして、もっと充実した時間を。</p>
+        </div>
+        <div class="alt-img">
+            <img src="{% static 'img/top_images/A_close-up_photo_of_a_202605301905.jpeg' %}" alt="みんなで共有">
+        </div>
+    </div>
+</section>
+
+<section class="alt-section alt-section-bg">
+    <div class="alt-inner alt-inner-reverse fade-up">
+        <div class="alt-text">
+            <div class="alt-label">Feature 04</div>
+            <h2>予定を<br>忘れない</h2>
+            <p>重要な予定は30分前に通知。直前に慌てることがなくなります。リマインダーがあるから、どんなに忙しい日でも大切な予定を把握できます。</p>
+        </div>
+        <div class="alt-img">
+            <img src="{% static 'img/top_images/A_smartphone_lying_on_a_202605301910.jpeg' %}" alt="リマインダー通知">
+        </div>
+    </div>
+</section>
+
+<section class="steps-section">
+    <div class="steps-inner">
+        <div class="fade-up steps-header">
+            <div class="section-label center">How to Start</div>
+            <h2 class="section-title">3ステップで始められる</h2>
+            <p class="section-sub center">アカウント登録から共有まで、わずか数分で完了します。</p>
+        </div>
+        <div class="steps-grid fade-up">
+            <div class="step-card">
+                <div class="step-num">1</div>
+                <h3>アカウントを作成</h3>
+                <p>メールまたはGoogleで無料登録。30秒で完了します。</p>
             </div>
-            {% comment %} <div class="footer-content">
-                <h4>プロダクト</h4>
-                <ul>
-                    <li>機能</li>
-                    <li>料金</li>
-                    <li>更新履歴</li>
-                    <li>ロードマップ</li>
-                </ul>
-            </div> {% endcomment %}
-            <div class="footer-content">
-                <h4>サポート</h4>
-                <ul>
-                    <li><a href="{% url 'DayLine_2_top:contact' %}">お問い合わせ</a></li>
-                    <li><a href="{% url 'DayLine_2_top:privacy' %}">プライバシーポリシー</a></li>
-                    <li><a href="{% url 'DayLine_2_top:terms' %}">利用規約</a></li>
-                </ul>
+            <div class="step-card">
+                <div class="step-num">2</div>
+                <h3>カレンダーを作る</h3>
+                <p>用途に合わせてカレンダーを作成。複数作れます。</p>
+            </div>
+            <div class="step-card">
+                <div class="step-num">3</div>
+                <h3>メンバーを招待</h3>
+                <p>URLをシェアするだけで完了。すぐ使い始められます。</p>
             </div>
         </div>
-        <div class="copy-field">
-            <p>&copy; 2026 DayLine. All rights reserved.</p>
+    </div>
+</section>
+
+<section class="scene-section">
+    <div class="scene-inner">
+        <div class="fade-up">
+            <div class="section-label">Use Cases</div>
+            <h2 class="section-title">あらゆるシーンで活躍</h2>
+            <p class="section-sub">DayLineはどんな関係性でも使えます。</p>
         </div>
-    </footer>
+        <div class="scene-grid">
+            <div class="scene-card fade-up delay-1">
+                <div class="scene-emoji">👨‍👩‍👧‍👦</div>
+                <h3>家族で</h3>
+                <p>子どもの行事・習い事・家族の通院など、みんなのスケジュールを一元管理。</p>
+            </div>
+            <div class="scene-card fade-up delay-2">
+                <div class="scene-emoji">💑</div>
+                <h3>カップルで</h3>
+                <p>デートの予定・記念日・旅行プランを共有。「いつ会える？」をスムーズに。</p>
+            </div>
+            <div class="scene-card fade-up delay-3">
+                <div class="scene-emoji">🎓</div>
+                <h3>友達・サークルで</h3>
+                <p>集まりの日程調整や合宿・イベントの計画をグループでまとめて管理。</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="cta-section">
+    <div class="cta-inner fade-up">
+        <div class="section-label center">Get Started</div>
+        <h2 class="section-title">今すぐ無料で<br>始めてみよう</h2>
+        <p class="section-sub center">登録は完全無料。大切な人との予定を、もっとスマートに管理しませんか。</p>
+        <div class="cta-btns">
+            <a href="{% url 'DayLine_3_accounts:signup' %}" class="btn-primary">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                無料で始める
+            </a>
+            <a href="{% url 'DayLine_3_accounts:login' %}" class="btn-secondary">ログインはこちら</a>
+        </div>
+    </div>
+</section>
+
+<footer>
+    <div class="footer-inner">
+        <div class="footer-brand">
+            <img src="{% static 'img/DayLine3.svg' %}" alt="DayLine">
+            <p>あなたの毎日に、ちょうどいいカレンダー</p>
+        </div>
+        <div class="footer-col">
+            <h4>サポート</h4>
+            <ul>
+                <li><a href="{% url 'DayLine_2_top:contact' %}">お問い合わせ</a></li>
+                <li><a href="{% url 'DayLine_2_top:privacy' %}">プライバシーポリシー</a></li>
+                <li><a href="{% url 'DayLine_2_top:terms' %}">利用規約</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="footer-copy"><p>&copy; 2026 DayLine. All rights reserved.</p></div>
+</footer>
+
 {% endblock %}
 
 {% block extra_js %}
-  <script src="{% static 'js/top/toppage.js' %}"></script>
+    <script src="{% static 'js/top/toppage.js' %}"></script>
+    <script src="{% static 'js/top/top_scroll.js' %}"></script>
 {% endblock %}

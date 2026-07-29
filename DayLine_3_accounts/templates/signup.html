@@ -1,65 +1,109 @@
 {% load static %}
+{% load socialaccount %}
 <!DOCTYPE html>
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>サインアップ</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <meta name="theme-color" content="#ffffff">
+    <title>サインアップ | DayLine</title>
     <link rel="stylesheet" href="{% static 'css/DayLine_style.css' %}">
     <link rel="stylesheet" href="{% static 'css/login_signup/login_signup.css' %}">
-    <script src="{% static 'js/accounts/other.js' %}"  defer></script>
-    <link rel="icon" href="{% static "img/favicon.ico" %}" >
+    <script src="{% static 'js/accounts/other.js' %}" defer></script>
+    <link rel="icon" href="{% static 'img/favicon.ico' %}">
 </head>
 <body>
     <header>
-        <a href="{% url "DayLine_2_top:top" %}">
-            <div class="app-icon"><img src="{% static 'img/DayLine2.svg' %}" alt=""></div>
-        </a>        <div class="header-content">
+        <a href="{% url 'DayLine_2_top:top' %}" class="app-icon">
+            <img src="{% static 'img/DayLine2.svg' %}" alt="DayLine">
+        </a>
+        <div class="header-content">
             <a href="{% url 'DayLine_2_top:contact' %}" id="contact">問い合わせ</a>
             <a href="{% url 'DayLine_3_accounts:login' %}" class="change-signup-login">ログイン</a>
         </div>
     </header>
+
     <main>
         <div class="login-signup">
-            <div class="login-signup-header">サインアップ</div>
+            <div class="login-signup-header">アカウントを作成</div>
+            <p class="signup-subtitle">DayLineで予定管理をはじめよう</p>
+
             <form method="POST" action="" id="signup-form" class="signup-login-form">
                 {% csrf_token %}
                 <div id="signup-form-inputs">
                     <div class="name-mail">
-                        <!--<input type="text" placeholder="ユーザー名" class="signup-form-input">-->
                         <p class="sginup-feeld-name">ユーザー名</p>
-                        {{form.username}}
-                        
-                        <!--<input type="email" id="" placeholder="メールアドレス" class="signup-form-input">-->
+                        {{ form.username }}
+
                         <p class="sginup-feeld-name">メールアドレス</p>
                         {{ form.email }}
                         {% for error in form.email.errors %}
-                        <p class="signup-error">{{ error }}</p>
+                            <p class="signup-error">{{ error }}</p>
                         {% endfor %}
                     </div>
+
                     <p class="sginup-feeld-name sginup-feeld-name-password">パスワード</p>
                     <div class="passwords">
-                        {{  form.password1 }}
-                        {{  form.password2 }}
+                        {{ form.password1 }}
+                        {{ form.password2 }}
                     </div>
-                    <div class="passwortd-condition ">
+
+                    <div class="passwortd-condition">
                         <ul>
-                            <li id="specified_length" class="passwortd-condition-list"><img src="{% static 'img/チェックマーク_未チェック.png' %}" alt=""><span>8〜20文字</span></li>
-                            <li id="specified_character" class="passwortd-condition-list"><img src="{% static 'img/チェックマーク_未チェック.png' %}" alt=""><span>半角英字、数字を使用</span></li>
-                            <li id="safety" class="passwortd-condition-list"><img src="{% static 'img/チェックマーク_未チェック.png' %}" alt=""><span>安全性が高い</span></li>
-                            <li id="password_matched" class="passwortd-condition-list"><img src="{% static 'img/チェックマーク_未チェック.png' %}" alt=""><span>確認用パスワードが一致</span></li>
+                            <li id="specified_length" class="passwortd-condition-list">
+                                <img src="{% static 'img/チェックマーク_未チェック.png' %}" alt="">
+                                <span>8〜20文字</span>
+                            </li>
+                            <li id="specified_character" class="passwortd-condition-list">
+                                <img src="{% static 'img/チェックマーク_未チェック.png' %}" alt="">
+                                <span>半角英字、数字を使用</span>
+                            </li>
+                            <li id="safety" class="passwortd-condition-list">
+                                <img src="{% static 'img/チェックマーク_未チェック.png' %}" alt="">
+                                <span>安全性が高い</span>
+                            </li>
+                            <li id="password_matched" class="passwortd-condition-list">
+                                <img src="{% static 'img/チェックマーク_未チェック.png' %}" alt="">
+                                <span>確認用パスワードが一致</span>
+                            </li>
                         </ul>
-                        <p class="terms_of_use" id="terms_of_use-btn"><input type="checkbox" id="terms_of_use-check" class="signup-form-input"><a href="{% url 'DayLine_2_top:terms' %}">利用規約</a>に同意する</p>
+                        <p class="terms_of_use" id="terms_of_use-btn">
+                            {# フォームのフィールドとして描画する。生のinputだとname属性がなく、#}
+                            {# サーバーには同意有無が一切送信されないため直接POSTで素通りできてしまう #}
+                            {{ form.terms_of_use }}
+                            <a href="{% url 'DayLine_2_top:terms' %}">利用規約</a>に同意する
+                        </p>
+                        {% for error in form.terms_of_use.errors %}
+                            <p class="signup-error">{{ error }}</p>
+                        {% endfor %}
 
                         {% for error in form.password1.errors %}
                             <p class="signup-error">{{ error }}</p>
                         {% endfor %}
                         {% for error in form.password2.errors %}
                             <p class="signup-error">{{ error }}</p>
-                        {% endfor %}                    </div>
-                    <div>
-                        <button type="submit" class="signup-submit" id="signup-btn">サインアップ</button>
+                        {% endfor %}
                     </div>
+
+                    <button type="submit" class="signup-submit" id="signup-btn">サインアップ</button>
+
+                    <div class="google-divider">
+                        <div class="google-divider-line"></div>
+                        <span class="google-divider-text">または</span>
+                        <div class="google-divider-line"></div>
+                    </div>
+
+                    <a href="{% provider_login_url 'google' %}" class="google-login-btn">
+                        <svg viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                            <path d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908c1.702-1.567 2.684-3.875 2.684-6.615z" fill="#4285F4"/>
+                            <path d="M9 18c2.43 0 4.467-.806 5.956-2.18l-2.908-2.259c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 0 0 9 18z" fill="#34A853"/>
+                            <path d="M3.964 10.71A5.41 5.41 0 0 1 3.682 9c0-.593.102-1.17.282-1.71V4.958H.957A8.996 8.996 0 0 0 0 9c0 1.452.348 2.827.957 4.042l3.007-2.332z" fill="#FBBC05"/>
+                            <path d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 0 0 .957 4.958L3.964 7.29C4.672 5.163 6.656 3.58 9 3.58z" fill="#EA4335"/>
+                        </svg>
+                        Googleでサインアップ
+                    </a>
+
+                    <p class="switch-link">すでにアカウントをお持ちの方は<a href="{% url 'DayLine_3_accounts:login' %}">ログイン</a></p>
                 </div>
             </form>
         </div>

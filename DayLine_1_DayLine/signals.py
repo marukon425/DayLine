@@ -28,8 +28,10 @@ def create_room_for_user(sender, instance, created, **kwargs):
             is_personal=True
         )
 
+        # 個人ルームの作成者はそのルームのオーナー
+        # （以前は誤って "admin" を割り当てていたため、ルームを削除する権限が持てなかった）
         authority, _ = Authority.objects.get_or_create(
-            authority_code="admin",
+            authority_code="owner",
             defaults={
                 "authority_name": "オーナー"
             }
@@ -40,3 +42,29 @@ def create_room_for_user(sender, instance, created, **kwargs):
             user=instance,
             authority=authority
         )
+
+
+
+from django.core.mail import send_mail
+from django.conf import settings
+
+# イベントが作成されたときにルームユーザーに知らせるメソッド
+@receiver(post_save, sender=Event)
+def notify_event_created(sender, instance, created, **kwargs):
+    if created:
+        # instanceはEventオブジェクト!!
+
+        recipient_list = []
+        #ここにfor文でルームに所属してるメンバーのメルアドをrecipient_listに入れていく※イベントを登録した本人のメルアドは除外する
+        members = instance.room.roommember_set.all()
+        for member in members:
+            # 作成者以外のルームユーザーに対して送信する
+            if member.user != instance.created_by:
+                recipient_list.append(member.user.email)
+        subject = "イベントが作成されました"
+        message = f"""
+        {instance.room.room_name}の{instance.created_by.username}が{instance.title}を追加しました。\n
+        開始日：{instance.start_date}
+        """
+        from_email = settings.DEFAULT_FROM_EMAIL
+        send_mail(subject, message, from_email, recipient_list)

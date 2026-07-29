@@ -1,80 +1,152 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ja">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="{% static "css/index/settingroom.css" %}">
-    <link rel="stylesheet" href="{% static "css/DayLine_style.css" %}">
-    <script src="{% static "js/room/room_setting.js" %}"></script>
+    <title>ルーム設定 | DayLine</title>
+    <link rel="stylesheet" href="{% static 'css/DayLine_style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/index/settingroom.css' %}">
+    <link rel="icon" href="{% static 'img/favicon.ico' %}">
+    <script src="{% static 'js/room/room_setting.js' %}"></script>
 </head>
 <body>
-    <header>
-        <img class="hamburger" src="{% static "img/ハンバーガー.svg" %}" alt="">
-        <a href="{% url "DayLine_1_DayLine:index" %}"><img src="{% static "img/DayLine2.svg" %}" alt=""></a>
-    </header>
-    <main>
-        <div class="settings-sidebar">
-            <div class="setting-category">
-                <ul>
-                    <li class="now-category"><a href="{% url 'DayLine_1_DayLine:settingroom' pk=room.pk %}">基本情報</a></li>
-                    {% comment %} <li>表示設定</li> {% endcomment %}
-                    <li><a href="{% url "DayLine_1_DayLine:settingroom_memmber" pk=room.pk%}">メンバー管理</a></li>
-                </ul>
-            </div>
+
+<!-- モバイル: タブナビ -->
+<nav class="tab-nav">
+    <div class="tab-inner">
+        <a class="tab-back" href="{% url 'DayLine_1_DayLine:index' %}">
+            <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>カレンダー
+        </a>
+        <a class="tab-item tab-active" href="{% url 'DayLine_1_DayLine:settingroom' pk=room.pk %}">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>基本情報
+        </a>
+        <a class="tab-item" href="{% url 'DayLine_1_DayLine:settingroom_memmber' pk=room.pk %}">
+            <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>メンバー
+        </a>
+    </div>
+</nav>
+
+<div class="setting-layout">
+
+    <!-- PC: サイドバー -->
+    <aside class="setting-sidebar">
+        <div class="sidebar-logo">
+            <img src="{% static 'img/DayLine2.svg' %}" alt="DayLine">
         </div>
-        <div class="main-setting">
-            <div class="room-main-setting">
-                <h2>基本情報</h2>
-                <div class="setting-space">
-                    <p class="setting-name">カレンダー情報</p>
-                    {% if is_admin %}                    
-                    <!--                                                                                 ↓ これがないとファイルデータが送信されない                                         -->
-                    <form action="{% url 'DayLine_1_DayLine:settingroom' object.pk %}" method="POST"  enctype="multipart/form-data" class="setting-chunk">
-                        {% csrf_token %}
-                        <div class="setting-area">
-                            <div class="setting-area-name">ルーム名</div>
-                            {{ form.room_name }}
-                        </div>
-                        <div class="setting-area">
-                            <div class="setting-area-name">説明</div>
-                            {{form.room_description}}
-                        </div>
-                        <div class="setting-area area-bottom">
-                            <div class="setting-area-name">アイコン</div>
-                            <img class="room-icon" src="{{ object.room_img.url }}" alt="" style="">
-                            <input class="edit-room-icon" type="file" name="room_img" accept="image/*" style="display:none;">
-                        </div>
-                        <div class="setting-save-cancel">
-                            <div class="cancel-btn">キャンセル</div>
-                            <input type="submit" class="save-btn" value="保存">
-                        </div>
-                    </form>
-                    {% else %}
-                    <div class="setting-chunk">
-                        <div class="setting-area">
-                            <div class="setting-area-name">ルーム名</div>
-                            <div class="setting-input">
-                                {{room_name}}
-                            </div>
-                        </div>
-                        <div class="setting-area">
-                            <div class="setting-area-name">説明</div>
-                            <div class="setting-input description ">
-                                {{room_description}}
-                            </div>
-                        </div>
-                        <div class="setting-area area-bottom">
-                            <div class="setting-area-name">アイコン</div>
-                            <img src="{% static "img/defalt_calendar_img.png" %}" alt="" style="">
-                        </div>
-                    </div>
-                    {% endif %}
+        <a class="sidebar-back" href="{% url 'DayLine_1_DayLine:index' %}">
+            <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+            カレンダーに戻る
+        </a>
+        <div class="sidebar-divider"></div>
+        <p class="sidebar-section">ルーム設定</p>
+        <a class="sidebar-item sidebar-active" href="{% url 'DayLine_1_DayLine:settingroom' pk=room.pk %}">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            基本情報
+        </a>
+        <a class="sidebar-item" href="{% url 'DayLine_1_DayLine:settingroom_memmber' pk=room.pk %}">
+            <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            メンバー管理
+        </a>
+        <div class="sidebar-bottom"></div>
+    </aside>
+
+    <!-- メインコンテンツ -->
+    <main class="setting-main">
+        <p class="setting-page-title">ルーム設定</p>
+        <p class="setting-page-sub">カレンダーの基本情報を管理します</p>
+
+        <!-- 招待リンクカード -->
+        <div class="setting-card invite-card">
+            <div class="invite-header">
+                <div class="invite-icon">
+                    <svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
                 </div>
-                <div class="bottom-space"></div>
+                <div>
+                    <p class="invite-label">招待リンク</p>
+                    <span class="invite-hint">このリンクを共有してメンバーを招待できます</span>
+                </div>
+            </div>
+            <div class="invite-url-row">
+                <input
+                    type="text"
+                    class="invite-url-input"
+                    id="invite-url-input"
+                    value="{{ request.scheme }}://{{ request.get_host }}{% url 'DayLine_1_DayLine:join_room_by_code' join_url=room.join_url %}"
+                    readonly
+                >
+                <button type="button" class="btn-copy" id="btn-copy">
+                    <svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                    <span id="btn-copy-text">コピー</span>
+                </button>
             </div>
         </div>
+
+        {% if is_admin %}
+        <!-- フォームカード -->
+        <div class="setting-card">
+            <form action="{% url 'DayLine_1_DayLine:settingroom' object.pk %}" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <!-- アイコン変更ボタンをformの中に移動 -->
+                <div class="room-icon-row">
+                    <img class="room-icon" id="preview-img" src="{{ object.room_img.url }}" alt="">
+                    <div class="room-icon-info">
+                        <p class="room-icon-label">カレンダーアイコン</p>
+                        <span class="room-icon-hint">推奨サイズ: 512 × 512px</span>
+                        <button type="button" class="btn-icon-change" onclick="document.querySelector('[name=room_img]').click()">
+                            画像を変更
+                        </button>
+                    </div>
+                </div>
+                {{ form.room_img }}  <!-- これがform内のfile input -->
+                <div class="fg">
+                    <label>ルーム名</label>
+                    {{ form.room_name }}
+                </div>
+                <div class="fg">
+                    <label>説明</label>
+                    {{ form.room_description }}
+                </div>
+                <div class="form-actions">
+                    <div class="btn-cancel" onclick="location.reload()">キャンセル</div>
+                    <input type="submit" class="btn-save" value="保存する">
+                </div>
+            </form>
+        </div>
+        <div class="deleteroom-leaving">
+            <div class="leaving">
+                <p class="deleteroom-leaving-h"><img src="{% static "img/leave-icon.svg" %}" alt="">カレンダーから退出</p>
+                <input type="submit" value="退会する">
+            </div>
+            <div class="deleteroom">
+                <p class="deleteroom-leaving-h"><img src="{% static "img/delete-icon.svg" %}" alt="">カレンダーを削除</p>
+                <input type="submit" value="削除する">
+            </div>
+        </div>
+        {% else %}
+        <!-- 閲覧のみ -->
+        <div class="setting-card">
+            <div class="room-icon-row">
+                <img class="room-icon" src="{{ object.room_img.url }}" alt="" style="cursor:default;">
+                <div class="room-icon-info">
+                    <p class="room-icon-label">カレンダーアイコン</p>
+                </div>
+            </div>
+        </div>
+        <div class="setting-card">
+            <div class="fg">
+                <label>ルーム名</label>
+                <div class="readonly-field">{{ room_name }}</div>
+            </div>
+            <div class="fg">
+                <label>説明</label>
+                <div class="readonly-field readonly-textarea">{{ room_description }}</div>
+            </div>
+            <p class="readonly-note">※ 編集権限がありません</p>
+        </div>
+        {% endif %}
     </main>
+</div>
+
 </body>
 </html>

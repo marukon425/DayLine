@@ -58,6 +58,9 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.google',
 
     'storages',
+
+    #通知系
+    'django_crontab'
 ]
 
 MIDDLEWARE = [
@@ -76,7 +79,8 @@ ROOT_URLCONF = 'DayLine.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        # 'DIRS': [BASE_DIR / 'DayLine' / 'templates'],
+        'DIRS': [BASE_DIR / 'DayLine' / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -163,9 +167,11 @@ EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = "smtp.gmail.com"
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = "maruriku0655@gmail.com"
+EMAIL_HOST_USER = "daylineofiice@gmail.com"
 EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+DEFAULT_FROM_EMAIL = 'DayLine <daylineofiice@gmail.com>'
+CONTACT_FROM_EMAIL = '問い合わせ <daylineofiice@gmail.com>'
 
 
 #生成ai用のapiキー
@@ -198,6 +204,8 @@ SOCIALACCOUNT_PROVIDERS = {
     }
 }
 
+SOCIALACCOUNT_LOGIN_ON_GET = True
+
 # 既存アカウントとメールアドレスが一致したら連携する
 SOCIALACCOUNT_EMAIL_AUTHENTICATION = True
 SOCIALACCOUNT_EMAIL_AUTHENTICATION_AUTO_CONNECT = True
@@ -223,7 +231,7 @@ LOGGING = {
     },
 }
 
-SOCIALACCOUNT_ADAPTER = 'allauth.socialaccount.adapter.DefaultSocialAccountAdapter'
+SOCIALACCOUNT_ADAPTER = 'DayLine_3_accounts.adapters.NoPasswordSocialAccountAdapter'
 SESSION_ENGINE = 'django.contrib.sessions.backends.db'
 SESSION_SAVE_EVERY_REQUEST = True
 
@@ -256,3 +264,16 @@ AWS_S3_OBJECT_PARAMETERS = {
 
 #グーグルアナリティクス
 GA_MEASUREMENT_ID = os.environ.get('GA_MEASUREMENT_ID', '')
+
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+
+SESSION_COOKIE_AGE = 60 * 60 * 24 * 30  # 30日間
+SESSION_EXPIRE_AT_BROWSER_CLOSE = False  # ブラウザ閉じてもセッション維持
+ACCOUNT_SESSION_REMEMBER = True  # 常にセッション維持
+
+# 時限通知
+CRONJOBS = [
+    # * * * * *は毎分実行という意味
+    ('* * * * *', 'DayLine_1_DayLine.tasks.send_event_notifications')
+]

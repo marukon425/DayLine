@@ -23,7 +23,7 @@
       <div class="form-card">
 
         <div id="form-body">
-          <form class="form-grid" method="POST">
+          <form class="form-grid" method="POST" id="contact-form">
             {% csrf_token %}
             <div class="field">
               <label>お名前</label>
@@ -48,11 +48,11 @@
           <div class="privacy">
             <div class="privacy-check" id="check" onclick="this.classList.toggle('checked')"></div>
             <p>
-              <a href="#">プライバシーポリシー</a>および<a href="#">利用規約</a>に同意します
+              <a href="{% url 'DayLine_2_top:privacy' %}">プライバシーポリシー</a>および<a href="{% url 'DayLine_2_top:terms' %}">利用規約</a>に同意します
             </p>
           </div>
 
-          <button class="submit-btn" onclick="handleSubmit()">送信する →</button>
+          <button class="submit-btn" onclick="handleSubmit(event)">送信する →</button>
         </div>
 
         <div class="success" id="success">
@@ -70,9 +70,25 @@
 
 {% block extra_js %}
 <script>
-  function handleSubmit() {
-    document.getElementById('form-body').style.display = 'none';
-    document.getElementById('success').style.display = 'block';
+  async function handleSubmit(event) {
+    event.preventDefault();
+    const form = document.getElementById('contact-form');
+    const formData = new FormData(form);
+
+    try {
+      const response = await fetch('/contact/', {
+        method: 'POST',
+        body: formData,
+      });
+      if (response.redirected) {
+        document.getElementById('form-body').style.display = 'none';
+        document.getElementById('success').style.display = 'block';
+      } else {
+        alert('入力内容を確認してください。');
+      }
+    } catch (e) {
+      alert('送信に失敗しました。時間をおいて再度お試しください。');
+    }
   }
 </script>
 {% endblock %}

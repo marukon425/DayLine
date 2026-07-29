@@ -1,221 +1,363 @@
-header{
-    height: 50px;
-    width: calc(100% - 20px);
-    padding: 0 10px;
-    display: flex;
-    align-items: center;
-}
+/* =============================================
+   account_setting.css  - プロフィール設定画面
+   ============================================= */
 
-.header-title img{
-    height: 30px;
-}
-
-main{
-    height: calc(100% - 30px);
-    width: 100%;
-    position: relative;
-    display: flex;
-}
-
-.account-modal{
-    display: flex;
-    position: absolute;
+/* ===== モバイルタブナビ（PC非表示） ===== */
+.tab-nav {
+    display: none;
+    background: #fff;
+    border-bottom: 1px solid #eee;
+    overflow-x: auto;
+    scrollbar-width: none;
+    position: sticky;
+    top: 0;
     z-index: 100;
-    height: 80%;
-    max-width: 40%;
-    min-width: 300px;
-    width: 70%;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    gap: 15px;
-    
 }
-
-.settings-selecter{
-    width: 470px;
-    height: 100%;
+.tab-nav::-webkit-scrollbar { display: none; }
+.tab-inner {
     display: flex;
-    flex-direction: column;
-    border-radius: 30px;
-    box-shadow: 4px 4px 10px 0 rgba(0, 0, 0, 0.094), -2px -2px 10px 0 rgba(0, 0, 0, 0.098);
-    background-color: rgb(1, 29, 69);
+    min-width: max-content;
 }
-
-.profile{
-    width: 100%;
-    margin: auto;
-    padding: 20px;
-    border-radius: 30px;
-    box-shadow: 4px 4px 10px 0 rgba(0, 0, 0, 0.094), -2px -2px 10px 0 rgba(0, 0, 0, 0.098);
-
-}
-
-.profile-settings-form{
-    height: 100%;
-}
-
-@media (max-width: 550px) {
-    .profile-settings-form{
-        display: block;
-        height: 100%;
-    }
-}
-
-.profile-icons{
-    display: flex;
-    flex-direction: column;
-}
-
-.profile-title{
-    text-align: center;
-    margin-bottom: 20px;
-    font-size: 20px;
-    font-weight: 600;
-}
-
-.profile-icon{
-    display: flex;
-    justify-content: center;
-    position: relative;
-    margin: 0 auto;
-}
-
-@media (max-width: 550px) {
-    .profile-icon{
-        margin-top: 0;
-    }
-}
-
-.profiele-icon-img{
-    height: 150px;
-    width: 150px;
-    margin-left: auto;
-    object-fit: cover;
-    border: 1px solid;
-    border-radius: 100px;
-}
-
-.profile-settings{
-    margin: 0 auto;
-    margin-top: 20px;
-    width: 100%;
-    max-width: 300px;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    justify-content: center;
-}
-
-@media (max-width: 550px) {
-    .profile-settings{
-        padding-right: 0;
-    }
-}
-
-.profile p{
-    margin: 0;
-    margin-bottom: 5px;
-    font-size: 13px;
-    color: rgb(1, 29, 69);
-    font-weight: 700;
-}
-
-.profile-settings input{
-    width: calc(100% - 10px);
-    border: none;
-    border-radius: 8px;
-    color: rgb(1, 29, 69);
-    padding: 5px;
-    height: 30px;
-    box-shadow: 4px 4px 10px 0 rgba(0, 0, 0, 0.094), -2px -2px 10px 0 rgba(0, 0, 0, 0.098);
-}
-.profile-word textarea:focus{
-    outline: none;
-}
-
-.profile-settings textarea{
-    width: 100%;
-    height: 100px;
-    background: none;
-    border: none;
-    border-radius: 8px;
-    box-shadow: 4px 4px 10px 0 rgba(0, 0, 0, 0.094), -2px -2px 10px 0 rgba(0, 0, 0, 0.098);
-    resize: none;
-}
-
-.profile-settings textarea:focus{
-    outline: none;
-}
-.sava-cancel-btn{
-    display: flex;
-    height: 40px;
-    gap: 10%;
-    margin-left: auto;
-
-}
-
-.cancel-btn{                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
-    font-size: 12px;
-    padding: 0 5px;
-    height: 100%;
-    border: 1px solid;
-    border-color: #0a1a3a4e;
-    border-radius: 100px;
-    text-align: center;
+.tab-back {
     display: flex;
     align-items: center;
-    justify-content: center;
-    transition: 0.2s;
+    gap: 6px;
+    padding: 13px 16px;
+    font-size: 13px;
+    font-weight: 600;
+    color: rgb(1,29,69);
+    text-decoration: none;
+    border-bottom: 2px solid transparent;
+    border-right: 1px solid #eee;
     white-space: nowrap;
 }
-.cancel-btn:hover{
-    background-color: #0a1a3a1f;
+.tab-back svg {
+    width: 15px; height: 15px;
+    stroke: currentColor; stroke-width: 2.5; fill: none;
 }
-
-.profile-save{
-    color: white !important;
-    background-color:  #0A1A3A;
-    border: none;
-    border-radius: 100px !important;
-    width: 80px !important;
-    height: 100%;
-    transition: 0.2s;
-}
-
-.profile-save:hover{
-    background-color: orange;
-}
-
-.settings-selecter-inner{
-    margin: 20px 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-}
-
-.setting-select{
+.tab-item {
     display: flex;
     align-items: center;
-    height: 50px;
+    gap: 6px;
+    padding: 13px 16px;
+    font-size: 13px;
+    color: #999;
+    text-decoration: none;
+    border-bottom: 2px solid transparent;
+    white-space: nowrap;
+    transition: .15s;
+}
+.tab-item svg {
+    width: 15px; height: 15px;
+    stroke: currentColor; stroke-width: 2; fill: none; opacity: .7;
+}
+.tab-active {
+    color: rgb(1,29,69);
+    border-bottom-color: #ffa500;
+    font-weight: 600;
+}
+.tab-active svg { opacity: 1; }
+
+/* ===== レイアウト ===== */
+.setting-layout {
+    display: flex;
+    max-width: 960px;
+    margin: 0 auto;
+    min-height: 100vh;
+}
+
+/* ===== サイドバー ===== */
+.setting-sidebar {
+    width: 220px;
+    min-width: 220px;
+    background: #fff;
+    border-right: 1px solid #eee;
+    display: flex;
+    flex-direction: column;
+    padding: 18px 0;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+}
+.sidebar-logo {
+    padding: 0 18px 16px;
+    border-bottom: 1px solid #eee;
+    margin-bottom: 10px;
+}
+.sidebar-logo img { height: 22px; }
+
+.sidebar-back {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 14px;
+    margin: 2px 8px;
     border-radius: 10px;
+    font-size: 13px;
+    font-weight: 600;
+    color: rgb(1,29,69);
+    text-decoration: none;
+    background: rgba(1,29,69,.05);
+    border-left: 3px solid #ffa500;
+    transition: .15s;
+}
+.sidebar-back:hover { background: rgba(1,29,69,.1); }
+.sidebar-back svg {
+    width: 16px; height: 16px;
+    stroke: currentColor; stroke-width: 2.5; fill: none; flex-shrink: 0;
+}
+
+.sidebar-divider {
+    height: 1px;
+    background: #eee;
+    margin: 10px 18px;
+}
+.sidebar-section {
+    padding: 6px 18px 4px;
+    font-size: 11px;
+    color: #aaa;
     font-weight: 500;
-    transition: 0.2s;
-    color: white;
-    padding: 0 10px;
+    letter-spacing: .6px;
+}
+.sidebar-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    margin: 2px 8px;
+    border-radius: 10px;
+    font-size: 13px;
+    color: rgb(1,29,69);
+    cursor: pointer;
+    border-left: 3px solid transparent;
+    transition: .15s;
+    text-decoration: none;
+    background: none;
+    border-top: none; border-right: none; border-bottom: none;
+    font-family: inherit;
+}
+.sidebar-item:hover { background: rgba(1,29,69,.04); }
+.sidebar-item svg {
+    width: 16px; height: 16px;
+    opacity: .6; flex-shrink: 0;
+    stroke: currentColor; stroke-width: 2; fill: none;
+}
+.sidebar-active {
+    background: rgba(1,29,69,.07);
+    border-left-color: #ffa500;
+    font-weight: 600;
+}
+.sidebar-active svg { opacity: 1; }
+.sidebar-danger { color: #c53030; }
+.sidebar-danger svg { opacity: .8; }
+.sidebar-bottom { margin-top: auto; }
+
+/* ===== メイン ===== */
+.setting-main {
+    flex: 1;
+    background: #f7f8fa;
+    padding: 28px;
+    min-width: 0;
+}
+.setting-page-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: rgb(1,29,69);
+    margin-bottom: 3px;
+}
+.setting-page-sub {
+    font-size: 12px;
+    color: #999;
+    margin-bottom: 20px;
 }
 
-.setting-selected{
-    background-color: #ffa500;
+/* ===== カード ===== */
+.setting-card {
+    background: #fff;
+    border-radius: 16px;
+    padding: 20px 22px;
+    margin-bottom: 14px;
+    box-shadow: 3px 3px 8px rgba(0,0,0,.06), -2px -2px 6px rgba(0,0,0,.04);
 }
 
-.setting-select:hover{
-    background-color: rgba(255, 255, 255, 0.288);
-    position: fixed;
-
+/* ===== アバター ===== */
+.avatar-row {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+}
+.avatar-wrap {
+    position: relative;
+    width: 72px; height: 72px;
+    cursor: pointer; flex-shrink: 0;
+}
+.profiele-icon-img {
+    width: 72px; height: 72px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #dde6f0;
+    display: block;
+}
+.avatar-cam {
+    position: absolute;
+    bottom: 0; right: 0;
+    width: 24px; height: 24px;
+    background: rgb(1,29,69);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    border: 2px solid #fff;
+}
+.avatar-cam svg {
+    width: 12px; height: 12px;
+    stroke: #fff; fill: none; stroke-width: 2.5;
+}
+.avatar-name {
+    font-size: 15px;
+    font-weight: 600;
+    color: rgb(1,29,69);
+    margin-bottom: 4px !important;
+}
+.avatar-hint {
+    font-size: 11px;
+    color: #bbb;
+    margin: 0 !important;
 }
 
-.user-name{
-    margin: auto 0;
-    margin-left: 15px;
+/* ===== フォーム ===== */
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+}
+.col2 { grid-column: 1 / -1; }
+.fg {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin-bottom: 14px;
+}
+.fg label {
+    font-size: 12px;
+    font-weight: 700;
+    color: rgb(1,29,69);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+.opt-badge {
+    font-size: 10px;
+    padding: 2px 7px;
+    border-radius: 4px;
+    background: #f0f0f0;
+    color: #999;
+    font-weight: 400;
+}
+.fg input, .fg textarea,
+.profile-settings input, .profile-settings textarea {
+    padding: 9px 12px;
+    border: none;
+    border-radius: 8px;
+    font-size: 13px;
+    color: rgb(1,29,69);
+    background: #f5f7fa;
+    box-shadow: 2px 2px 5px rgba(0,0,0,.07), -1px -1px 5px rgba(0,0,0,.05);
+    outline: none;
+    transition: .2s;
+    font-family: inherit;
+    width: 100%;
+    box-sizing: border-box;
+}
+.fg input:focus, .fg textarea:focus { box-shadow: 0 0 0 2px rgba(255,165,0,.35); }
+.fg textarea { height: 72px; resize: none; }
+
+/* ===== ボタン ===== */
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 18px;
+}
+.btn-cancel {
+    padding: 8px 22px;
+    border: 1px solid #ddd;
+    border-radius: 100px;
+    font-size: 13px;
+    background: #fff;
+    color: rgb(1,29,69);
+    cursor: pointer;
+    transition: .2s;
+    white-space: nowrap;
+}
+.btn-cancel:hover { background: #f5f5f5; }
+.btn-save {
+    padding: 8px 22px;
+    border-radius: 100px;
+    font-size: 13px;
+    background: rgb(1,29,69);
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+    font-family: inherit;
+    transition: .2s;
+    white-space: nowrap;
+}
+.btn-save:hover { background: #ffa500; }
+
+/* ===== セキュリティ設定（パスワード変更・メールアドレス変更） ===== */
+/* カード内の見出しと補足文 */
+.setting-card-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: rgb(1,29,69);
+    margin-bottom: 6px;
+}
+.setting-card-note {
+    font-size: 12px;
+    line-height: 1.7;
+    color: #6b7684;
+    margin-bottom: 16px;
+}
+.setting-card-note a { color: #ffa500; }
+
+/* 処理結果のお知らせ（messagesフレームワーク） */
+.setting-messages { margin-bottom: 14px; }
+.setting-message {
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-size: 13px;
+    margin-bottom: 8px;
+    background: #f5f7fa;
+    color: rgb(1,29,69);
+}
+.setting-message-success {
+    background: #e8f6ec;
+    color: #1c7a3e;
+}
+.setting-message-error {
+    background: #fdecec;
+    color: #c0392b;
+}
+
+/* フォームのバリデーションエラー */
+.setting-error {
+    font-size: 12px;
+    color: #c0392b;
+    margin-top: 4px;
+}
+
+/* ===== モバイル対応 ===== */
+@media (max-width: 640px) {
+    .setting-sidebar { display: none; }
+    .tab-nav { display: block; }
+    .setting-layout { display: block; min-height: auto; }
+    .setting-main { padding: 16px; }
+    .setting-page-title { font-size: 17px; }
+    .setting-card { padding: 16px; }
+    .form-grid { grid-template-columns: 1fr; }
+    .col2 { grid-column: 1; }
+    .profiele-icon-img,
+    .avatar-wrap { width: 60px; height: 60px; }
+    .form-actions { gap: 8px; }
+    .btn-cancel, .btn-save { flex: 1; text-align: center; }
 }
