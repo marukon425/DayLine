@@ -68,9 +68,14 @@
                             </li>
                         </ul>
                         <p class="terms_of_use" id="terms_of_use-btn">
-                            <input type="checkbox" id="terms_of_use-check" class="signup-form-input">
+                            {# フォームのフィールドとして描画する。生のinputだとname属性がなく、#}
+                            {# サーバーには同意有無が一切送信されないため直接POSTで素通りできてしまう #}
+                            {{ form.terms_of_use }}
                             <a href="{% url 'DayLine_2_top:terms' %}">利用規約</a>に同意する
                         </p>
+                        {% for error in form.terms_of_use.errors %}
+                            <p class="signup-error">{{ error }}</p>
+                        {% endfor %}
 
                         {% for error in form.password1.errors %}
                             <p class="signup-error">{{ error }}</p>

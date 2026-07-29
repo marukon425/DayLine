@@ -304,6 +304,48 @@
 }
 .btn-save:hover { background: #ffa500; }
 
+/* ===== セキュリティ設定（パスワード変更・メールアドレス変更） ===== */
+/* カード内の見出しと補足文 */
+.setting-card-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: rgb(1,29,69);
+    margin-bottom: 6px;
+}
+.setting-card-note {
+    font-size: 12px;
+    line-height: 1.7;
+    color: #6b7684;
+    margin-bottom: 16px;
+}
+.setting-card-note a { color: #ffa500; }
+
+/* 処理結果のお知らせ（messagesフレームワーク） */
+.setting-messages { margin-bottom: 14px; }
+.setting-message {
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-size: 13px;
+    margin-bottom: 8px;
+    background: #f5f7fa;
+    color: rgb(1,29,69);
+}
+.setting-message-success {
+    background: #e8f6ec;
+    color: #1c7a3e;
+}
+.setting-message-error {
+    background: #fdecec;
+    color: #c0392b;
+}
+
+/* フォームのバリデーションエラー */
+.setting-error {
+    font-size: 12px;
+    color: #c0392b;
+    margin-top: 4px;
+}
+
 /* ===== モバイル対応 ===== */
 @media (max-width: 640px) {
     .setting-sidebar { display: none; }

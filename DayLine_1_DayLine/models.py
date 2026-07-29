@@ -3,11 +3,6 @@ from DayLine_3_accounts.models import *
 import datetime
 from django.urls import reverse
 import uuid
-# Create your models here.
-import uuid
-
-
-# ルーム
 
 
 # カラー
@@ -127,6 +122,7 @@ class Room(models.Model):
 
 
 # 権限
+# 権限コードごとに「何ができるか」は permissions.py の AUTHORITY_PERMISSIONS で定義している
 class Authority(models.Model):
     class Meta:
         verbose_name = "権限セット"
@@ -137,14 +133,12 @@ class Authority(models.Model):
         max_length=20
     )
 
+    # owner / admin / user / member / guest のいずれかが入る
     authority_code = models.CharField(
         verbose_name='権限',
-        max_length=20
+        max_length=20,
+        unique=True
     )
-
-    class Meta:
-        verbose_name = "Authority"
-        verbose_name_plural = "Authoritys"
 
     def __str__(self):
         return self.authority_name
@@ -237,13 +231,6 @@ class Event(models.Model):
         on_delete=models.SET_NULL,
         null=True
     )
-
-    # user = models.ForeignKey(
-    #     CustomUser,
-    #     verbose_name='作成者',
-    #     on_delete=models.SET_NULL,
-    #     null=True
-    # )
 
     start_date = models.DateField(
         verbose_name='開始日',
@@ -345,12 +332,5 @@ class ToDoEvent(models.Model):
         default=False
     )
 
-# # 通知モデル
-# class Notification(models.Model):
-#     class Meta:
-#         verbose_name = "予定"
-#         verbose_name_plural = "予定"
-    
-#     id = models.UUIDField(
-        
-#     )
+    def __str__(self):
+        return self.title

@@ -218,18 +218,26 @@ document.addEventListener('DOMContentLoaded', function() {
 
         user.textContent = props.user || "";
         start_date.textContent = formatDate(props.start_date);
+
+        // 終日イベントのend_dateはFullCalendarの排他仕様に合わせてサーバー側で+1日されている。
+        // 画面には「実際の最終日」を出したいので、終日のときだけ-1日して戻す。
+        // 時間指定イベントは+1日されていないのでそのまま使う。
         const endDateObj = new Date(props.end_date);
-        endDateObj.setDate(endDateObj.getDate() - 1);
+        if (event.allDay) {
+            endDateObj.setDate(endDateObj.getDate() - 1);
+        }
         const ey = endDateObj.getFullYear();
         const em = endDateObj.getMonth() + 1;
         const ed = endDateObj.getDate();
+
         end_date.textContent = formatDate(`${ey}-${String(em).padStart(2,'0')}-${String(ed).padStart(2,'0')}`);
         start_time.textContent = formatTime(props.start_time);
         end_time.textContent = formatTime(props.end_time);
         allday_start_date.textContent = `${Number(props.start_date.slice(5, 7))}月${Number(props.start_date.slice(8, 10))}日`;
         allday_end_date.textContent = `${em}月${ed}日`;
         allday_start_year.textContent = `${Number(props.start_date.slice(0, 4))}年`;
-        allday_end_year.textContent = `${Number(props.end_date.slice(0, 4))}年`;
+        // 年も-1日した後の値を使う（12/31→1/1をまたぐイベントで年がずれるのを防ぐ）
+        allday_end_year.textContent = `${ey}年`;
 
         if(props.repeat=="繰り返しなし"){document.getElementById("detail-repeat").style.display="none";}else{document.getElementById("detail-repeat").style.display="flex"; repeat.textContent = props.repeat || "";}
         if(props.event_url==null){document.getElementById("detail-url").style.display="none";}else{document.getElementById("detail-url").style.display="flex"; event_url.textContent = props.event_url || "";}
@@ -546,9 +554,12 @@ document.addEventListener('DOMContentLoaded', function() {
             this.form.action = `/index/event/${id}/edit/`;
 
             // 日付
+            // 終日イベントのend_dateだけサーバー側で+1日されているので、フォームに戻すときは-1日する
             getFp("#create-start-date input").setDate(props.start_date, false);
             const endDateObj = new Date(props.end_date);
-            endDateObj.setDate(endDateObj.getDate() - 1);
+            if (fcEvent.allDay) {
+                endDateObj.setDate(endDateObj.getDate() - 1);
+            }
             getFp("#create-end-date input").setDate(endDateObj.toISOString().split('T')[0], false);
 
             // 時刻
@@ -1135,7 +1146,11 @@ document.querySelector('.chat-input-textarea-textarea')
             : 'chat-for-user ai-chat-chat';
 
         // テキストをpタグで表示
-        div.innerHTML = `<p>${text}</p>`;
+        // innerHTMLで埋めるとAIの返答に含まれるHTMLがそのまま実行されてしまうため、
+        // 要素を作ってtextContentに入れる（Prompt Injection経由のXSS対策）
+        const p = document.createElement('p');
+        p.textContent = text;
+        div.appendChild(p);
 
         // チャットエリアの末尾に追加
         chatArea.appendChild(div);

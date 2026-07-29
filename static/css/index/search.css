@@ -1,20 +1,117 @@
+/* 絞り込み条件が増えて縦に伸びるため、ページ全体をスクロールできるようにする
+   （以前は overflow:hidden + 固定高さで、はみ出した内容が見られなかった） */
 html, body{
     margin: 0;
     padding: 0;
-    height: 100%;
     width: 100%;
-    overflow: hidden;
 }
 
+/* このページのヘッダーは「検索ボックス＋絞り込み条件」を縦に積むので高さを可変にする
+   （index/header.css の height:50px を上書きしている） */
+header{
+    height: auto;
+    align-items: flex-start;
+    padding: 10px;
+    gap: 15px;
+    flex-wrap: wrap;
+    border-bottom: 1px solid #eee;
+}
+
+#search-form{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    flex: 1;
+    min-width: 280px;
+}
 
 .search-box{
     display: flex;
     height: 40px;
-    width: 700px;
-    margin-right: 50px;
+    width: 100%;
+    max-width: 700px;
     background-color: rgba(121, 121, 121, 0.1);
     border-radius: 10px;
 }
+
+/* ===== 絞り込み・並び替え ===== */
+.search-filters{
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: 10px;
+}
+
+.search-filter{
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    font-size: 11px;
+    font-weight: 600;
+    color: #6b7684;
+}
+
+.search-filter select,
+.search-filter input{
+    padding: 6px 8px;
+    font-size: 13px;
+    font-family: inherit;
+    color: rgb(1,29,69);
+    background-color: rgba(121, 121, 121, 0.08);
+    border: none;
+    border-radius: 8px;
+    outline: none;
+}
+
+.search-apply-btn{
+    padding: 7px 18px;
+    border: none;
+    border-radius: 100px;
+    background-color: rgb(1,29,69);
+    color: #fff;
+    font-size: 13px;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    transition: .2s;
+}
+.search-apply-btn:hover{ background-color: #ffa500; }
+
+.search-reset-btn{
+    font-size: 12px;
+    color: #6b7684;
+    text-decoration: none;
+    padding: 7px 4px;
+}
+.search-reset-btn:hover{ color: #ffa500; }
+
+.search-result-count{
+    font-size: 12px;
+    color: #6b7684;
+    margin: 0 0 10px 0;
+}
+
+.search-empty{
+    font-size: 13px;
+    color: #6b7684;
+}
+
+/* ===== ページ送り ===== */
+.search-pagination{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    margin-top: 18px;
+    font-size: 13px;
+    color: #6b7684;
+}
+.search-pagination a{
+    color: rgb(1,29,69);
+    text-decoration: none;
+    font-weight: 600;
+}
+.search-pagination a:hover{ color: #ffa500; }
 
 .search-icon{
     display: flex;
@@ -52,33 +149,21 @@ html, body{
     color: aliceblue;
 }
 
-main{    
-    height: calc(100% - 50px - (15px * 2));
-    width: calc(100% - (15px * 2));
-    display: flex;
+/* 絞り込みUIはヘッダーに移したので、mainは検索結果だけを縦に並べる */
+main{
     margin: 15px;
-    gap: 15px;
 }
 
 .search_results{
-    width: 60%;
-    height: 100%;
+    width: 100%;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    overflow-y: scroll;
     gap: 15px;
 }
 
-.filter{
-    width: 40%;
-    height: 100%;
-    background-color: aliceblue;
-}
-
 .search-result{
-    height:  calc(70px - (10px * 2));
-    width: 95%;
+    min-height: calc(70px - (10px * 2));
+    width: auto;
     padding: 10px;
     display: flex;
     flex-direction: column;
@@ -110,6 +195,16 @@ main{
     padding-left: 10px;
     border-left: 3px solid;
     border-color: orange;
+}
+
+/* どのカレンダーの予定かを結果に表示する */
+.search-result-detail-room{
+    margin-left: 12px;
+    padding: 2px 8px;
+    border-radius: 100px;
+    font-size: 11px;
+    color: #6b7684;
+    background-color: rgba(121, 121, 121, 0.1);
 }
 
 .search-result-detail-createby{

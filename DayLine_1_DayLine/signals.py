@@ -28,8 +28,10 @@ def create_room_for_user(sender, instance, created, **kwargs):
             is_personal=True
         )
 
+        # 個人ルームの作成者はそのルームのオーナー
+        # （以前は誤って "admin" を割り当てていたため、ルームを削除する権限が持てなかった）
         authority, _ = Authority.objects.get_or_create(
-            authority_code="admin",
+            authority_code="owner",
             defaults={
                 "authority_name": "オーナー"
             }
